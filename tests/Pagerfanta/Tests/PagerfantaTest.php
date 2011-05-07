@@ -20,6 +20,12 @@ class PagerfantaTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->adapter, $this->pagerfanta->getAdapter());
     }
 
+    public function testFluentInterface()
+    {
+        $this->assertInstanceOf('Pagerfanta\Pagerfanta', $this->pagerfanta->setCurrentPage(1, true));
+        $this->assertInstanceOf('Pagerfanta\Pagerfanta', $this->pagerfanta->setMaxPerPage(20));
+    }
+
     /**
      * @dataProvider providerSetGetMaxPerPage
      */
