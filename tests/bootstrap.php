@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__.'/../vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php');
+require_once(__DIR__.'/../vendor/propel/runtime/lib/Propel.php');
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 

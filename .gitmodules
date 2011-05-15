@@ -13,3 +13,6 @@
 [submodule "vendor/doctrine-common"]
 	path = vendor/doctrine-common
 	url = http://github.com/doctrine/common.git
+[submodule "vendor/propel"]
+	path = vendor/propel
+	url = git://github.com/Xosofox/propel.git
