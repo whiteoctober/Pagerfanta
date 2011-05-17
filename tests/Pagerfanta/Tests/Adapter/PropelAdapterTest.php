@@ -48,7 +48,13 @@ class PropelAdapterTest extends \PHPUnit_Framework_TestCase
         $this->query
             ->expects($this->once())
             ->method('limit')
-            ->with($length, $offset)
+            ->with($length)
+            ->will($this->returnValue($this->query))
+        ;
+        $this->query
+            ->expects($this->once())
+            ->method('offset')
+            ->with($offset)
             ->will($this->returnValue($this->query))
         ;
         $this->query

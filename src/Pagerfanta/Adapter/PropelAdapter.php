@@ -49,6 +49,6 @@ class PropelAdapter implements AdapterInterface
      */
     public function getSlice($offset, $length)
     {
-        return $this->query->limit($length, $offset)->find();
+        return $this->query->limit($length)->offset($offset)->find();
     }
 }
