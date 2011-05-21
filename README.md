@@ -80,7 +80,7 @@ An adapter must implement the *Pagerfanta\\Adapter\\AdapterInterface* interface,
      */
     function getSlice($offset, $length);
 
-Pagerfanta comes with four adapters:
+Pagerfanta comes with six adapters:
 
 ### ArrayAdapter
 
@@ -101,7 +101,7 @@ To paginate [Mandango](http://mandango.org) Queries.
 
 ### DoctrineORMAdapter
 
-To paginate [DoctrineORM](http://www.doctrine-project.org/projects/orm) query builders.
+To paginate [DoctrineORM](http://www.doctrine-project.org/projects/orm) query objects or query builders.
 
     use Pagerfanta\Adapter\DoctrineORMAdapter;
 
@@ -111,6 +111,19 @@ To paginate [DoctrineORM](http://www.doctrine-project.org/projects/orm) query bu
     ;
     $adapter = new DoctrineORMAdapter($queryBuilder);
 
+To paginate fetch joined collections correctly you can set the second variable $fetchJoinCollection
+to the constructor to true:
+
+    use Pagerfanta\Adapter\DoctrineORMAdapter;
+
+    $dql = "SELECT u, g FROM Pagerfanta\Tests\Adapter\Doctrine\User u INNER JOIN u.groups g";
+    $query = $entityManager->createQuery($dql);
+
+    $adapter = new DoctrineORMAdapter($queryBuilder, true);
+
+This will use a limit subquery + where-in strategy (using 2 queries instead of 1) to determine the
+slice which should be returned.
+
 ### DoctrineODMMongoDBAdapter
 
 To paginate [DoctrineODMMongoDB](http://www.doctrine-project.org/docs/mongodb_odm/1.0/en/) query builders.
@@ -119,6 +132,26 @@ To paginate [DoctrineODMMongoDB](http://www.doctrine-project.org/docs/mongodb_od
 
     $queryBuilder = $documentManager->createQueryBuilder('Model\Article');
     $adapter = new DoctrineODMMongoDBAdapter($queryBuilder);
+
+### DoctrineCollectionAdapter
+
+To paginate a `Doctrine\Common\Collection\Collections` interface you can use the `DoctrineCollectionAdapter`.
+It proxies to the count() and slice() methods on the Collections interface for pagination. This makes sense
+if you are using Doctrine ORMs Extra Lazy association features:
+
+    use Pagerfanta\Adapter\DoctrineCollectionAdapter;
+
+    $user = $em->find("Pagerfanta\Tests\Adapter\Doctrine\User", 1);
+
+    $adapter = new DoctrineCollectionAdapter($user->getGroups());
+
+## PropelAdapter
+
+To paginate a propel query:
+
+    use Pagerfanta\Adapter\PropelAdapter;
+
+    $adapter = new PropelAdapter($query);
 
 Views
 -----

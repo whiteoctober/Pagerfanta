@@ -7,6 +7,7 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $classLoader = new UniversalClassLoader();
 $classLoader->registerNamespaces(array(
+    'Pagerfanta\Tests'     => __DIR__,
     'Pagerfanta'           => __DIR__.'/../src',
     'Mandango'             => __DIR__.'/../vendor/mandango/src',
     'Doctrine\Common'      => __DIR__.'/../vendor/doctrine-common/lib',
@@ -14,3 +15,10 @@ $classLoader->registerNamespaces(array(
     'Doctrine\ODM\MongoDB' => __DIR__.'/../vendor/doctrine-mongodb-odm/lib',
 ));
 $classLoader->register();
+
+// Assume Doctrine ORM is insalled via PEAR
+$loader = new \Doctrine\Common\ClassLoader("Doctrine\DBAL");
+$loader->register();
+
+$loader = new \Doctrine\Common\ClassLoader("Doctrine\ORM");
+$loader->register();
