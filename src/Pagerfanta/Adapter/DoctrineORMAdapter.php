@@ -13,6 +13,7 @@ namespace Pagerfanta\Adapter;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\NoResultException;
 
 /**
  * DoctrineORMAdapter.
@@ -78,7 +79,11 @@ class DoctrineORMAdapter implements AdapterInterface
         $countQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
         $countQuery->setFirstResult(null)->setMaxResults(null);
 
-        return $countQuery->getSingleScalarResult();
+        try {
+            return $countQuery->getSingleScalarResult();
+        } catch(NoResultException $e) {
+            return 0;
+        }
     }
 
     /**
