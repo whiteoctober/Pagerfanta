@@ -62,9 +62,6 @@ class CountWalker extends TreeWalkerAdapter
 
         // ORDER BY is not needed, only increases query execution through unnecessary sorting.
         $AST->orderByClause = null;
-
-        // GROUP BY will break things, we are trying to get a count of all
-        $AST->groupByClause = null;
     }
 
 }

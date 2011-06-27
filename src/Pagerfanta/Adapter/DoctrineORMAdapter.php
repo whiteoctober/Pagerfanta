@@ -80,7 +80,9 @@ class DoctrineORMAdapter implements AdapterInterface
         $countQuery->setFirstResult(null)->setMaxResults(null);
 
         try {
-            return $countQuery->getSingleScalarResult();
+            $data =  $countQuery->getScalarResult();
+            $data = array_map('current', $data);
+            return array_sum($data);
         } catch(NoResultException $e) {
             return 0;
         }
