@@ -120,7 +120,7 @@ class Pagerfanta implements PagerfantaInterface
         }
 
         // out of range pages
-        if (!$allowOutOfRangePages) {
+        if (!$allowOutOfRangePages && $currentPage > 1) {
             if ($currentPage > $this->getNbPages()) {
                 if (!$normalizeOutOfRangePages) {
                     throw new OutOfRangeCurrentPageException();
