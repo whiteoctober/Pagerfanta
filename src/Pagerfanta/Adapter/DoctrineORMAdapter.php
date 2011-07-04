@@ -101,10 +101,10 @@ class DoctrineORMAdapter implements AdapterInterface
 
             $ids = array_map('current', $subQuery->getScalarResult());
 
+            $whereInQuery = $this->cloneQuery($this->query);
             // don't do this for an empty id array
             if (count($ids) > 0) {
                 $namespace = 'pg_';
-                $whereInQuery = $this->cloneQuery($this->query);
 
                 $whereInQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\WhereInWalker'));
                 $whereInQuery->setHint('id.count', count($ids));
@@ -114,14 +114,12 @@ class DoctrineORMAdapter implements AdapterInterface
                     $i++;
                     $whereInQuery->setParameter("{$namespace}_{$i}", $id);
                 }
-            } else {
-                $whereInQuery = $this->query;
             }
 
             return $whereInQuery->getResult($this->query->getHydrationMode());
         }
 
-        return $this->query
+        return $this->cloneQuery($this->query)
             ->setMaxResults($length)
             ->setFirstResult($offset)
             ->getResult($this->query->getHydrationMode())

@@ -78,4 +78,14 @@ class DoctrineORMAdapterTest extends DoctrineORMTestCase
         $this->assertEquals(2, count( $adapter->getSlice(0, 10)) );
         $this->assertEquals(1, count( $adapter->getSlice(1, 1)) );
     }
+
+    public function testCountAfterSlice()
+    {
+        $dql = "SELECT u FROM Pagerfanta\Tests\Adapter\DoctrineORM\User u";
+        $query = $this->entityManager->createQuery($dql);
+
+        $adapter = new DoctrineORMAdapter($query);
+        $adapter->getSlice(0, 1);
+        $this->assertEquals(2, $adapter->getNbResults() );
+    }
 }
