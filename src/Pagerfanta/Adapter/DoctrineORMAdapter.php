@@ -43,7 +43,7 @@ class DoctrineORMAdapter implements AdapterInterface
     public function __construct($query, $fetchJoinCollection = false)
     {
         $this->query = $query;
-        $this->fetchJoin = (Boolean) $fetchJoinCollection;
+        $this->fetchJoinCollection = (Boolean) $fetchJoinCollection;
     }
 
     /**
