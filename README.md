@@ -109,7 +109,7 @@ To paginate [DoctrineORM](http://www.doctrine-project.org/projects/orm) query ob
         ->select('u')
         ->from('Model\Article', 'u')
     ;
-    $adapter = new DoctrineORMAdapter($query->getQuery();
+    $adapter = new DoctrineORMAdapter($query);
 
 To paginate fetch joined collections correctly you can set the second variable $fetchJoinCollection
 to the constructor to true:
