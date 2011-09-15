@@ -41,7 +41,8 @@ class PropelAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->query->count();
+        $q = clone $this->getQuery();
+        return $q->limit(0)->offset(0)->count();
     }
 
     /**
@@ -49,6 +50,7 @@ class PropelAdapter implements AdapterInterface
      */
     public function getSlice($offset, $length)
     {
-        return $this->query->limit($length)->offset($offset)->find();
+        $q = clone $this->getQuery();
+        return $q->limit($length)->offset($offset)->find();
     }
 }
