@@ -29,7 +29,7 @@ class TwitterBootstrapView implements ViewInterface
     public function render(PagerfantaInterface $pagerfanta, $routeGenerator, array $options = array())
     {
         $options = array_merge(array(
-            'proximity'              => 3,
+            'proximity'           => 3,
             'prev_message'        => '&larr; Previous',
             'prev_disabled_href'  => '',
             'next_message'        => 'Next &rarr;',
