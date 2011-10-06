@@ -16,6 +16,10 @@ use Pagerfanta\PagerfantaInterface;
 /**
  * TwitterBootstrapView.
  *
+ * View that can be used with the pagination module 
+ * from the Twitter Bootstrap CSS Toolkit
+ * http://twitter.github.com/bootstrap/
+ *
  * @author Pablo Díez <pablodip@gmail.com>
  * @author Jan Sorgalla <jsorgalla@gmail.com>
  *
