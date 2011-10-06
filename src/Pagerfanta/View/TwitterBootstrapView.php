@@ -68,7 +68,7 @@ class TwitterBootstrapView implements ViewInterface
         $class = $options['css_prev_class'];
         $url   = $options['prev_disabled_href'];
         if (!$pagerfanta->hasPreviousPage()) {
-            $class .= ' ' . $options['css_disabled_class'];
+            $class .= ' '.$options['css_disabled_class'];
         } else {
             $url = $routeGenerator($pagerfanta->getPreviousPage());
         }
@@ -113,7 +113,7 @@ class TwitterBootstrapView implements ViewInterface
         $class = $options['css_next_class'];
         $url   = $options['next_disabled_href'];
         if (!$pagerfanta->hasNextPage()) {
-            $class .= ' ' . $options['css_disabled_class'];
+            $class .= ' '.$options['css_disabled_class'];
         } else {
             $url = $routeGenerator($pagerfanta->getNextPage());
         }
