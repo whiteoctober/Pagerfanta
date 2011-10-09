@@ -55,9 +55,7 @@ class CountWalker extends TreeWalkerAdapter
         $pathExpression->type = PathExpression::TYPE_STATE_FIELD;
 
         $AST->selectClause->selectExpressions = array(
-            new SelectExpression(
-                    new AggregateExpression('count', $pathExpression, true), null
-            )
+            new SelectExpression(new AggregateExpression('count', $pathExpression, true), false, null)
         );
 
         // ORDER BY is not needed, only increases query execution through unnecessary sorting.
