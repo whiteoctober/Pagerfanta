@@ -15,7 +15,8 @@ use Doctrine\ORM\Query\TreeWalkerAdapter,
     Doctrine\ORM\Query\AST\SelectStatement,
     Doctrine\ORM\Query\AST\SelectExpression,
     Doctrine\ORM\Query\AST\PathExpression,
-    Doctrine\ORM\Query\AST\AggregateExpression;
+    Doctrine\ORM\Query\AST\AggregateExpression,
+    Doctrine\ORM\Version;
 
 class CountWalker extends TreeWalkerAdapter
 {
@@ -54,8 +55,14 @@ class CountWalker extends TreeWalkerAdapter
         );
         $pathExpression->type = PathExpression::TYPE_STATE_FIELD;
 
+        $aggregateExpression = new AggregateExpression('count', $pathExpression, true);
+        if (Version::compare('2.2.0-DEV') < 0) {
+            $selectExpression = new SelectExpression($aggregateExpression, null);
+        } else {
+            $selectExpression = new SelectExpression($aggregateExpression, false, null);
+        }
         $AST->selectClause->selectExpressions = array(
-            new SelectExpression(new AggregateExpression('count', $pathExpression, true), false, null)
+            $selectExpression
         );
 
         // ORDER BY is not needed, only increases query execution through unnecessary sorting.
