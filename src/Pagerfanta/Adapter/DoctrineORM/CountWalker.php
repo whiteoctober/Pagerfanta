@@ -56,7 +56,7 @@ class CountWalker extends TreeWalkerAdapter
         $pathExpression->type = PathExpression::TYPE_STATE_FIELD;
 
         $aggregateExpression = new AggregateExpression('count', $pathExpression, true);
-        if (Version::compare('2.2.0-DEV') < 0) {
+        if (Version::compare('2.2.0-DEV') > 0) {
             $selectExpression = new SelectExpression($aggregateExpression, null);
         } else {
             $selectExpression = new SelectExpression($aggregateExpression, false, null);
