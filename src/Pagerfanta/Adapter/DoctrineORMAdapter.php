@@ -79,6 +79,8 @@ class DoctrineORMAdapter implements AdapterInterface
     {
         /* @var $countQuery Query */
         $countQuery = $this->cloneQuery($this->query);
+        
+        $countQuery->setDql(preg_replace('|JOIN ([a-zA-Z\.]+) ([a-zA-Z]+)|', '', $countQuery->getDql()));
 
         $countQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
         $countQuery->setFirstResult(null)->setMaxResults(null);
