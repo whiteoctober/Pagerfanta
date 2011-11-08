@@ -23,6 +23,9 @@ Usage
 
     $pagerfanta->getNbPages();
 
+    $pagerfanta->getLowerOffsetOfResults();
+    $pagerfanta->getHigherOffsetOfResults();
+
     $pagerfanta->haveToPaginate(); // whether the number of results if higher than the max per page
 
     $pagerfanta->hasPreviousPage();

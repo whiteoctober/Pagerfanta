@@ -34,6 +34,8 @@ class Pagerfanta implements PagerfantaInterface, \IteratorAggregate
     private $currentPageResults;
     private $nbResults;
     private $nbPages;
+    private $lowerOffsetOfResults;
+    private $higherOffsetOfResults;
 
     /**
      * Constructor.
@@ -48,6 +50,8 @@ class Pagerfanta implements PagerfantaInterface, \IteratorAggregate
         $this->adapter = $adapter;
         $this->maxPerPage = 10;
         $this->currentPage = 1;
+        $this->lowerOffsetOfResults = 1;
+        $this->higherOffsetOfResults = 10;
     }
 
     /**
@@ -153,6 +157,8 @@ class Pagerfanta implements PagerfantaInterface, \IteratorAggregate
             $offset = ($this->getCurrentPage() - 1) * $this->getMaxPerPage();
             $length = $this->getMaxPerPage();
             $this->currentPageResults = $this->adapter->getSlice($offset, $length);
+            $this->lowerOffsetOfResults = (int) $offset + 1;
+            $this->higherOffsetOfResults = (int) $this->currentPage * $length;
         }
 
         return $this->currentPageResults;
@@ -181,6 +187,23 @@ class Pagerfanta implements PagerfantaInterface, \IteratorAggregate
 
         return $this->nbPages;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLowerOffsetOfResults()
+    {
+        return $this->lowerOffsetOfResults;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHigherOffsetOfResults()
+    {
+        return $this->higherOffsetOfResults;
+    }
+
 
     /**
      * {@inheritdoc}
