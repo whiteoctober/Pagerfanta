@@ -204,6 +204,27 @@ class PagerfantaTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(17, $this->pagerfanta->getNbPages());
     }
 
+    public function testGetLowerOffsetOfRecords()
+    {
+        $this->adapter
+            ->expects($this->any())
+            ->method('getCurrentPageResults')
+        ;
+        $this->pagerfanta->setCurrentPage(3);
+        $this->assertSame(31, $this->pagerfanta->getLowerOffsetOfRecords());
+    }
+
+    public function testGetHigherOffsetOfRecords()
+    {
+        $this->adapter
+            ->expects($this->any())
+            ->method('getCurrentPageResults')
+        ;
+
+        $this->pagerfanta->setCurrentPage(3);
+        $this->assertSame(40, $this->pagerfanta->getHigherOffsetOfRecords());
+    }
+
     public function testHaveToPaginate()
     {
         $this->adapter
