@@ -204,17 +204,17 @@ class PagerfantaTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(17, $this->pagerfanta->getNbPages());
     }
 
-    public function testGetLowerOffsetOfRecords()
+    public function testGetLowerOffsetOfResults()
     {
         $this->adapter
             ->expects($this->any())
             ->method('getCurrentPageResults')
         ;
         $this->pagerfanta->setCurrentPage(3);
-        $this->assertSame(31, $this->pagerfanta->getLowerOffsetOfRecords());
+        $this->assertSame(31, $this->pagerfanta->getLowerOffsetOfResults());
     }
 
-    public function testGetHigherOffsetOfRecords()
+    public function testGetHigherOffsetOfResults()
     {
         $this->adapter
             ->expects($this->any())
@@ -222,7 +222,7 @@ class PagerfantaTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->pagerfanta->setCurrentPage(3);
-        $this->assertSame(40, $this->pagerfanta->getHigherOffsetOfRecords());
+        $this->assertSame(40, $this->pagerfanta->getHigherOffsetOfResults());
     }
 
     public function testHaveToPaginate()

@@ -95,18 +95,18 @@ interface PagerfantaInterface
     function getNbPages();
 
     /**
-     * Returns the lower offset of records selection
+     * Returns the lower offset of resultset
      *
      * @return integer The lower offset
      */
-    function getLowerOffsetOfRecords();
+    function getLowerOffsetOfResults();
 
     /**
-     * Returns the higher offset of records selection
+     * Returns the higher offset of resultset
      *
      * @return integer The lower offset
      */
-    function getHigherOffsetOfRecords();
+    function getHigherOffsetOfResults();
 
     /**
      * Returns whether have to paginate or not.

@@ -23,8 +23,8 @@ Usage
 
     $pagerfanta->getNbPages();
 
-    $pagerfanta->getLowerOffsetOfRecords();
-    $pagerfanta->getHigherOffsetOfRecords();
+    $pagerfanta->getLowerOffsetOfResults();
+    $pagerfanta->getHigherOffsetOfResults();
 
     $pagerfanta->haveToPaginate(); // whether the number of results if higher than the max per page
 
