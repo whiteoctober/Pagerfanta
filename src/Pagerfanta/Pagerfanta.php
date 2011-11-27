@@ -26,7 +26,7 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
  *
  * @api
  */
-class Pagerfanta implements PagerfantaInterface, \IteratorAggregate
+class Pagerfanta implements PagerfantaInterface, \IteratorAggregate, \Countable
 {
     private $adapter;
     private $maxPerPage;
@@ -241,4 +241,15 @@ class Pagerfanta implements PagerfantaInterface, \IteratorAggregate
     {
         return new \ArrayIterator($this->getCurrentPageResults());
     }
+    
+    /**
+     * Implements the \Countable interface.
+     * 
+     * Even thought we work with only a slice of data, from user's perspective,
+     * the count of rows in a database refers to the total number of results.
+     */
+    public function count() {
+        return $this->getNbResults();
+    }
+    
 }
