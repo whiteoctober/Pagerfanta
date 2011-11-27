@@ -248,7 +248,8 @@ class Pagerfanta implements PagerfantaInterface, \IteratorAggregate, \Countable
      * Even thought we work with only a slice of data, from user's perspective,
      * the count of rows in a database refers to the total number of results.
      */
-    public function count() {
+    public function count() 
+    {
         return $this->getNbResults();
     }
     
