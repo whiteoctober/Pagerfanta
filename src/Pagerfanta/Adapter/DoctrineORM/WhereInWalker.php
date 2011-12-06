@@ -115,7 +115,7 @@ class WhereInWalker extends TreeWalkerAdapter
                 );
             } else {
                 // error check to provide a more verbose error on failure
-                throw \Exception("Unknown conditionalExpression in WhereInWalker");
+                throw new \RuntimeException("Unknown conditionalExpression in WhereInWalker");
             }
         }
     }
