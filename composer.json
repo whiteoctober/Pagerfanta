@@ -15,7 +15,8 @@
     },
     "suggest": {
         "doctrine/orm": "2.*",
-        "doctrine/mongodb-odm": "2.*"
+        "doctrine/mongodb-odm": "2.*",
+        "solarium/solarium": "2.*"
     },
     "autoload": {
         "psr-0": { "Pagerfanta\\": "src/" }

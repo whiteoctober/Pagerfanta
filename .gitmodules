@@ -22,3 +22,6 @@
 [submodule "vendor/propel"]
 	path = vendor/propel
 	url = http://github.com/propelorm/Propel.git
+[submodule "vendor/solarium"]
+	path = vendor/solarium
+	url = https://github.com/basdenooijer/solarium

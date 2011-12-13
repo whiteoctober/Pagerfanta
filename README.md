@@ -153,6 +153,19 @@ To paginate a propel query:
 
     $adapter = new PropelAdapter($query);
 
+### SolariumAdapter
+
+To paginate a [solarium](https://github.com/basdenooijer/solarium) query:
+
+    use Pagerfanta\Adapter\SolariumAdapter;
+
+    $query = $solarium->createSelect();
+    $query->setQuery('search term');
+
+    $adapter = new SolariumAdapter($solarium, $query);
+
+For using solarium see also the [NelmioSolariumBundle](https://github.com/nelmio/NelmioSolariumBundle).
+
 Views
 -----
 

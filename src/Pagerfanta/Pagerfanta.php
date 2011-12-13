@@ -251,6 +251,16 @@ class Pagerfanta implements PagerfantaInterface, \Countable, \IteratorAggregate
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->getCurrentPageResults());
+        $currentPageResults = $this->getCurrentPageResults();
+
+        if ($currentPageResults instanceof \Iterator) {
+            return $currentPageResults;
+        }
+
+        if ($currentPageResults instanceof \IteratorAggregate) {
+            return $currentPageResults->getIterator();
+        }
+
+        return new \ArrayIterator($currentPageResults);
     }
 }

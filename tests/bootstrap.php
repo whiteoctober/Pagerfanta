@@ -16,4 +16,7 @@ $classLoader->registerNamespaces(array(
     'Doctrine\DBAL'        => __DIR__.'/../vendor/doctrine-dbal/lib',
     'Doctrine\ORM'         => __DIR__.'/../vendor/doctrine-orm/lib',
 ));
+$classLoader->registerPrefixes(array(
+    'Solarium_'            => __DIR__.'/../vendor/solarium/library',
+));
 $classLoader->register();
