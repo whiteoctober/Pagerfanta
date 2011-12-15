@@ -36,11 +36,11 @@ class DoctrineORMAdapter implements AdapterInterface
      * Constructor.
      *
      * @param Query|QueryBuilder $query               A Doctrine ORM query or query builder.
-     * @param Boolean            $fetchJoinCollection Whether the query joins a collection (false by default).
+     * @param Boolean            $fetchJoinCollection Whether the query joins a collection (true by default).
      *
      * @api
      */
-    public function __construct($query, $fetchJoinCollection = false)
+    public function __construct($query, $fetchJoinCollection = true)
     {
         if ($query instanceof QueryBuilder) {
             $query = $query->getQuery();
