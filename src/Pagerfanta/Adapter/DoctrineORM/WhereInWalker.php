@@ -20,6 +20,9 @@ use Doctrine\ORM\Query\TreeWalkerAdapter,
     Doctrine\ORM\Query\AST\ConditionalTerm,
     Doctrine\ORM\Query\AST\ConditionalExpression,
     Doctrine\ORM\Query\AST\ConditionalFactor,
+    Doctrine\ORM\Query\AST\NullComparisonExpression,
+    Doctrine\ORM\Query\AST\ArithmeticExpression,
+    Doctrine\ORM\Query\AST\SimpleArithmeticExpression,
     Doctrine\ORM\Query\AST\WhereClause;
 
 /**
@@ -33,7 +36,6 @@ use Doctrine\ORM\Query\TreeWalkerAdapter,
  */
 class WhereInWalker extends TreeWalkerAdapter
 {
-
     /**
      * Replaces the whereClause in the AST
      *
@@ -49,14 +51,13 @@ class WhereInWalker extends TreeWalkerAdapter
     {
         $parent = null;
         $parentName = null;
-        foreach ($this->_getQueryComponents() AS $dqlAlias => $qComp) {
-
+        foreach ($this->_getQueryComponents() as $dqlAlias => $qComp) {
             // skip mixed data in query
             if (isset($qComp['resultVariable'])) {
                 continue;
             }
 
-            if ($qComp['parent'] === null && $qComp['nestingLevel'] == 0) {
+            if (array_key_exists('parent', $qComp) && $qComp['parent'] === null && $qComp['nestingLevel'] == 0) {
                 $parent = $qComp;
                 $parentName = $dqlAlias;
                 break;
@@ -64,14 +65,30 @@ class WhereInWalker extends TreeWalkerAdapter
         }
 
         $pathExpression = new PathExpression(
-                        PathExpression::TYPE_STATE_FIELD, $parentName, $parent['metadata']->getSingleIdentifierFieldName()
+            PathExpression::TYPE_STATE_FIELD, $parentName, $parent['metadata']->getSingleIdentifierFieldName()
         );
         $pathExpression->type = PathExpression::TYPE_STATE_FIELD;
-        $inExpression = new InExpression($pathExpression);
-        $ns = $this->_getQuery()->getHint('pg.ns');
+
         $count = $this->_getQuery()->getHint('id.count');
-        for ($i = 1; $i <= $count; $i++) {
-            $inExpression->literals[] = new InputParameter(":{$ns}_$i");
+
+        if ($count > 0) {
+            // in new doctrine 2.2 version theres a different expression
+            if (property_exists('Doctrine\ORM\Query\AST\InExpression', 'expression')) {
+                $arithmeticExpression = new ArithmeticExpression();
+                $arithmeticExpression->simpleArithmeticExpression = new SimpleArithmeticExpression(
+                    array($pathExpression)
+                );
+                $inExpression = new InExpression($arithmeticExpression);
+            } else {
+                $inExpression = new InExpression($pathExpression);
+            }
+            $ns = $this->_getQuery()->getHint('pg.ns');
+            for ($i = 1; $i <= $count; $i++) {
+                $inExpression->literals[] = new InputParameter(":{$ns}_$i");
+            }
+        } else {
+            $inExpression = new NullComparisonExpression($pathExpression);
+            $inExpression->not = false;
         }
         $conditionalPrimary = new ConditionalPrimary;
         $conditionalPrimary->simpleConditionalExpression = $inExpression;
@@ -79,11 +96,11 @@ class WhereInWalker extends TreeWalkerAdapter
         // if no existing whereClause
         if ($AST->whereClause === null) {
             $AST->whereClause = new WhereClause(
-                            new ConditionalExpression(array(
-                                new ConditionalTerm(array(
-                                    new ConditionalFactor($conditionalPrimary)
-                                ))
-                            ))
+                new ConditionalExpression(array(
+                    new ConditionalTerm(array(
+                        new ConditionalFactor($conditionalPrimary)
+                    ))
+                ))
             );
         } else { // add to the existing using AND
             // existing AND clause
@@ -93,14 +110,14 @@ class WhereInWalker extends TreeWalkerAdapter
             // single clause where
             elseif ($AST->whereClause->conditionalExpression instanceof ConditionalPrimary) {
                 $AST->whereClause->conditionalExpression = new ConditionalExpression(
-                                array(
-                                    new ConditionalTerm(
-                                            array(
-                                                $AST->whereClause->conditionalExpression,
-                                                $conditionalPrimary
-                                            )
-                                    )
-                                )
+                    array(
+                        new ConditionalTerm(
+                            array(
+                                $AST->whereClause->conditionalExpression,
+                                $conditionalPrimary
+                            )
+                        )
+                    )
                 );
             }
             // an OR clause
@@ -108,10 +125,10 @@ class WhereInWalker extends TreeWalkerAdapter
                 $tmpPrimary = new ConditionalPrimary;
                 $tmpPrimary->conditionalExpression = $AST->whereClause->conditionalExpression;
                 $AST->whereClause->conditionalExpression = new ConditionalTerm(
-                                array(
-                                    $tmpPrimary,
-                                    $conditionalPrimary,
-                                )
+                    array(
+                        $tmpPrimary,
+                        $conditionalPrimary,
+                    )
                 );
             } else {
                 // error check to provide a more verbose error on failure

@@ -11,6 +11,10 @@ class MandangoAdapterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (!class_exists('Mandango\Query')) {
+            $this->markTestSkipped('Mandango is not available');
+        }
+
         $this->query = $this
             ->getMockBuilder('Mandango\Query')
             ->disableOriginalConstructor()

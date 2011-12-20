@@ -8,6 +8,10 @@ abstract class DoctrineORMTestCase extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        if (!class_exists('Doctrine\ORM\EntityManager')) {
+            $this->markTestSkipped('Doctrine ORM is not available');
+        }
+
         $config = new \Doctrine\ORM\Configuration();
         $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache);
         $config->setQueryCacheImpl(new \Doctrine\Common\Cache\ArrayCache);

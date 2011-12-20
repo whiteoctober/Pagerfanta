@@ -16,6 +16,10 @@ class PropelAdapterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (!class_exists('ModelCriteria')) {
+            $this->markTestSkipped('Propel is not available');
+        }
+
         $this->query = $this
             ->getMockBuilder('\ModelCriteria')
             ->disableOriginalConstructor()

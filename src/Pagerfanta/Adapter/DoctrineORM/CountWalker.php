@@ -19,7 +19,6 @@ use Doctrine\ORM\Query\TreeWalkerAdapter,
 
 class CountWalker extends TreeWalkerAdapter
 {
-
     /**
      * Walks down a SelectStatement AST node, modifying it to retrieve a COUNT
      *
@@ -31,16 +30,13 @@ class CountWalker extends TreeWalkerAdapter
         $parent = null;
         $parentName = null;
 
-
-
-        foreach ($this->_getQueryComponents() AS $dqlAlias => $qComp) {
-
+        foreach ($this->_getQueryComponents() as $dqlAlias => $qComp) {
             // skip mixed data in query
             if (isset($qComp['resultVariable'])) {
                 continue;
             }
 
-            if ($qComp['parent'] === null && $qComp['nestingLevel'] == 0) {
+            if (array_key_exists('parent', $qComp) && $qComp['parent'] === null && $qComp['nestingLevel'] == 0) {
                 $parent = $qComp;
                 $parentName = $dqlAlias;
                 break;
@@ -49,14 +45,14 @@ class CountWalker extends TreeWalkerAdapter
 
 
         $pathExpression = new PathExpression(
-                        PathExpression::TYPE_STATE_FIELD | PathExpression::TYPE_SINGLE_VALUED_ASSOCIATION, $parentName,
-                        $parent['metadata']->getSingleIdentifierFieldName()
+            PathExpression::TYPE_STATE_FIELD | PathExpression::TYPE_SINGLE_VALUED_ASSOCIATION, $parentName,
+            $parent['metadata']->getSingleIdentifierFieldName()
         );
         $pathExpression->type = PathExpression::TYPE_STATE_FIELD;
 
         $AST->selectClause->selectExpressions = array(
             new SelectExpression(
-                    new AggregateExpression('count', $pathExpression, true), null
+                new AggregateExpression('count', $pathExpression, true), null
             )
         );
 

@@ -12,6 +12,10 @@ class DoctrineODMMongoDBAdapterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        if (!class_exists('Doctrine\ODM\MongoDB\Query\Builder')) {
+            $this->markTestSkipped('Doctrine MongoDB is not available');
+        }
+
         $this->queryBuilder = $this
             ->getMockBuilder('Doctrine\ODM\MongoDB\Query\Builder')
             ->disableOriginalConstructor()

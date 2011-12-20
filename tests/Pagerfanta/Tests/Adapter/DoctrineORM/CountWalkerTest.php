@@ -30,7 +30,7 @@ class CountWalkerTest extends DoctrineORMTestCase
         );
     }
 
-    public function testCountQuery_RemovesGroupBy()
+    public function testCountQuery_KeepsGroupBy()
     {
         $query = $this->entityManager->createQuery(
                         'SELECT b FROM Pagerfanta\Tests\Adapter\DoctrineORM\BlogPost b GROUP BY b.id');
@@ -38,7 +38,7 @@ class CountWalkerTest extends DoctrineORMTestCase
         $query->setFirstResult(null)->setMaxResults(null);
 
         $this->assertEquals(
-                "SELECT count(DISTINCT b0_.id) AS sclr0 FROM BlogPost b0_", $query->getSql()
+                "SELECT count(DISTINCT b0_.id) AS sclr0 FROM BlogPost b0_ GROUP BY b0_.id", $query->getSql()
         );
     }
 
