@@ -6,7 +6,6 @@ use Doctrine\ORM\Query;
 
 class LimitSubqueryWalkerTest extends DoctrineORMTestCase
 {
-
     public function testLimitSubquery()
     {
         $query = $this->entityManager->createQuery(
@@ -27,7 +26,7 @@ class LimitSubqueryWalkerTest extends DoctrineORMTestCase
         $limitQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\LimitSubqueryWalker'));
 
         $this->assertEquals(
-                "SELECT DISTINCT a0_.id AS id0 FROM Author a0_", $limitQuery->getSql()
+                "SELECT DISTINCT a0_.id AS id0, sum(a0_.name) AS sclr1 FROM Author a0_", $limitQuery->getSql()
         );
     }
 }

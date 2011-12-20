@@ -104,6 +104,21 @@ class Author
 /**
  * @Entity
  */
+class Person
+{
+
+    /** @Id @column(type="integer") @generatedValue */
+    public $id;
+    /** @Column(type="string") */
+    public $name;
+    /** @Column(type="string") */
+    public $biography;
+
+}
+
+/**
+ * @Entity
+ */
 class Category
 {
 
