@@ -114,11 +114,6 @@ class Pagerfanta implements PagerfantaInterface
             throw new NotIntegerCurrentPageException();
         }
 
-        // less than 1?
-        if ($currentPage < 1) {
-            $currentPage = 1;
-        }
-
         // out of range pages
         if (!$allowOutOfRangePages && $currentPage > 1) {
             if ($currentPage > $this->getNbPages()) {
@@ -128,6 +123,11 @@ class Pagerfanta implements PagerfantaInterface
 
                 $currentPage = $this->getNbPages();
             }
+        }
+
+        // less than 1?
+        if ($currentPage < 1) {
+            $currentPage = 1;
         }
 
         $this->currentPageResults = null;

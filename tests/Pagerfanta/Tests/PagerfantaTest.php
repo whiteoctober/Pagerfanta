@@ -152,6 +152,30 @@ class PagerfantaTest extends \PHPUnit_Framework_TestCase
         $this->pagerfanta->setCurrentPage(3);
     }
 
+    public function testSetCurrentPageNormalized()
+    {
+        $this->adapter
+            ->expects($this->any())
+            ->method('getNbResults')
+            ->will($this->returnValue(0))
+        ;
+
+        $this->pagerfanta->setCurrentPage(-1, false, true);
+        $this->assertSame(1, $this->pagerfanta->getCurrentPage());
+
+        $this->pagerfanta->setCurrentPage(0, false, true);
+        $this->assertSame(1, $this->pagerfanta->getCurrentPage());
+
+        $this->pagerfanta->setCurrentPage(1, false, true);
+        $this->assertSame(1, $this->pagerfanta->getCurrentPage());
+
+        $this->pagerfanta->setCurrentPage(2, false, true);
+        $this->assertSame(1, $this->pagerfanta->getCurrentPage());
+
+        $this->pagerfanta->setCurrentPage(100, false, true);
+        $this->assertSame(1, $this->pagerfanta->getCurrentPage());
+    }
+
     public function testGetCurrentPageResults()
     {
         $returnValues = array(
