@@ -121,7 +121,8 @@ class DoctrineORMAdapter implements AdapterInterface
                 $whereInQuery->setFirstResult(null)->setMaxResults(null);
                 foreach ($ids as $i => $id) {
                     $i++;
-                    $whereInQuery->setParameter("{$namespace}_{$i}", $id);
+                    $value = is_array($id) ? current($id) : $id; // Note: Needs to be changed for composite primary keys
+                    $whereInQuery->setParameter("{$namespace}_{$i}", $value);
                 }
             }
 
