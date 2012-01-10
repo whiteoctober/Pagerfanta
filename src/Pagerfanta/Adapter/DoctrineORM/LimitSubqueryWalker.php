@@ -91,7 +91,7 @@ class LimitSubqueryWalker extends SqlWalker
         // Get the root entity and alias from the AST fromClause
         $from = $AST->fromClause->identificationVariableDeclarations;
         if (count($from) !== 1) {
-            throw new \Exception('Cannot generate limit for DQL query with multiple root entities');
+            throw new \RuntimeException('Cannot generate limit for DQL query with multiple root entities');
         }
 
         $rootClass = $from[0]->rangeVariableDeclaration->abstractSchemaName;
@@ -112,7 +112,7 @@ class LimitSubqueryWalker extends SqlWalker
         }
 
         if (count($rootIdentifier) != count($sqlIdentifier)) {
-            throw new \Exception(sprintf(
+            throw new \RuntimeException(sprintf(
                 'Not all identifier properties can be found in the ResultSetMapping: %s',
                 implode(', ', array_diff($rootIdentifier, array_keys($sqlIdentifier)))
             ));
