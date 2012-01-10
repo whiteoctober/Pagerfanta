@@ -12,7 +12,7 @@
 namespace Pagerfanta\Adapter\DoctrineORM;
 
 use Doctrine\ORM\Query\SqlWalker,
-    Doctrine\ORM\Query\AST;
+    Doctrine\ORM\Query\AST\SelectStatement;
 
 /**
  * Wrap the query in order to accurately count the root objects
@@ -62,7 +62,7 @@ class CountWalker extends SqlWalker
      * @param SelectStatement $AST
      * @return string
      */
-    public function walkSelectStatement(AST\SelectStatement $AST)
+    public function walkSelectStatement(SelectStatement $AST)
     {
         $sql = parent::walkSelectStatement($AST);
 
