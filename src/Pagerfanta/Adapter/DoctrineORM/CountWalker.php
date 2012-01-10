@@ -26,6 +26,11 @@ use Doctrine\ORM\Query\SqlWalker,
 class CountWalker extends SqlWalker
 {
     /**
+     * @var Doctrine\DBAL\Platforms\AbstractPlatform
+     */
+    private $platform;
+
+    /**
      * @var Doctrine\ORM\Query\ResultSetMapping
      */
     private $rsm;
@@ -46,6 +51,7 @@ class CountWalker extends SqlWalker
      */
     public function __construct($query, $parserResult, array $queryComponents)
     {
+        $this->platform = $query->getEntityManager()->getConnection()->getDatabasePlatform();
         $this->rsm = $parserResult->getResultSetMapping();
         $this->queryComponents = $queryComponents;
 
@@ -101,7 +107,10 @@ class CountWalker extends SqlWalker
         }
 
         // Build the counter query
-        return sprintf('SELECT COUNT(*) AS _dctrn_count FROM (SELECT DISTINCT %s FROM (%s) AS _dctrn_result) AS _dctrn_table',
-            implode(', ', $sqlIdentifier), $sql);
+        return sprintf('SELECT %s AS _dctrn_count FROM (SELECT DISTINCT %s FROM (%s) AS _dctrn_result) AS _dctrn_table',
+            $this->platform->getCountExpression('*'),
+            implode(', ', $sqlIdentifier),
+            $sql
+        );
     }
 }
