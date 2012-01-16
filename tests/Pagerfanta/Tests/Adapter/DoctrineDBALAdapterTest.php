@@ -110,15 +110,13 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(50, $adapter->getNbResults());
     }
 
+    /**
+     * @expectedException Pagerfanta\Exception\LogicException
+     */
     public function testAdapterNoAliasInCountField()
     {
         $query = new QueryBuilder($this->conn);
 
-        try {
-            $adapter = new DoctrineDBALAdapter($query, 'id');
-            $this->fail();
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('Pagerfanta\Exception\LogicException', $e);
-        }
+        $adapter = new DoctrineDBALAdapter($query, 'id');
     }
 }
