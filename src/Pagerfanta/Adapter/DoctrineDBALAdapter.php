@@ -12,6 +12,7 @@
 namespace Pagerfanta\Adapter;
 
 use Doctrine\DBAL\Query\QueryBuilder;
+use Pagerfanta\Exception\LogicException;
 
 /**
  * DoctrineDBALAdapter.
@@ -24,26 +25,30 @@ class DoctrineDBALAdapter implements AdapterInterface
 {
     private $queryBuilder;
 
-    private $primaryKey;
+    private $countField;
 
     /**
      * Constructor.
      *
-     * @param Builder $queryBuilder A DBAL query builder.
-     * @param The primary key for the primary DB table in the query, example, "id"
+     * @param QueryBuilder $queryBuilder A DBAL query builder.
+     * @param string $countField Primary key for the table in query. Used in count expression. Must include table alias
      *
      * @api
      */
-    public function __construct(QueryBuilder $queryBuilder, $primaryKey)
+    public function __construct(QueryBuilder $queryBuilder, $countField)
     {
+        if (strpos($countField, '.') === false) {
+            throw new LogicException('The $countField must contain a table alias in the string.');
+        }
+
         $this->queryBuilder = $queryBuilder;
-        $this->primaryKey = $primaryKey;
+        $this->countField = $countField;
     }
 
     /**
      * Returns the query builder.
      *
-     * @return Builder The query builder.
+     * @return QueryBuilder The query builder.
      *
      * @api
      */
@@ -58,7 +63,7 @@ class DoctrineDBALAdapter implements AdapterInterface
     public function getNbResults()
     {
         $query = clone $this->queryBuilder;
-        $statement = $query->select('COUNT(DISTINCT ' . $this->primaryKey . ') AS total_results')
+        $statement = $query->select('COUNT(DISTINCT '.$this->countField.') AS total_results')
             ->setMaxResults(1)
             ->execute()
         ;
