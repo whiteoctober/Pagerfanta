@@ -105,6 +105,19 @@ use Pagerfanta\Adapter\ArrayAdapter;
 $adapter = new ArrayAdapter($array);
 ```
 
+### MongoAdapter
+
+To paginate [Mongo](http://php.net/manual/en/book.mongo.php) Cursors.
+
+```php
+<?php
+
+use Pagerfanta\Adapter\MongoAdapter;
+
+$cursor = $collection->find();
+$adapter = new MongoAdapter($cursor);
+```
+
 ### MandangoAdapter
 
 To paginate [Mandango](http://mandango.org) Queries.
