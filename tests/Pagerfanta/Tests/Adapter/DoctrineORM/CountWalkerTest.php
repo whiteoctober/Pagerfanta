@@ -10,11 +10,11 @@ class CountWalkerTest extends DoctrineORMTestCase
     {
         $query = $this->entityManager->createQuery(
                         'SELECT p, c, a FROM Pagerfanta\Tests\Adapter\DoctrineORM\BlogPost p JOIN p.category c JOIN p.author a');
-        $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
+        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Pagerfanta\Adapter\DoctrineORM\CountWalker');
         $query->setFirstResult(null)->setMaxResults(null);
 
         $this->assertEquals(
-                "SELECT count(DISTINCT b0_.id) AS sclr0 FROM BlogPost b0_ INNER JOIN Category c1_ ON b0_.category_id = c1_.id INNER JOIN Author a2_ ON b0_.author_id = a2_.id", $query->getSql()
+                "SELECT COUNT(*) AS _dctrn_count FROM (SELECT DISTINCT id0 FROM (SELECT b0_.id AS id0, c1_.id AS id1, a2_.id AS id2, a2_.name AS name3, b0_.author_id AS author_id4, b0_.category_id AS category_id5 FROM BlogPost b0_ INNER JOIN Category c1_ ON b0_.category_id = c1_.id INNER JOIN Author a2_ ON b0_.author_id = a2_.id) AS _dctrn_result) AS _dctrn_table", $query->getSql()
         );
     }
 
@@ -22,47 +22,23 @@ class CountWalkerTest extends DoctrineORMTestCase
     {
         $query = $this->entityManager->createQuery(
                         'SELECT a, sum(a.name) as foo FROM Pagerfanta\Tests\Adapter\DoctrineORM\Author a');
-        $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
+        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Pagerfanta\Adapter\DoctrineORM\CountWalker');
         $query->setFirstResult(null)->setMaxResults(null);
 
         $this->assertEquals(
-                "SELECT count(DISTINCT a0_.id) AS sclr0 FROM Author a0_", $query->getSql()
+                "SELECT COUNT(*) AS _dctrn_count FROM (SELECT DISTINCT id0 FROM (SELECT a0_.id AS id0, a0_.name AS name1, sum(a0_.name) AS sclr2 FROM Author a0_) AS _dctrn_result) AS _dctrn_table", $query->getSql()
         );
     }
 
-    public function testCountQuery_KeepsGroupBy()
+    public function testCountQuery_Having()
     {
         $query = $this->entityManager->createQuery(
-                        'SELECT b FROM Pagerfanta\Tests\Adapter\DoctrineORM\BlogPost b GROUP BY b.id');
-        $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
+                        'SELECT g, u, count(u.id) AS userCount FROM Pagerfanta\Tests\Adapter\DoctrineORM\Group g LEFT JOIN g.users u GROUP BY g.id HAVING userCount > 0');
+        $query->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Pagerfanta\Adapter\DoctrineORM\CountWalker');
         $query->setFirstResult(null)->setMaxResults(null);
 
         $this->assertEquals(
-                "SELECT count(DISTINCT b0_.id) AS sclr0 FROM BlogPost b0_ GROUP BY b0_.id", $query->getSql()
-        );
-    }
-
-    public function testCountQuery_RemovesOrderBy()
-    {
-        $query = $this->entityManager->createQuery(
-                        'SELECT p, c, a FROM Pagerfanta\Tests\Adapter\DoctrineORM\BlogPost p JOIN p.category c JOIN p.author a ORDER BY a.name');
-        $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
-        $query->setFirstResult(null)->setMaxResults(null);
-
-        $this->assertEquals(
-                "SELECT count(DISTINCT b0_.id) AS sclr0 FROM BlogPost b0_ INNER JOIN Category c1_ ON b0_.category_id = c1_.id INNER JOIN Author a2_ ON b0_.author_id = a2_.id", $query->getSql()
-        );
-    }
-
-    public function testCountQuery_RemovesLimits()
-    {
-        $query = $this->entityManager->createQuery(
-                        'SELECT p, c, a FROM Pagerfanta\Tests\Adapter\DoctrineORM\BlogPost p JOIN p.category c JOIN p.author a');
-        $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
-        $query->setFirstResult(null)->setMaxResults(null);
-
-        $this->assertEquals(
-                "SELECT count(DISTINCT b0_.id) AS sclr0 FROM BlogPost b0_ INNER JOIN Category c1_ ON b0_.category_id = c1_.id INNER JOIN Author a2_ ON b0_.author_id = a2_.id", $query->getSql()
+                "SELECT COUNT(*) AS _dctrn_count FROM (SELECT DISTINCT id1 FROM (SELECT count(u0_.id) AS sclr0, g1_.id AS id1, u0_.id AS id2 FROM groups g1_ LEFT JOIN user_group u2_ ON g1_.id = u2_.group_id LEFT JOIN User u0_ ON u0_.id = u2_.user_id GROUP BY g1_.id HAVING sclr0 > 0) AS _dctrn_result) AS _dctrn_table", $query->getSql()
         );
     }
 }

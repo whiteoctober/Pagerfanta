@@ -14,6 +14,7 @@ namespace Pagerfanta\Adapter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * DoctrineORMAdapter.
@@ -80,8 +81,12 @@ class DoctrineORMAdapter implements AdapterInterface
         /* @var $countQuery Query */
         $countQuery = $this->cloneQuery($this->query);
 
-        $countQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
+        $countQuery->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Pagerfanta\Adapter\DoctrineORM\CountWalker');
         $countQuery->setFirstResult(null)->setMaxResults(null);
+
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('_dctrn_count', 'count');
+        $countQuery->setResultSetMapping($rsm);
 
         try {
             $data =  $countQuery->getScalarResult();
@@ -99,7 +104,7 @@ class DoctrineORMAdapter implements AdapterInterface
     {
         if ($this->fetchJoinCollection) {
             $subQuery = $this->cloneQuery($this->query);
-            $subQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\LimitSubqueryWalker'))
+            $subQuery->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, 'Pagerfanta\Adapter\DoctrineORM\LimitSubqueryWalker')
                 ->setFirstResult($offset)
                 ->setMaxResults($length);
 
@@ -116,7 +121,8 @@ class DoctrineORMAdapter implements AdapterInterface
                 $whereInQuery->setFirstResult(null)->setMaxResults(null);
                 foreach ($ids as $i => $id) {
                     $i++;
-                    $whereInQuery->setParameter("{$namespace}_{$i}", $id);
+                    $value = is_array($id) ? current($id) : $id; // Note: Needs to be changed for composite primary keys
+                    $whereInQuery->setParameter("{$namespace}_{$i}", $value);
                 }
             }
 

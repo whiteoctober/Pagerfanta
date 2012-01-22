@@ -11,48 +11,106 @@
 
 namespace Pagerfanta\Adapter\DoctrineORM;
 
-use Doctrine\ORM\Query\TreeWalkerAdapter,
-    Doctrine\ORM\Query\AST\SelectStatement,
-    Doctrine\ORM\Query\AST\SelectExpression,
-    Doctrine\ORM\Query\AST\PathExpression,
-    Doctrine\ORM\Query\AST\AggregateExpression;
+use Doctrine\ORM\Query\SqlWalker,
+    Doctrine\ORM\Query\AST\SelectStatement;
 
-class CountWalker extends TreeWalkerAdapter
+/**
+ * Wrap the query in order to accurately count the root objects
+ *
+ * Given a DQL like `SELECT u FROM User u` it will generate an SQL query like:
+ * SELECT COUNT(*) (SELECT DISTINCT <id> FROM (<original SQL>))
+ *
+ * Works with composite keys but cannot deal with queries that have multiple
+ * root entities (e.g. `SELECT f, b from Foo, Bar`)
+ */
+class CountWalker extends SqlWalker
 {
     /**
-     * Walks down a SelectStatement AST node, modifying it to retrieve a COUNT
+     * @var Doctrine\DBAL\Platforms\AbstractPlatform
+     */
+    private $platform;
+
+    /**
+     * @var Doctrine\ORM\Query\ResultSetMapping
+     */
+    private $rsm;
+
+    /**
+     * @var array
+     */
+    private $queryComponents;
+
+    /**
+     * Constructor. Stores various parameters that are otherwise unavailable
+     * because Doctrine\ORM\Query\SqlWalker keeps everything private without
+     * accessors.
+     *
+     * @param Doctrine\ORM\Query $query
+     * @param Doctrine\ORM\Query\ParserResult $parserResult
+     * @param array $queryComponents
+     */
+    public function __construct($query, $parserResult, array $queryComponents)
+    {
+        $this->platform = $query->getEntityManager()->getConnection()->getDatabasePlatform();
+        $this->rsm = $parserResult->getResultSetMapping();
+        $this->queryComponents = $queryComponents;
+
+        parent::__construct($query, $parserResult, $queryComponents);
+    }
+
+    /**
+     * Walks down a SelectStatement AST node, wrapping it in a COUNT (SELECT DISTINCT)
+     *
+     * Note that the ORDER BY clause is not removed. Many SQL implementations (e.g. MySQL)
+     * are able to cache subqueries. By keeping the ORDER BY clause intact, the limitSubQuery
+     * that will most likely be exected next can be read from the native SQL cache.
      *
      * @param SelectStatement $AST
-     * @return void
+     * @return string
      */
     public function walkSelectStatement(SelectStatement $AST)
     {
-        $parent = null;
-        $parentName = null;
+        $sql = parent::walkSelectStatement($AST);
 
-        foreach ($this->_getQueryComponents() as $dqlAlias => $qComp) {
-            if (array_key_exists('parent', $qComp) && $qComp['parent'] === null && $qComp['nestingLevel'] == 0) {
-                $parent = $qComp;
-                $parentName = $dqlAlias;
-                break;
+        // Find out the SQL alias of the identifier column of the root entity
+        // It may be possible to make this work with multiple root entities but that
+        // would probably require issuing multiple queries or doing a UNION SELECT
+        // so for now, It's not supported.
+
+        // Get the root entity and alias from the AST fromClause
+        $from = $AST->fromClause->identificationVariableDeclarations;
+        if (count($from) > 1) {
+            throw new \RuntimeException('Cannot generate count for DQL query with multiple root entities');
+        }
+
+        $rootClass = $from[0]->rangeVariableDeclaration->abstractSchemaName;
+        $rootAlias = $from[0]->rangeVariableDeclaration->aliasIdentificationVariable;
+
+        // Get the identity properties from the metadata
+        $rootIdentifier = $this->queryComponents[$rootAlias]['metadata']->identifier;
+
+        // For every identifier, find out the SQL alias by combing through the ResultSetMapping
+        $sqlIdentifier = array();
+        foreach ($rootIdentifier as $property) {
+            foreach (array_keys($this->rsm->fieldMappings, $property) as $alias) {
+                if ($this->rsm->columnOwnerMap[$alias] == $rootAlias) {
+                    $sqlIdentifier[$property] = $alias;
+                }
             }
         }
 
+        if (count($rootIdentifier) != count($sqlIdentifier)) {
+            throw new \RuntimeException(sprintf(
+                'Not all identifier properties can be found in the ResultSetMapping: %s',
+                implode(', ', array_diff($rootIdentifier, array_keys($sqlIdentifier)))
+            ));
+        }
 
-        $pathExpression = new PathExpression(
-            PathExpression::TYPE_STATE_FIELD | PathExpression::TYPE_SINGLE_VALUED_ASSOCIATION, $parentName,
-            $parent['metadata']->getSingleIdentifierFieldName()
+        // Build the counter query
+        return sprintf('SELECT %s AS _dctrn_count FROM (SELECT DISTINCT %s FROM (%s) AS _dctrn_result) AS _dctrn_table',
+            $this->platform->getCountExpression('*'),
+            implode(', ', $sqlIdentifier),
+            $sql
         );
-        $pathExpression->type = PathExpression::TYPE_STATE_FIELD;
-
-        $AST->selectClause->selectExpressions = array(
-            new SelectExpression(
-                new AggregateExpression('count', $pathExpression, true), null
-            )
-        );
-
-        // ORDER BY is not needed, only increases query execution through unnecessary sorting.
-        $AST->orderByClause = null;
     }
-
 }
