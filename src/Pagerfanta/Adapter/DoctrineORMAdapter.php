@@ -11,43 +11,38 @@
 
 namespace Pagerfanta\Adapter;
 
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
+use Pagerfanta\Adapter\DoctrineORM\Paginator as LegacyPaginator;
 
 /**
  * DoctrineORMAdapter.
  *
- * @author Pablo Díez <pablodip@gmail.com>
- * @author Benjamin Eberlei <kontakt@beberlei.de>
+ * @author Christophe Coevoet <stof@notk.org>
  *
  * @api
  */
 class DoctrineORMAdapter implements AdapterInterface
 {
     /**
-     * @var Query
+     * @var \Doctrine\ORM\Tools\Pagination\Paginator|\Pagerfanta\Adapter\DoctrineORM\Paginator
      */
-    private $query;
-
-    private $fetchJoinCollection;
+    private $paginator;
 
     /**
      * Constructor.
      *
-     * @param Query|QueryBuilder $query               A Doctrine ORM query or query builder.
+     * @param \Doctrine\ORM\Query|\Doctrine\ORM\QueryBuilder $query               A Doctrine ORM query or query builder.
      * @param Boolean            $fetchJoinCollection Whether the query joins a collection (true by default).
      *
      * @api
      */
     public function __construct($query, $fetchJoinCollection = true)
     {
-        if ($query instanceof QueryBuilder) {
-            $query = $query->getQuery();
+        if (class_exists('Doctrine\ORM\Tools\Pagination\Paginator')) {
+            $this->paginator = new DoctrinePaginator($query, $fetchJoinCollection);
+        } else {
+            $this->paginator = new LegacyPaginator($query, $fetchJoinCollection);
         }
-
-        $this->query = $query;
-        $this->fetchJoinCollection = (Boolean) $fetchJoinCollection;
     }
 
     /**
@@ -59,7 +54,7 @@ class DoctrineORMAdapter implements AdapterInterface
      */
     public function getQuery()
     {
-        return $this->query;
+        return $this->paginator->getQuery();
     }
 
     /**
@@ -69,7 +64,7 @@ class DoctrineORMAdapter implements AdapterInterface
      */
     public function getFetchJoinCollection()
     {
-        return $this->fetchJoinCollection;
+        return $this->paginator->getFetchJoinCollection();
     }
 
     /**
@@ -77,19 +72,7 @@ class DoctrineORMAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        /* @var $countQuery Query */
-        $countQuery = $this->cloneQuery($this->query);
-
-        $countQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\CountWalker'));
-        $countQuery->setFirstResult(null)->setMaxResults(null);
-
-        try {
-            $data =  $countQuery->getScalarResult();
-            $data = array_map('current', $data);
-            return array_sum($data);
-        } catch(NoResultException $e) {
-            return 0;
-        }
+        return count($this->paginator);
     }
 
     /**
@@ -97,55 +80,10 @@ class DoctrineORMAdapter implements AdapterInterface
      */
     public function getSlice($offset, $length)
     {
-        if ($this->fetchJoinCollection) {
-            $subQuery = $this->cloneQuery($this->query);
-            $subQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\LimitSubqueryWalker'))
-                ->setFirstResult($offset)
-                ->setMaxResults($length);
-
-            $ids = array_map('current', $subQuery->getScalarResult());
-
-            $whereInQuery = $this->cloneQuery($this->query);
-            // don't do this for an empty id array
-            if (count($ids) > 0) {
-                $namespace = 'pg_';
-
-                $whereInQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS, array('Pagerfanta\Adapter\DoctrineORM\WhereInWalker'));
-                $whereInQuery->setHint('id.count', count($ids));
-                $whereInQuery->setHint('pg.ns', $namespace);
-                $whereInQuery->setFirstResult(null)->setMaxResults(null);
-                foreach ($ids as $i => $id) {
-                    $i++;
-                    $whereInQuery->setParameter("{$namespace}_{$i}", $id);
-                }
-            }
-
-            return $whereInQuery->getResult($this->query->getHydrationMode());
-        }
-
-        return $this->cloneQuery($this->query)
-            ->setMaxResults($length)
+        $this->paginator->getQuery()
             ->setFirstResult($offset)
-            ->getResult($this->query->getHydrationMode())
-        ;
-    }
+            ->setMaxResults($length);
 
-    /**
-     * Clones a query.
-     *
-     * @param Query $query The query.
-     *
-     * @return Query The cloned query.
-     */
-    private function cloneQuery(Query $query)
-    {
-        /* @var $cloneQuery Query */
-        $cloneQuery = clone $query;
-        $cloneQuery->setParameters($query->getParameters());
-        foreach ($query->getHints() as $name => $value) {
-            $cloneQuery->setHint($name, $value);
-        }
-
-        return $cloneQuery;
+        return $this->paginator->getIterator();
     }
 }
