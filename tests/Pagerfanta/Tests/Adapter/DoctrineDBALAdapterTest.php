@@ -73,6 +73,9 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
         $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'p.id');
 
         $this->assertEquals(50, $adapter->getNbResults());
+
+        $qb = clone $this->queryBuilder;
+        $this->assertEquals(count($qb->execute()->fetchAll()), $adapter->getNbResults());
     }
 
     public function testGetSlice()
@@ -93,9 +96,13 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
             ->from('posts', 'p')
         ;
 
+
         $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'p.id');
         $adapter->getSlice(0, 1);
         $this->assertEquals(50, $adapter->getNbResults());
+
+        $qb = clone $this->queryBuilder;
+        $this->assertEquals(count($qb->execute()->fetchAll()), $adapter->getNbResults());
     }
 
     public function testAdapterCountFetchJoin()
@@ -107,6 +114,9 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
 
         $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'p.id');
         $this->assertEquals(50, $adapter->getNbResults());
+
+        $qb = clone $this->queryBuilder;
+        $this->assertEquals(count($qb->execute()->fetchAll()), $adapter->getNbResults());
     }
 
     /**
