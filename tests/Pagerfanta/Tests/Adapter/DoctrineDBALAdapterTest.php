@@ -2,25 +2,29 @@
 
 namespace Pagerfanta\Tests\Adapter;
 
-use Doctrine\ORM\Query;
-use Doctrine\ORM\Tools\SchemaTool;
-use Pagerfanta\Adapter\DoctrineDBALAdapter;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Query\QueryBuilder;
-use Doctrine\DBAL\Portability\Connection;
+use Doctrine\DBAL\Schema\Schema;
+use Pagerfanta\Adapter\DoctrineDBALAdapter;
 
 class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Connection
+     * @var \Doctrine\DBAL\Connection
      */
     private $conn;
 
-    public function setUp()
+    /**
+     * @var QueryBuilder
+     */
+    private $queryBuilder;
+
+    protected function setUp()
     {
         parent::setUp();
 
         if (!class_exists('Doctrine\DBAL\DriverManager')) {
-           $this->markTestSkipped('Doctrine DBAL is not available');
+            $this->markTestSkipped('Doctrine DBAL is not available');
         }
 
         $conn = array(
@@ -28,9 +32,9 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
             'memory' => true,
         );
 
-        $this->conn = \Doctrine\DBAL\DriverManager::getConnection($conn);
+        $this->conn = DriverManager::getConnection($conn);
 
-        $schema = new \Doctrine\DBAL\Schema\Schema();
+        $schema = new Schema();
         $posts = $schema->createTable('posts');
         $posts->addColumn('id', 'integer', array('unsigned' => true));
         $posts->addColumn('username', 'string', array('length' => 32));
@@ -44,7 +48,7 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
         $comments->addColumn('content', 'text');
         $comments->setPrimaryKey(array('id'));
 
-        $queries = $schema->toSql(new \Doctrine\DBAL\Platforms\SqlitePlatform()); // get queries to create this schema.
+        $queries = $schema->toSql($this->conn->getDatabasePlatform()); // get queries to create this schema.
 
         foreach ($queries as $sql) {
             $this->conn->executeQuery($sql);
@@ -52,35 +56,32 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
 
         for ($i = 1; $i <= 50; $i++) {
             $this->conn->insert('posts', array('username' => 'Jon Doe', 'post_content' => 'Post #' . $i));
-        }
-
-        for ($i = 1; $i <= 50; $i++) {
             for ($j = 1; $j <= 5; $j++) {
                 $this->conn->insert('comments', array('post_id' => $i, 'username' => 'Jon Doe', 'content' => 'Comment #' . $j));
             }
         }
+
+        $this->queryBuilder = new QueryBuilder($this->conn);
     }
 
     public function testAdapterCount()
     {
-        $query = new QueryBuilder($this->conn);
-        $query->select('p.*')
+        $this->queryBuilder->select('p.*')
             ->from('posts', 'p')
         ;
 
-        $adapter = new DoctrineDBALAdapter($query, 'p.id');
+        $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'p.id');
 
         $this->assertEquals(50, $adapter->getNbResults());
     }
 
     public function testGetSlice()
     {
-        $query = new QueryBuilder($this->conn);
-        $query->select('p.*')
+        $this->queryBuilder->select('p.*')
             ->from('posts', 'p')
         ;
 
-        $adapter = new DoctrineDBALAdapter($query, 'p.id');
+        $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'p.id');
         $this->assertEquals(10, count($adapter->getSlice(0, 10)));
         $this->assertEquals(1, count($adapter->getSlice(0, 1)));
         $this->assertEquals(1, count($adapter->getSlice(1, 1)));
@@ -88,25 +89,23 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
 
     public function testCountAfterSlice()
     {
-        $query = new QueryBuilder($this->conn);
-        $query->select('p.*')
+        $this->queryBuilder->select('p.*')
             ->from('posts', 'p')
         ;
 
-        $adapter = new DoctrineDBALAdapter($query, 'p.id');
+        $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'p.id');
         $adapter->getSlice(0, 1);
         $this->assertEquals(50, $adapter->getNbResults());
     }
 
     public function testAdapterCountFetchJoin()
     {
-        $query = new QueryBuilder($this->conn);
-        $query->select('p.*')
+        $this->queryBuilder->select('p.*')
             ->from('posts', 'p')
             ->innerJoin('p', 'comments', 'c', 'c.post_id = p.id')
         ;
 
-        $adapter = new DoctrineDBALAdapter($query, 'p.id');
+        $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'p.id');
         $this->assertEquals(50, $adapter->getNbResults());
     }
 
@@ -115,8 +114,6 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testAdapterNoAliasInCountField()
     {
-        $query = new QueryBuilder($this->conn);
-
-        $adapter = new DoctrineDBALAdapter($query, 'id');
+        $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'id');
     }
 }
