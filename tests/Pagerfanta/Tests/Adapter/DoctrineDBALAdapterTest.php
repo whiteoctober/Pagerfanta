@@ -116,4 +116,14 @@ class DoctrineDBALAdapterTest extends \PHPUnit_Framework_TestCase
     {
         $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'id');
     }
+
+    /**
+     * @expectedException Pagerfanta\Exception\LogicException
+     */
+    public function testNoSelectQuery()
+    {
+        $this->queryBuilder->delete('posts', 'p');
+
+        $adapter = new DoctrineDBALAdapter($this->queryBuilder, 'p.id');
+    }
 }

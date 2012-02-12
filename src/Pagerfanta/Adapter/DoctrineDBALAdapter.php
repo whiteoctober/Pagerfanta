@@ -41,6 +41,10 @@ class DoctrineDBALAdapter implements AdapterInterface
             throw new LogicException('The $countField must contain a table alias in the string.');
         }
 
+        if (QueryBuilder::SELECT !== $queryBuilder->getType()) {
+            throw new LogicException('Only SELECT queries can be paginated.');
+        }
+
         $this->queryBuilder = $queryBuilder;
         $this->countField = $countField;
     }
@@ -78,7 +82,7 @@ class DoctrineDBALAdapter implements AdapterInterface
     {
         $query = clone $this->queryBuilder;
 
-        $result =  $query->setMaxResults($length)
+        $result = $query->setMaxResults($length)
             ->setFirstResult($offset)
             ->execute()
         ;
