@@ -144,7 +144,7 @@ $queryBuilder = $entityManager->createQueryBuilder()
     ->select('u')
     ->from('Model\Article', 'u')
 ;
-$adapter = new DoctrineORMAdapter($query);
+$adapter = new DoctrineORMAdapter($queryBuilder);
 ```
 
 ### DoctrineODMMongoDBAdapter
