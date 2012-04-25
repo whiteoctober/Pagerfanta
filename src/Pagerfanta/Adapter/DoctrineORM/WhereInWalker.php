@@ -115,19 +115,21 @@ class WhereInWalker extends TreeWalkerAdapter
                     )
                 );
             }
-            // an OR clause
-            elseif ($AST->whereClause->conditionalExpression instanceof ConditionalExpression) {
+            // an OR or NOT clause
+            elseif ($AST->whereClause->conditionalExpression instanceof ConditionalExpression
+                || $AST->whereClause->conditionalExpression instanceof ConditionalFactor
+            ) {
                 $tmpPrimary = new ConditionalPrimary;
                 $tmpPrimary->conditionalExpression = $AST->whereClause->conditionalExpression;
                 $AST->whereClause->conditionalExpression = new ConditionalTerm(
-                    array(
-                        $tmpPrimary,
-                        $conditionalPrimary,
-                    )
+                                array(
+                                    $tmpPrimary,
+                                    $conditionalPrimary,
+                                )
                 );
             } else {
                 // error check to provide a more verbose error on failure
-                throw new \RuntimeException("Unknown conditionalExpression in WhereInWalker");
+                throw \Exception("Unknown conditionalExpression in WhereInWalker");
             }
         }
     }
