@@ -169,6 +169,11 @@ class Pagerfanta implements PagerfantaInterface
 
         return $this->nbResults;
     }
+    
+    public function setNbResults($count)
+    {
+        $this->nbResults = (integer) $count;
+    }
 
     /**
      * {@inheritdoc}

@@ -242,6 +242,17 @@ class PagerfantaTest extends \PHPUnit_Framework_TestCase
         $this->pagerfanta->setMaxPerPage(9);
         $this->assertTrue($this->pagerfanta->haveToPaginate());
     }
+    
+    public function testSetNbResults()
+    {
+        $this->adapter
+            ->expects($this->never())
+            ->method('getNbResults')
+        ;
+        
+        $this->pagerfanta->setNbResults(2);
+        $this->assertEquals(2, $this->pagerfanta->getNbResults());
+    }
 
     public function testHasGetPreviousNextPage()
     {
