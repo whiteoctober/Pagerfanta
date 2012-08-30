@@ -27,7 +27,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function setMaxResults($maxResults);
+    public function setMaxResults($maxResults);
 
     /**
      * Returns the max results.
@@ -38,7 +38,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function getMaxResults();
+    public function getMaxResults();
 
     /**
      * Sets the max per page.
@@ -47,7 +47,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function setMaxPerPage($maxPerPage);
+    public function setMaxPerPage($maxPerPage);
 
     /**
      * Returns the max per page.
@@ -61,7 +61,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function getMaxPerPage();
+    public function getMaxPerPage();
 
     /**
      * Sets the current page.
@@ -76,7 +76,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function setCurrentPage($currentPage);
+    public function setCurrentPage($currentPage);
 
     /**
      * Returns the current page.
@@ -85,7 +85,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function getCurrentPage();
+    public function getCurrentPage();
 
     /**
      * Returns the results for the current page.
@@ -94,7 +94,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function getCurrentPageResults();
+    public function getCurrentPageResults();
 
     /**
      * Returns the number of results.
@@ -103,7 +103,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function getNbResults();
+    public function getNbResults();
 
     /**
      * Returns the number of pages.
@@ -112,7 +112,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function getNbPages();
+    public function getNbPages();
 
     /**
      * Returns whether have to paginate or not.
@@ -121,7 +121,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @return Boolean Whether have to paginate or not.
      */
-    function haveToPaginate();
+    public function haveToPaginate();
 
     /**
      * Returns whether there is previous page or not.
@@ -130,7 +130,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function hasPreviousPage();
+    public function hasPreviousPage();
 
     /**
      * Returns the previous page.
@@ -141,7 +141,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function getPreviousPage();
+    public function getPreviousPage();
 
     /**
      * Returns whether there is next page or not.
@@ -150,7 +150,7 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function hasNextPage();
+    public function hasNextPage();
 
     /**
      * Returns the next page.
@@ -161,5 +161,5 @@ interface PagerfantaInterface extends \Countable, \IteratorAggregate
      *
      * @api
      */
-    function getNextPage();
+    public function getNextPage();
 }

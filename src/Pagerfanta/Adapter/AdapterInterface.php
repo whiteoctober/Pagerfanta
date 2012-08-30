@@ -27,7 +27,7 @@ interface AdapterInterface
      *
      * @api
      */
-    function getNbResults();
+    public function getNbResults();
 
     /**
      * Returns an slice of the results.
@@ -39,7 +39,7 @@ interface AdapterInterface
      *
      * @api
      */
-    function getSlice($offset, $length);
+    public function getSlice($offset, $length);
 
     /**
      * Set a maximum number of results
@@ -48,7 +48,7 @@ interface AdapterInterface
      *
      * @api
      */
-    function setMaxResults($maxResults);
+    public function setMaxResults($maxResults);
 
     /**
      * Returns the max results.
@@ -59,5 +59,5 @@ interface AdapterInterface
      *
      * @api
      */
-    function getMaxResults();
+    public function getMaxResults();
 }

@@ -16,7 +16,6 @@ use Pagerfanta\Exception\LogicException;
 use Pagerfanta\Exception\NotIntegerMaxPerPageException;
 use Pagerfanta\Exception\LessThan1MaxPerPageException;
 use Pagerfanta\Exception\NotIntegerCurrentPageException;
-use Pagerfanta\Exception\LessThan1CurrentPageException;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 
 /**
@@ -194,7 +193,7 @@ class Pagerfanta implements PagerfantaInterface
 
         return $this->nbResults;
     }
-    
+
     public function setNbResults($count)
     {
         $this->nbResults = (integer) $count;
@@ -208,7 +207,7 @@ class Pagerfanta implements PagerfantaInterface
         if (null === $this->nbPages) {
             $this->nbPages = (int) ceil($this->getNbResults() / $this->getMaxPerPage());
         }
-        
+
         return $this->nbPages;
     }
 
