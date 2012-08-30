@@ -21,6 +21,26 @@ namespace Pagerfanta;
 interface PagerfantaInterface extends \Countable, \IteratorAggregate
 {
     /**
+     * Set a maximum number of results
+     *
+     * @param integer $maxResults The max numbers of results.
+     *
+     * @api
+     */
+    function setMaxResults($maxResults);
+
+    /**
+     * Returns the max results.
+     *
+     * Tries to normalize from string to integer.
+     *
+     * @return integer The max results.
+     *
+     * @api
+     */
+    function getMaxResults();
+
+    /**
      * Sets the max per page.
      *
      * @param integer $maxPerPage The max per page.

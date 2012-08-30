@@ -67,6 +67,26 @@ class Pagerfanta implements PagerfantaInterface
      *
      * {@inheritdoc}
      */
+    public function setMaxResults($maxResults)
+    {
+        $this->getAdapter()->setMaxResults($maxResults);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaxResults()
+    {
+        return $this->getAdapter()->getMaxResults();
+    }
+
+    /**
+     * This method implements a fluent interface.
+     *
+     * {@inheritdoc}
+     */
     public function setMaxPerPage($maxPerPage)
     {
         // tries to normalize from string to integer
@@ -152,6 +172,11 @@ class Pagerfanta implements PagerfantaInterface
         if (null === $this->currentPageResults) {
             $offset = ($this->getCurrentPage() - 1) * $this->getMaxPerPage();
             $length = $this->getMaxPerPage();
+
+            if ($this->getMaxResults() != 0 && $offset + $length > $this->getMaxResults()) {
+                $length = $this->getMaxResults() - $offset;
+            }
+
             $this->currentPageResults = $this->adapter->getSlice($offset, $length);
         }
 
@@ -183,7 +208,7 @@ class Pagerfanta implements PagerfantaInterface
         if (null === $this->nbPages) {
             $this->nbPages = (int) ceil($this->getNbResults() / $this->getMaxPerPage());
         }
-
+        
         return $this->nbPages;
     }
 

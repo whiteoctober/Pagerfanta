@@ -40,4 +40,24 @@ interface AdapterInterface
      * @api
      */
     function getSlice($offset, $length);
+
+    /**
+     * Set a maximum number of results
+     *
+     * @param integer $maxResults The max numbers of results.
+     *
+     * @api
+     */
+    function setMaxResults($maxResults);
+
+    /**
+     * Returns the max results.
+     *
+     * Tries to normalize from string to integer.
+     *
+     * @return integer The max results.
+     *
+     * @api
+     */
+    function getMaxResults();
 }
