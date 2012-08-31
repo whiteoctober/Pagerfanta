@@ -41,7 +41,13 @@ class SolariumAdapter extends BaseAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->getResultSet()->getNumFound();
+        $count = $this->getResultSet()->getNumFound();
+
+        if ($this->getMaxResults() == 0) {
+            return $count;
+        }
+
+        return $count > $this->getMaxResults() ? $this->getMaxResults() : $count;
     }
 
     /**
