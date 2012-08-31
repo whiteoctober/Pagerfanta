@@ -16,7 +16,7 @@ namespace Pagerfanta\Adapter;
  *
  * @author Benjamin Dulau <benjamin.dulau@anonymation.com>
  */
-class NullAdapter implements AdapterInterface
+class NullAdapter extends BaseAdapter implements AdapterInterface
 {
     private $nbResults;
 

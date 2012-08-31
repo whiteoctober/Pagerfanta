@@ -20,7 +20,7 @@ use Mandango\Query;
  *
  * @api
  */
-class MandangoAdapter implements AdapterInterface
+class MandangoAdapter extends BaseAdapter implements AdapterInterface
 {
     private $query;
 

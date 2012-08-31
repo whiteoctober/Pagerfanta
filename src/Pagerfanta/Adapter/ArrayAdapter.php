@@ -18,7 +18,7 @@ namespace Pagerfanta\Adapter;
  *
  * @api
  */
-class ArrayAdapter implements AdapterInterface
+class ArrayAdapter extends BaseAdapter implements AdapterInterface
 {
     private $array;
 

@@ -16,10 +16,9 @@ namespace Pagerfanta\Adapter;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PropelAdapter implements AdapterInterface
+class PropelAdapter extends BaseAdapter implements AdapterInterface
 {
     private $query;
-    private $maxResults;
 
     /**
      * Constructor.
@@ -27,7 +26,6 @@ class PropelAdapter implements AdapterInterface
     public function __construct($query)
     {
         $this->query = $query;
-        $this->maxResults = 0;
     }
 
     /**
@@ -56,25 +54,5 @@ class PropelAdapter implements AdapterInterface
         $q = clone $this->getQuery();
 
         return $q->limit($length)->offset($offset)->find();
-    }
-
-    /**
-     * This method implements a fluent interface.
-     *
-     * {@inheritdoc}
-     */
-    public function setMaxResults($maxResults)
-    {
-        $this->maxResults = $maxResults;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMaxResults()
-    {
-        return $this->maxResults;
     }
 }

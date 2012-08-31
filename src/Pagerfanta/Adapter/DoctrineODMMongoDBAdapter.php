@@ -20,7 +20,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
  *
  * @api
  */
-class DoctrineODMMongoDBAdapter implements AdapterInterface
+class DoctrineODMMongoDBAdapter extends BaseAdapter implements AdapterInterface
 {
     private $queryBuilder;
 

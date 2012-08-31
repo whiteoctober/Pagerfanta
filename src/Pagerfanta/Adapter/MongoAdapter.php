@@ -18,7 +18,7 @@ namespace Pagerfanta\Adapter;
  *
  * @api
  */
-class MongoAdapter implements AdapterInterface
+class MongoAdapter extends BaseAdapter implements AdapterInterface
 {
     private $cursor;
 

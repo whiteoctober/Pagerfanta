@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
  *
  * @api
  */
-class DoctrineCollectionAdapter implements AdapterInterface
+class DoctrineCollectionAdapter extends BaseAdapter implements AdapterInterface
 {
     private $collection;
 
