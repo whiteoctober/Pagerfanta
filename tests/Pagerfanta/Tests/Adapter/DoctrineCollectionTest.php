@@ -31,7 +31,7 @@ class DoctrineCollectionTest extends \PHPUnit_Framework_TestCase
     public function testGetNbResults()
     {
         $this->collection
-            ->expects($this->any())
+            ->expects($this->exactly(2))
             ->method('count')
             ->will($this->returnValue(120))
         ;
