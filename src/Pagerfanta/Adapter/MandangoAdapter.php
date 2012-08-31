@@ -59,7 +59,7 @@ class MandangoAdapter extends BaseAdapter implements AdapterInterface
             return $count;
         }
 
-        return $count > $this->getMaxResults() ? $this->getMaxResults() : $count;
+        return min($count, $this->getMaxResults());
     }
 
     /**

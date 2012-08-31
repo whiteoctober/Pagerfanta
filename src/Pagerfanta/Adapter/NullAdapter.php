@@ -41,7 +41,7 @@ class NullAdapter extends BaseAdapter implements AdapterInterface
             return $this->nbResults;
         }
 
-        return $this->nbResults > $this->getMaxResults() ? $this->getMaxResults() : $this->nbResults;
+        return min($this->nbResults, $this->getMaxResults());
     }
 
     /**

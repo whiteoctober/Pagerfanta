@@ -55,7 +55,7 @@ class ArrayAdapter extends BaseAdapter implements AdapterInterface
             return count($this->array);
         }
 
-        return count($this->array) > $this->getMaxResults() ? $this->getMaxResults() : count($this->array);
+        return min(count($this->array), $this->getMaxResults());
     }
 
     /**
