@@ -51,7 +51,13 @@ class MongoAdapter extends BaseAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->cursor->count();
+        $count = $this->cursor->count();
+
+        if ($this->getMaxResults() == 0) {
+            return $count;
+        }
+
+        return $count > $this->getMaxResults() ? $this->getMaxResults() : $count;
     }
 
     /**

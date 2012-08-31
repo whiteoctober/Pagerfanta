@@ -31,12 +31,15 @@ class MongoAdapterTest extends \PHPUnit_Framework_TestCase
     public function testGetNbResults()
     {
         $this->cursor
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('count')
             ->will($this->returnValue(100))
         ;
 
         $this->assertSame(100, $this->adapter->getNbResults());
+
+        $this->adapter->setMaxResults(25);
+        $this->assertSame(25, $this->adapter->getNbResults());
     }
 
     /**
