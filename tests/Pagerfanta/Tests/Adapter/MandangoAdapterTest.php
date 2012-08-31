@@ -31,12 +31,15 @@ class MandangoAdapterTest extends \PHPUnit_Framework_TestCase
     public function testGetNbResults()
     {
         $this->query
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('count')
             ->will($this->returnValue(100))
         ;
 
         $this->assertSame(100, $this->adapter->getNbResults());
+
+        $this->adapter->setMaxResults(3);
+        $this->assertSame(3, $this->adapter->getNbResults());
     }
 
     /**

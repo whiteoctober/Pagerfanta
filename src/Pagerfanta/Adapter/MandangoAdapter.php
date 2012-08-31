@@ -53,7 +53,13 @@ class MandangoAdapter extends BaseAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->query->count();
+        $count = $this->query->count();
+
+        if ($this->getMaxResults() == 0) {
+            return $count;
+        }
+
+        return $count > $this->getMaxResults() ? $this->getMaxResults() : $count;
     }
 
     /**
