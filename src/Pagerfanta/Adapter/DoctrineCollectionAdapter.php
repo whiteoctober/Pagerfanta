@@ -53,7 +53,11 @@ class DoctrineCollectionAdapter extends BaseAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->collection->count();
+        if ($this->getMaxResults() == 0) {
+            return $this->collection->count();
+        }
+
+        return $this->collection->count() > $this->getMaxResults() ? $this->getMaxResults() : $this->collection->count();
     }
 
     /**
