@@ -72,7 +72,11 @@ class DoctrineORMAdapter extends BaseAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return count($this->paginator);
+        if ($this->getMaxResults() == 0) {
+            return count($this->paginator);
+        }
+
+        return count($this->paginator) > $this->getMaxResults() ? $this->getMaxResults() : count($this->paginator);
     }
 
     /**
