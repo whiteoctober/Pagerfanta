@@ -18,6 +18,9 @@ class NullAdapterTest extends \PHPUnit_Framework_TestCase
     public function testGetNbResults()
     {
         $this->assertSame(33, $this->adapter->getNbResults());
+
+        $this->adapter->setMaxResults(10);
+        $this->assertSame(10, $this->adapter->getNbResults());
     }
 
     public function testGetResults()
