@@ -8,7 +8,7 @@ class OptionableViewTest extends \PHPUnit_Framework_TestCase
 {
     public function testRender()
     {
-        $routeGenerator = function($page) {
+        $routeGenerator = function($page, $route = '') {
             return '/'.$page;
         };
         $pagerfanta = $this->getMock('Pagerfanta\PagerfantaInterface');

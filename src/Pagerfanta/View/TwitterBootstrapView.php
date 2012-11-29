@@ -46,6 +46,7 @@ class TwitterBootstrapView implements ViewInterface
             'css_disabled_class'  => 'disabled',
             'css_dots_class'      => 'disabled',
             'css_active_class'    => 'active',
+            'route'               => '',
         ), $options);
 
         $currentPage = $pagerfanta->getCurrentPage();
@@ -70,7 +71,7 @@ class TwitterBootstrapView implements ViewInterface
         if (!$pagerfanta->hasPreviousPage()) {
             $class .= ' '.$options['css_disabled_class'];
         } else {
-            $url = $routeGenerator($pagerfanta->getPreviousPage());
+            $url = $routeGenerator($pagerfanta->getPreviousPage(), $options['route']);
         }
 
         $pages[] = sprintf('<li class="%s"><a href="%s">%s</a></li>', $class, $url, $options['prev_message']);
@@ -78,9 +79,9 @@ class TwitterBootstrapView implements ViewInterface
 
         // first
         if ($startPage > 1) {
-            $pages[] = sprintf('<li><a href="%s">%s</a></li>', $routeGenerator(1), 1);
+            $pages[] = sprintf('<li><a href="%s">%s</a></li>', $routeGenerator(1, $options['route']), 1);
             if (3 == $startPage) {
-                $pages[] = sprintf('<li><a href="%s">%s</a></li>', $routeGenerator(2), 2);
+                $pages[] = sprintf('<li><a href="%s">%s</a></li>', $routeGenerator(2, $options['route']), 2);
             } elseif (2 != $startPage) {
                 $pages[] = sprintf('<li class="%s"><a href="%s">%s</a></li>', $options['css_dots_class'], $options['dots_href'], $options['dots_message']);
             }
@@ -93,7 +94,7 @@ class TwitterBootstrapView implements ViewInterface
                 $class = sprintf(' class="%s"', $options['css_active_class']);
             }
 
-            $pages[] = sprintf('<li%s><a href="%s">%s</a></li>', $class, $routeGenerator($page), $page);
+            $pages[] = sprintf('<li%s><a href="%s">%s</a></li>', $class, $routeGenerator($page, $options['route']), $page);
         }
 
         // last
@@ -102,11 +103,11 @@ class TwitterBootstrapView implements ViewInterface
                 if ($pagerfanta->getNbPages() > ($endPage + 2)) {
                     $pages[] = sprintf('<li class="%s"><a href="%s">%s</a></li>', $options['css_dots_class'], $options['dots_href'], $options['dots_message']);
                 } else {
-                    $pages[] = sprintf('<li><a href="%s">%s</a></li>', $routeGenerator($endPage + 1), $endPage + 1);
+                    $pages[] = sprintf('<li><a href="%s">%s</a></li>', $routeGenerator($endPage + 1, $options['route']), $endPage + 1);
                 }
             }
 
-            $pages[] = sprintf('<li><a href="%s">%s</a></li>', $routeGenerator($pagerfanta->getNbPages()), $pagerfanta->getNbPages());
+            $pages[] = sprintf('<li><a href="%s">%s</a></li>', $routeGenerator($pagerfanta->getNbPages(), $options['route']), $pagerfanta->getNbPages());
         }
 
         // next
@@ -115,7 +116,7 @@ class TwitterBootstrapView implements ViewInterface
         if (!$pagerfanta->hasNextPage()) {
             $class .= ' '.$options['css_disabled_class'];
         } else {
-            $url = $routeGenerator($pagerfanta->getNextPage());
+            $url = $routeGenerator($pagerfanta->getNextPage(), $options['route']);
         }
 
         $pages[] = sprintf('<li class="%s"><a href="%s">%s</a></li>', $class, $url, $options['next_message']);
