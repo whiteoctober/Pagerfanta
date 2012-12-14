@@ -16,6 +16,8 @@ namespace Pagerfanta\Adapter;
  *
  * @author Igor Wiedler <igor@wiedler.ch>
  * @author wiistriker <wiistriker@gmail.com>
+ *
+ * @api
  */
 class SolariumAdapter implements AdapterInterface
 {
