@@ -11,6 +11,12 @@
 
 namespace Pagerfanta\Adapter;
 
+use Pagerfanta\Exception\InvalidArgumentException;
+use Solarium\QueryType\Select\Query\Query;
+use Solarium\Core\Client\Client;
+use Solarium_Query_Select;
+use Solarium_Client;
+
 /**
  * SolariumAdapter.
  *
@@ -26,12 +32,19 @@ class SolariumAdapter implements AdapterInterface
     /**
      * Constructor.
      *
-     * @param Solarium_Query_Select  $query           A Solarium select query.
+     * @param Solarium_Client|Client       $client A Solarium client.
+     * @param Solarium_Query_Select|Query  $query  A Solarium select query.
      *
      * @api
      */
-    public function __construct(\Solarium_Client $client, \Solarium_Query_Select $query)
+    public function __construct($client, $query)
     {
+        if ((!$query instanceof Query) && (!$query instanceof Solarium_Query_Select)) {
+            throw new InvalidArgumentException('The query object should be a Solarium_Query_Select or Solarium\QueryType\Select\Query\Query instance, '.get_class($query).' given');
+        }
+        if ((!$client instanceof Client) && (!$client instanceof Solarium_Client)) {
+            throw new InvalidArgumentException('The client object should be a Solarium_Client or Solarium\Core\Client\Client instance, '.get_class($client).' given');
+        }
         $this->client = $client;
         $this->query = $query;
     }

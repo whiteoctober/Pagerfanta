@@ -8,7 +8,7 @@ class SolariumAdapterTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        if (!class_exists('Solarium_Client')) {
+        if (!class_exists('Solarium\Core\Client\Client')) {
             $this->markTestSkipped('Solarium is not available.');
         }
     }
@@ -57,17 +57,19 @@ class SolariumAdapterTest extends \PHPUnit_Framework_TestCase
 
     private function getSolariumClientMock()
     {
-        return $this->getMock('Solarium_Client');
+        return $this->getMockBuilder('Solarium\Core\Client\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     private function getSolariumQueryMock()
     {
-        return $this->getMock('Solarium_Query_Select');
+        return $this->getMock('Solarium\QueryType\Select\Query\Query');
     }
 
     private function getSolariumResultMock()
     {
-        return $this->getMockBuilder('Solarium_Result_Select')
+        return $this->getMockBuilder('Solarium\QueryType\Select\Result\Result')
             ->disableOriginalConstructor()
             ->getMock();
     }
