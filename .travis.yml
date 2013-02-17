@@ -5,8 +5,11 @@ php:
   - 5.4
 
 env:
-    - DOCTRINE_ORM_REV=origin/2.1.x DOCTRINE_COMMON_REV=origin/2.1.x DOCTRINE_DBAL_REV=origin/2.1.x
-    - DOCTRINE_ORM_REV=origin/2.2
-    - DOCTRINE_ORM_REV=origin/master
+  - DOCTRINE_ORM_VERSION=2.1.*
+  - DOCTRINE_ORM_VERSION=2.2.*
+  - DOCTRINE_ORM_VERSION=2.3.*
+  - DOCTRINE_ORM_VERSION=dev-master
 
-before_script: php vendors.php
+before_script:
+  - composer require doctrine/orm:${DOCTRINE_ORM_VERSION} --dev --no-update
+  - composer install --dev
