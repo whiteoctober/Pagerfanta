@@ -34,6 +34,7 @@ class DefaultView implements ViewInterface
             'css_disabled_class' => 'disabled',
             'css_dots_class'     => 'dots',
             'css_current_class'  => 'current',
+            'route'              => ''
         ), $options);
 
         $currentPage = $pagerfanta->getCurrentPage();
@@ -104,7 +105,7 @@ class DefaultView implements ViewInterface
             if (is_string($page)) {
                 $pagesHtml .= $page;
             } else {
-                $pagesHtml .= '<a href="'.$routeGenerator($page[0]).'">'.$page[1].'</a>';
+                $pagesHtml .= '<a href="'.$routeGenerator($page[0], $options['route']).'">'.$page[1].'</a>';
             }
         }
 
