@@ -15,20 +15,32 @@ namespace Pagerfanta\Adapter;
  * SolariumAdapter.
  *
  * @author Igor Wiedler <igor@wiedler.ch>
+ * @author wiistriker <wiistriker@gmail.com>
  *
  * @api
  */
 class SolariumAdapter implements AdapterInterface
 {
+    /**
+     * @var \Solarium_Client
+     */
     private $client;
+
+    /**
+     * @var \Solarium_Query_Select
+     */
     private $query;
+
+    /**
+     * @var \Solarium_Result_Select
+     */
+    private $resultSet = null;
 
     /**
      * Constructor.
      *
-     * @param Solarium_Query_Select  $query           A Solarium select query.
-     *
-     * @api
+     * @param \Solarium_Client $client A Solarium client
+     * @param \Solarium_Query_Select $query A Solarium select query
      */
     public function __construct(\Solarium_Client $client, \Solarium_Query_Select $query)
     {
@@ -56,8 +68,17 @@ class SolariumAdapter implements AdapterInterface
         return $this->getResultSet();
     }
 
+    /**
+     * Solr select
+     *
+     * @return \Solarium_Result_Select
+     */
     private function getResultSet()
     {
-        return $this->client->select($this->query);
+        if ($this->resultSet === null) {
+            $this->resultSet = $this->client->select($this->query);
+        }
+
+        return $this->resultSet;
     }
 }
