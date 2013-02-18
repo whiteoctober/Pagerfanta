@@ -18,7 +18,7 @@ namespace Pagerfanta\Adapter;
  *
  * @api
  */
-class ArrayAdapter implements AdapterInterface
+class ArrayAdapter extends BaseAdapter implements AdapterInterface
 {
     private $array;
 
@@ -51,7 +51,11 @@ class ArrayAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return count($this->array);
+        if ($this->getMaxResults() == 0) {
+            return count($this->array);
+        }
+
+        return min(count($this->array), $this->getMaxResults());
     }
 
     /**

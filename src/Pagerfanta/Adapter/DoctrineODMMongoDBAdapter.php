@@ -20,7 +20,7 @@ use Doctrine\ODM\MongoDB\Query\Builder;
  *
  * @api
  */
-class DoctrineODMMongoDBAdapter implements AdapterInterface
+class DoctrineODMMongoDBAdapter extends BaseAdapter implements AdapterInterface
 {
     private $queryBuilder;
 
@@ -53,7 +53,13 @@ class DoctrineODMMongoDBAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->queryBuilder->getQuery()->count();
+        $count = $this->queryBuilder->getQuery()->count();
+
+        if ($this->getMaxResults() == 0) {
+            return $count;
+        }
+
+        return min($count, $this->getMaxResults());
     }
 
     /**

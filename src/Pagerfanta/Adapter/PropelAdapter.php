@@ -16,7 +16,7 @@ namespace Pagerfanta\Adapter;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PropelAdapter implements AdapterInterface
+class PropelAdapter extends BaseAdapter implements AdapterInterface
 {
     private $query;
 
@@ -43,7 +43,7 @@ class PropelAdapter implements AdapterInterface
     {
         $q = clone $this->getQuery();
 
-        return $q->limit(0)->offset(0)->count();
+        return $q->limit($this->getMaxResults())->offset(0)->count();
     }
 
     /**

@@ -56,6 +56,9 @@ class DoctrineORMAdapterTest extends DoctrineORMTestCase
 
         $adapter = new DoctrineORMAdapter($query);
         $this->assertEquals(2, $adapter->getNbResults());
+
+        $adapter->setMaxResults(1);
+        $this->assertEquals(1, $adapter->getNbResults());
     }
 
     public function testAdapterCountFetchJoin()

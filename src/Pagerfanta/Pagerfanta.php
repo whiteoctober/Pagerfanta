@@ -16,7 +16,6 @@ use Pagerfanta\Exception\LogicException;
 use Pagerfanta\Exception\NotIntegerMaxPerPageException;
 use Pagerfanta\Exception\LessThan1MaxPerPageException;
 use Pagerfanta\Exception\NotIntegerCurrentPageException;
-use Pagerfanta\Exception\LessThan1CurrentPageException;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 
 /**
@@ -60,6 +59,26 @@ class Pagerfanta implements PagerfantaInterface
     public function getAdapter()
     {
         return $this->adapter;
+    }
+
+    /**
+     * This method implements a fluent interface.
+     *
+     * {@inheritdoc}
+     */
+    public function setMaxResults($maxResults)
+    {
+        $this->getAdapter()->setMaxResults($maxResults);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMaxResults()
+    {
+        return $this->getAdapter()->getMaxResults();
     }
 
     /**
@@ -152,6 +171,11 @@ class Pagerfanta implements PagerfantaInterface
         if (null === $this->currentPageResults) {
             $offset = ($this->getCurrentPage() - 1) * $this->getMaxPerPage();
             $length = $this->getMaxPerPage();
+
+            if ($this->getMaxResults() != 0 && $offset + $length > $this->getMaxResults()) {
+                $length = $this->getMaxResults() - $offset;
+            }
+
             $this->currentPageResults = $this->adapter->getSlice($offset, $length);
         }
 
@@ -169,7 +193,7 @@ class Pagerfanta implements PagerfantaInterface
 
         return $this->nbResults;
     }
-    
+
     public function setNbResults($count)
     {
         $this->nbResults = (integer) $count;

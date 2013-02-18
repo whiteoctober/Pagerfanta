@@ -18,7 +18,7 @@ namespace Pagerfanta\Adapter;
  *
  * @api
  */
-class MongoAdapter implements AdapterInterface
+class MongoAdapter extends BaseAdapter implements AdapterInterface
 {
     private $cursor;
 
@@ -51,7 +51,13 @@ class MongoAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->cursor->count();
+        $count = $this->cursor->count();
+
+        if ($this->getMaxResults() == 0) {
+            return $count;
+        }
+
+        return min($count, $this->getMaxResults());
     }
 
     /**

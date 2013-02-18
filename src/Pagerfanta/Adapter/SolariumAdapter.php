@@ -18,7 +18,7 @@ namespace Pagerfanta\Adapter;
  *
  * @api
  */
-class SolariumAdapter implements AdapterInterface
+class SolariumAdapter extends BaseAdapter implements AdapterInterface
 {
     private $client;
     private $query;
@@ -26,7 +26,7 @@ class SolariumAdapter implements AdapterInterface
     /**
      * Constructor.
      *
-     * @param Solarium_Query_Select  $query           A Solarium select query.
+     * @param Solarium_Query_Select $query A Solarium select query.
      *
      * @api
      */
@@ -41,7 +41,13 @@ class SolariumAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->getResultSet()->getNumFound();
+        $count = $this->getResultSet()->getNumFound();
+
+        if ($this->getMaxResults() == 0) {
+            return $count;
+        }
+
+        return min($count, $this->getMaxResults());
     }
 
     /**

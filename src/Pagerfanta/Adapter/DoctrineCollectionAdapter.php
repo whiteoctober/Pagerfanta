@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
  *
  * @api
  */
-class DoctrineCollectionAdapter implements AdapterInterface
+class DoctrineCollectionAdapter extends BaseAdapter implements AdapterInterface
 {
     private $collection;
 
@@ -53,7 +53,13 @@ class DoctrineCollectionAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->collection->count();
+        $count = $this->collection->count();
+
+        if ($this->getMaxResults() == 0) {
+            return $count;
+        }
+
+        return min($count, $this->getMaxResults());
     }
 
     /**

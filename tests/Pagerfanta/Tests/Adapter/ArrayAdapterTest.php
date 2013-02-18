@@ -26,6 +26,9 @@ class ArrayAdapterTest extends \PHPUnit_Framework_TestCase
     public function testGetNbResults()
     {
         $this->assertSame(count($this->array), $this->adapter->getNbResults());
+
+        $this->adapter->setMaxResults(3);
+        $this->assertSame(3, $this->adapter->getNbResults());
     }
 
     /**

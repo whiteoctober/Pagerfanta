@@ -16,7 +16,7 @@ namespace Pagerfanta\Adapter;
  *
  * @author Benjamin Dulau <benjamin.dulau@anonymation.com>
  */
-class NullAdapter implements AdapterInterface
+class NullAdapter extends BaseAdapter implements AdapterInterface
 {
     private $nbResults;
 
@@ -37,7 +37,11 @@ class NullAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->nbResults;
+        if ($this->getMaxResults() == 0) {
+            return $this->nbResults;
+        }
+
+        return min($this->nbResults, $this->getMaxResults());
     }
 
     /**

@@ -21,7 +21,7 @@ use Pagerfanta\Adapter\DoctrineORM\Paginator as LegacyPaginator;
  *
  * @api
  */
-class DoctrineORMAdapter implements AdapterInterface
+class DoctrineORMAdapter extends BaseAdapter implements AdapterInterface
 {
     /**
      * @var \Doctrine\ORM\Tools\Pagination\Paginator|\Pagerfanta\Adapter\DoctrineORM\Paginator
@@ -32,7 +32,7 @@ class DoctrineORMAdapter implements AdapterInterface
      * Constructor.
      *
      * @param \Doctrine\ORM\Query|\Doctrine\ORM\QueryBuilder $query               A Doctrine ORM query or query builder.
-     * @param Boolean            $fetchJoinCollection Whether the query joins a collection (true by default).
+     * @param Boolean                                        $fetchJoinCollection Whether the query joins a collection (true by default).
      *
      * @api
      */
@@ -72,7 +72,11 @@ class DoctrineORMAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return count($this->paginator);
+        if ($this->getMaxResults() == 0) {
+            return count($this->paginator);
+        }
+
+        return min(count($this->paginator), $this->getMaxResults());
     }
 
     /**
