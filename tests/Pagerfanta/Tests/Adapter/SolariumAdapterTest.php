@@ -113,6 +113,38 @@ class SolariumAdapterTest extends \PHPUnit_Framework_TestCase
         $adapter->getSlice(1, 200);
     }
 
+    public function testGetSliceShouldCacheResult()
+    {
+        $query = $this->getQueryStub();
+
+        $client = $this->getClientMock();
+        $client
+            ->expects($this->once())
+            ->method('select')
+            ->will($this->returnValue($this->getResultMock()));
+
+        $adapter = new SolariumAdapter($client, $query);
+
+        $adapter->getSlice(1, 200);
+        $adapter->getNbResults();
+    }
+
+    public function testGetNbResultsShouldNotCacheResult()
+    {
+        $query = $this->getQueryStub();
+
+        $client = $this->getClientMock();
+        $client
+            ->expects($this->exactly(2))
+            ->method('select')
+            ->will($this->returnValue($this->getResultMock()));
+
+        $adapter = new SolariumAdapter($client, $query);
+
+        $adapter->getNbResults();
+        $adapter->getSlice(1, 200);
+    }
+
     private function getClientMock()
     {
         return $this->getMockBuilder(static::$clientClass)
@@ -123,6 +155,21 @@ class SolariumAdapterTest extends \PHPUnit_Framework_TestCase
     private function getQueryMock()
     {
         return $this->getMock(static::$queryClass);
+    }
+
+    private function getQueryStub()
+    {
+        $query = $this->getQueryMock();
+        $query
+            ->expects($this->any())
+            ->method('setStart')
+            ->will($this->returnSelf());
+        $query
+            ->expects($this->any())
+            ->method('setRows')
+            ->will($this->returnSelf());
+
+        return $query;
     }
 
     private function getResultMock()

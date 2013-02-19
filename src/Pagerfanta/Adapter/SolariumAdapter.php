@@ -28,6 +28,7 @@ class SolariumAdapter implements AdapterInterface
 {
     private $client;
     private $query;
+    private $cachedResultSet;
 
     /**
      * Constructor.
@@ -54,7 +55,7 @@ class SolariumAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->getResultSet()->getNumFound();
+        return $this->getCachedResultSet()->getNumFound();
     }
 
     /**
@@ -66,11 +67,18 @@ class SolariumAdapter implements AdapterInterface
             ->setStart($offset)
             ->setRows($length);
 
-        return $this->getResultSet();
+        $this->cachedResultSet = $this->getResultSet();
+
+        return $this->cachedResultSet;
     }
 
     private function getResultSet()
     {
         return $this->client->select($this->query);
+    }
+
+    private function getCachedResultSet()
+    {
+        return $this->cachedResultSet ?: $this->getResultSet();
     }
 }
