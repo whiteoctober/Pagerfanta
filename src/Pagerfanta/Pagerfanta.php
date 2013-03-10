@@ -126,7 +126,7 @@ class Pagerfanta implements PagerfantaInterface
 
         // less than 1?
         if ($currentPage < 1) {
-            $currentPage = 1;
+            throw new LessThan1CurrentPageException();
         }
 
         $this->currentPageResults = null;
