@@ -45,7 +45,7 @@ $pagerfanta
 ;
 ```
 
-**NB:** You should call `->setMaxPerPage()` before `->setCurrentPage()`!
+**NB:** You should call `->setMaxPerPage()` before `->setCurrentPage()` or you will get Exceptions in some cases where you did not expect them!
 
 The `->setMaxPerPage()` method throws an exception if the max per page is not valid:
 
