@@ -67,7 +67,7 @@ class WhereInWalker extends TreeWalkerAdapter
         $count = $this->_getQuery()->getHint('id.count');
 
         if ($count > 0) {
-            // in new doctrine 2.2 version theres a different expression
+            // in new doctrine 2.2 version there's a different expression
             if (property_exists('Doctrine\ORM\Query\AST\InExpression', 'expression')) {
                 $arithmeticExpression = new ArithmeticExpression();
                 $arithmeticExpression->simpleArithmeticExpression = new SimpleArithmeticExpression(
