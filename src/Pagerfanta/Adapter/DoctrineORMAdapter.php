@@ -38,11 +38,11 @@ class DoctrineORMAdapter implements AdapterInterface
      */
     public function __construct($query, $fetchJoinCollection = true)
     {
-        if (class_exists('Doctrine\ORM\Tools\Pagination\Paginator')) {
-            $this->paginator = new DoctrinePaginator($query, $fetchJoinCollection);
-        } else {
+        $this->paginator = new DoctrinePaginator($query, $fetchJoinCollection);
+        
+        if (!class_exists('Doctrine\ORM\Tools\Pagination\Paginator')) {
             $this->paginator = new LegacyPaginator($query, $fetchJoinCollection);
-        }
+        } 
     }
 
     /**
