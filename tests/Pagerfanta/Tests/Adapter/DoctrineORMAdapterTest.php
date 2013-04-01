@@ -168,4 +168,22 @@ DQL;
         $this->assertEquals('Foo', $items[0][0]->name);
         $this->assertEquals(1, $items[0]['relevance']);
     }
+
+    public function testQueryBuilder()
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder()
+            ->select('u')
+            ->from('Pagerfanta\Tests\Adapter\DoctrineORM\User', 'u');
+
+        $adapter = new DoctrineORMAdapter($queryBuilder);
+        $this->assertEquals(2, $adapter->getNbResults());
+
+        $items = $adapter->getSlice(0, 10);
+        $this->assertCount(2, $items);
+
+        foreach ($items as $item) {
+            $this->assertObjectHasAttribute('id', $item);
+            $this->assertObjectHasAttribute('groups', $item);
+        }
+    }
 }
