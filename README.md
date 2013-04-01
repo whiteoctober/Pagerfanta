@@ -15,7 +15,7 @@ use Pagerfanta\Adapter\ArrayAdapter;
 $adapter = new ArrayAdapter($array);
 $pagerfanta = new Pagerfanta($adapter);
 
-$pagerfanta->setMaxPerPage($maxPerPage); // 10 by default
+$pagerfanta->setMaxPerPage($maxPerPage); // 10 by default, should be called before getCurrentPage!
 $maxPerPage = $pagerfanta->getMaxPerPage();
 
 $pagerfanta->setCurrentPage($currentPage); // 1 by default
@@ -44,6 +44,8 @@ $pagerfanta
     ->setCurrentPage($currentPage)
 ;
 ```
+
+**NB:** You should call `->setMaxPerPage()` before `->setCurrentPage()` or you will get Exceptions in some cases where you did not expect them!
 
 The `->setMaxPerPage()` method throws an exception if the max per page is not valid:
 
