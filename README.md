@@ -178,6 +178,27 @@ $user = $em->find("Pagerfanta\Tests\Adapter\DoctrineORM\User", 1);
 $adapter = new DoctrineCollectionAdapter($user->getGroups());
 ```
 
+### DoctrineSelectableAdapter
+
+To paginate a `Doctrine\Common\Collection\Selectable` interface you can use the `DoctrineSelectableAdapter`. It uses the matching() method on the Selectable interface for pagination. This is especially usefull when using the Doctrine Criteria object to filter a PersistentCollection:
+
+```php
+<?php
+
+use Pagerfanta\Adapter\DoctrineSelectableAdapter;
+use Doctrine\Common\Collections\Criteria;
+
+$user = $em->find("Pagerfanta\Tests\Adapter\DoctrineORM\User", 1);
+$comments = $user->getComments();
+$criteria = Criteria::create()->andWhere(Criteria::expr()->in('id', array(1,2,3));
+
+$adapter = new DoctrineSelectableAdapter($comments, $criteria);
+```
+
+Note that you should never use this adapter with a PersistentCollection which is not set to use the EXTRA_LAZY fetch mode.
+
+*Be carefull when using the `count()` method, currently Doctrine2 needs to fetch all the records to count the number of elements.*
+
 ### PropelAdapter
 
 To paginate a propel query:
