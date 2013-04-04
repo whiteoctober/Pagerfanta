@@ -151,7 +151,6 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     {
         $this->currentPageResults = null;
         $this->nbResults = null;
-        $this->nbPages = null;
     }
 
     /**
