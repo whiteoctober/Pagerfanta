@@ -15,7 +15,7 @@ class DoctrineDbalSingleTableAdapterTestt extends DoctrineDbalTestCase
     {
         parent::setUp();
 
-        $this->adapter = new DoctrineDBALSingleTableAdapter($this->q, 'p.id');
+        $this->adapter = new DoctrineDbalSingleTableAdapter($this->q, 'p.id');
     }
 
     public function testGetNbResults()
