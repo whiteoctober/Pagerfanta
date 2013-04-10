@@ -135,6 +135,45 @@ $query = \Model\Article::getRepository()->createQuery();
 $adapter = new MandangoAdapter($query);
 ```
 
+### DoctrineDbalAdapter
+
+To paginate [DoctrineDbal](http://www.doctrine-project.org/projects/dbal.html)
+queries.
+
+```php
+<?php
+
+use Pagerfanta\Adapter\DoctrineDbalAdapter;
+
+$query = new QueryBuilder($conn);
+$query->select('p.*')->from('posts', 'p');
+
+$countQueryModifier = function ($query) {
+    $query->select('COUNT(DISTINCT p.id) AS total_results')
+          ->setMaxResults(1);
+};
+
+$adapter = new DoctrineDbalAdapter($query, $countQueryModifier);
+```
+
+### DoctrineDbalSingleTableAdapter
+
+To simplify the pagination of single table
+[DoctrineDbal](http://www.doctrine-project.org/projects/dbal.html) queries.
+
+```php
+<?php
+
+use Pagerfanta\Adapter\DoctrineDbalSingleTableAdapter;
+
+$query = new QueryBuilder($conn);
+$query->select('p.*')->from('posts', 'p');
+
+$countField = 'p.id';
+
+$adapter = new DoctrineDbalSingleTableAdapter($query, $countField);
+```
+
 ### DoctrineORMAdapter
 
 To paginate [DoctrineORM](http://www.doctrine-project.org/projects/orm) query objects.
