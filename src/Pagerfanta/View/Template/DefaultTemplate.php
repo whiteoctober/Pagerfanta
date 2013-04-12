@@ -82,7 +82,7 @@ class DefaultTemplate extends Template
         return $this->generateSpan($this->option('css_dots_class'), $this->option('dots_text'));
     }
 
-    private function generateSpan($class, $page)
+    protected function generateSpan($class, $page)
     {
         return sprintf('<span class="%s">%s</span>', $class, $page);
     }
