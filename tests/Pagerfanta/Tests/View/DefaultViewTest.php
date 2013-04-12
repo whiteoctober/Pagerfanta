@@ -261,6 +261,35 @@ EOF
 EOF
         , $this->renderView($options));
     }
+    
+    public function testRenderModifiyingStringTemplate()
+    {
+        $this->setNbPages(100);
+        $this->setCurrentPage(1);
+        
+        $options = array(
+            'container_template'      => '<nav><ul>%pages%</ul></nav>',
+            'page_with_text_template' => '<li><a href="%s">%s</a></li>',
+            'span_template'           => '<li><span class="%s">%s</span></li>'
+        );
+        
+        $this->assertRenderedView(<<<EOF
+<nav>
+    <ul>
+        <li><span class="disabled">Previous</span></li>
+        <li><span class="current">1</span></li>
+        <li><a href="|2|">2</a></li>
+        <li><a href="|3|">3</a></li>
+        <li><a href="|4|">4</a></li>
+        <li><a href="|5|">5</a></li>
+        <li><span class="dots">...</span></li>
+        <li><a href="|100|">100</a></li>
+        <li><a href="|2|">Next</a></li>
+    </ul>
+</nav>
+EOF
+        , $this->renderView($options));
+    }
 
     protected function filterExpectedView($expected)
     {
