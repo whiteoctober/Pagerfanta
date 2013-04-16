@@ -1,7 +1,7 @@
 {
     "name": "pagerfanta/pagerfanta",
     "description": "Pagination for PHP 5.3",
-    "keywords": ["page","paging"],
+    "keywords": ["page","paging", "paginator", "pagination"],
     "type": "library",
     "license": "MIT",
     "authors": [
