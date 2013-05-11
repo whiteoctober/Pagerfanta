@@ -306,7 +306,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
 
     private function calculateOffsetForCurrentPageResults()
     {
-        return ($this->getCurrentPage() - 1) * $this->getMaxPerPage();
+        return abs(($this->getCurrentPage() - 1) * $this->getMaxPerPage());
     }
 
     /**
