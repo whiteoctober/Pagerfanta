@@ -654,4 +654,33 @@ class PagerfantaTest extends \PHPUnit_Framework_TestCase
         $callback();
         $this->assertSame($currentPageResults1, $this->pagerfanta->getCurrentPageResults());
     }
+
+
+    public function testGetCurrentPageOffsetStart()
+    {
+        $this->setAdapterNbResultsAny(100);
+        $this->pagerfanta->setMaxPerPage(10);
+        $this->pagerfanta->setCurrentPage(2);
+
+        $this->assertSame(11, $this->pagerfanta->getCurrentPageOffsetStart());
+    }
+
+    public function testGetCurrentPageOffsetEnd()
+    {
+        $this->setAdapterNbResultsAny(100);
+        $this->pagerfanta->setMaxPerPage(10);
+        $this->pagerfanta->setCurrentPage(2);
+
+        $this->assertSame(20, $this->pagerfanta->getCurrentPageOffsetEnd());
+    }
+
+    public function testGetCurrentPageOffsetEndOnEndPage()
+    {
+        $this->setAdapterNbResultsAny(90);
+        $this->pagerfanta->setMaxPerPage(20);
+        $this->pagerfanta->setCurrentPage(5);
+
+        $this->assertSame(90, $this->pagerfanta->getCurrentPageOffsetEnd());
+    }
+
 }
