@@ -23,14 +23,15 @@ class DefaultTemplate extends Template
         'css_dots_class'     => 'dots',
         'css_current_class'  => 'current',
         'dots_text'          => '...',
-        'container_template' => '<nav>%pages%</nav>',
         'page_template'      => '<a href="%href%">%text%</a>',
         'span_template'      => '<span class="%class%">%text%</span>'
     );
 
     public function container()
     {
-        return $this->option('container_template');
+        return sprintf('<nav class="%s" data-pagination=\'%%paginationData%%\'>%%pages%%</nav>',
+            $this->option('css_container_class')
+        );
     }
 
     public function page($page)
