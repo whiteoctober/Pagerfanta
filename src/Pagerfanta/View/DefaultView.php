@@ -217,7 +217,7 @@ class DefaultView implements ViewInterface
     private function last()
     {
         if ($this->pagerfanta->getNbPages() > $this->endPage) {
-            return $this->template->page($this->pagerfanta->getNbPages());
+            return $this->template->last($this->pagerfanta->getNbPages());
         }
     }
 
