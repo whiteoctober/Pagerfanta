@@ -105,7 +105,10 @@ class SolariumAdapter implements AdapterInterface
         return $this->getResultSet();
     }
 
-    private function getResultSet()
+    /**
+     * @return Solarium_Result_Select|Solarium\QueryType\Select\Result\Result
+     **/
+    public function getResultSet()
     {
         if ($this->isResultSetNotCached()) {
             $this->resultSet = $this->createResultSet();

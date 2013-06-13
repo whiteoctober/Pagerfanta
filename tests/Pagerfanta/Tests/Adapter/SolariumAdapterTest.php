@@ -122,6 +122,19 @@ abstract class SolariumAdapterTest extends \PHPUnit_Framework_TestCase
         $adapter->getSlice(1, 200);
     }
 
+    public function testGetResultSet()
+    {
+        $query = $this->createQueryMock();
+        $client = $this->createClientMock();
+        $client
+            ->expects($this->atLeastOnce())
+            ->method('select')
+            ->will($this->returnValue($this->createResultMock()));
+
+        $adapter = new SolariumAdapter($client, $query);
+        $this->assertInstanceOf($this->getResultClass(), $adapter->getResultSet());
+    }
+
     private function createClientMock()
     {
         return $this->getMockBuilder($this->getClientClass())
