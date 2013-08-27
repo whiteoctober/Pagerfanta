@@ -17,18 +17,18 @@ namespace Pagerfanta\View\Template;
 class TwitterBootstrapTemplate extends Template
 {
     static protected $defaultOptions = array(
-        'previous_message'        => '&larr; Previous',
-        'prev_disabled_href'  => '#',
-        'next_message'        => 'Next &rarr;',
-        'next_disabled_href'  => '#',
-        'dots_message'        => '&hellip;',
-        'dots_href'           => '#',
-        'css_container_class' => 'pagination',
-        'css_prev_class'      => 'prev',
-        'css_next_class'      => 'next',
-        'css_disabled_class'  => 'disabled',
-        'css_dots_class'      => 'disabled',
-        'css_active_class'    => 'active'
+        'previous_message'       => '&larr; Previous',
+        'previous_disabled_href' => '#',
+        'next_message'           => 'Next &rarr;',
+        'next_disabled_href'     => '#',
+        'dots_message'           => '&hellip;',
+        'dots_href'              => '#',
+        'css_container_class'    => 'pagination',
+        'css_previous_class'     => 'prev',
+        'css_next_class'         => 'next',
+        'css_disabled_class'     => 'disabled',
+        'css_dots_class'         => 'disabled',
+        'css_active_class'       => 'active'
     );
 
     public function container()
@@ -62,7 +62,7 @@ class TwitterBootstrapTemplate extends Template
     public function previousDisabled()
     {
         $class = $this->previousDisabledClass();
-        $href = $this->option('prev_disabled_href');
+        $href = $this->option('previous_disabled_href');
         $text = $this->option('previous_message');
 
         return $this->li($class, $href, $text);
@@ -70,13 +70,13 @@ class TwitterBootstrapTemplate extends Template
 
     private function previousDisabledClass()
     {
-        return $this->option('css_prev_class').' '.$this->option('css_disabled_class');
+        return $this->option('css_previous_class').' '.$this->option('css_disabled_class');
     }
 
     public function previousEnabled($page)
     {
         $text = $this->option('previous_message');
-        $class = $this->option('css_prev_class');
+        $class = $this->option('css_previous_class');
 
         return $this->pageWithTextAndClass($page, $text, $class);
     }
