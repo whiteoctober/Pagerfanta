@@ -449,7 +449,7 @@ $html = $view->render($pagerfanta, $routeGenerator, $options);
 Options (default):
 
   * proximity (3)
-  * prev_message (&larr; Previous)
+  * previous_message (&larr; Previous)
   * prev_disabled_href ()
   * next_message (Next &rarr;)
   * next_disabled_href ()

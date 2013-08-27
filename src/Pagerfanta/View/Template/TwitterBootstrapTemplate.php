@@ -17,7 +17,7 @@ namespace Pagerfanta\View\Template;
 class TwitterBootstrapTemplate extends Template
 {
     static protected $defaultOptions = array(
-        'prev_message'        => '&larr; Previous',
+        'previous_message'        => '&larr; Previous',
         'prev_disabled_href'  => '#',
         'next_message'        => 'Next &rarr;',
         'next_disabled_href'  => '#',
@@ -63,7 +63,7 @@ class TwitterBootstrapTemplate extends Template
     {
         $class = $this->previousDisabledClass();
         $href = $this->option('prev_disabled_href');
-        $text = $this->option('prev_message');
+        $text = $this->option('previous_message');
 
         return $this->li($class, $href, $text);
     }
@@ -75,7 +75,7 @@ class TwitterBootstrapTemplate extends Template
 
     public function previousEnabled($page)
     {
-        $text = $this->option('prev_message');
+        $text = $this->option('previous_message');
         $class = $this->option('css_prev_class');
 
         return $this->pageWithTextAndClass($page, $text, $class);
