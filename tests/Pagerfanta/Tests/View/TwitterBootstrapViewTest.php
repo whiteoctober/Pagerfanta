@@ -237,7 +237,7 @@ EOF
         $this->setCurrentPage(10);
 
         $options = array(
-            'prev_message' => 'Anterior',
+            'previous_message' => 'Anterior',
             'next_message' => 'Siguiente'
         );
 
@@ -270,7 +270,7 @@ EOF
 
         $options = array(
             'css_container_class' => 'paginacion',
-            'css_prev_class'      => 'anterior',
+            'css_previous_class'  => 'anterior',
             'css_next_class'      => 'siguiente',
             'css_disabled_class'  => 'deshabilitado',
             'css_dots_class'      => 'puntos',

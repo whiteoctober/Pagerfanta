@@ -449,14 +449,14 @@ $html = $view->render($pagerfanta, $routeGenerator, $options);
 Options (default):
 
   * proximity (3)
-  * prev_message (&larr; Previous)
-  * prev_disabled_href ()
+  * previous_message (&larr; Previous)
+  * previous_disabled_href ()
   * next_message (Next &rarr;)
   * next_disabled_href ()
   * dots_message (&hellip;)
   * dots_href ()
   * css_container_class (pagination)
-  * css_prev_class (prev)
+  * css_previous_class (prev)
   * css_next_class (next)
   * css_disabled_class (disabled)
   * css_dots_class (disabled)
