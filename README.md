@@ -491,7 +491,7 @@ $defaultView = new DefaultView();
 // view and default options
 $myView1 = new OptionableView($defaultView, array('proximity' => 3));
 
-$myView2 = new OptionableView($defaultView, array('previous_message' => 'Anterior', 'next_message' => 'Siguiente'));
+$myView2 = new OptionableView($defaultView, array('prev_message' => 'Anterior', 'next_message' => 'Siguiente'));
 
 // using in a normal way
 $pagerfantaHtml = $myView2->render($pagerfanta, $routeGenerator);
