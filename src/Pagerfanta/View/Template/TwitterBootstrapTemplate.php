@@ -28,7 +28,9 @@ class TwitterBootstrapTemplate extends Template
         'css_next_class'      => 'next',
         'css_disabled_class'  => 'disabled',
         'css_dots_class'      => 'disabled',
-        'css_active_class'    => 'active'
+        'css_active_class'    => 'active',
+        'rel_previous'        => 'prev',
+        'rel_next'            => 'next'
     );
 
     public function container()
@@ -52,11 +54,11 @@ class TwitterBootstrapTemplate extends Template
         return $this->pageWithTextAndClass($page, $text, $class);
     }
 
-    private function pageWithTextAndClass($page, $text, $class)
+    private function pageWithTextAndClass($page, $text, $class, $rel = null)
     {
         $href = $this->generateRoute($page);
 
-        return $this->li($class, $href, $text);
+        return $this->li($class, $href, $text, $rel);
     }
 
     public function previousDisabled()
@@ -77,8 +79,9 @@ class TwitterBootstrapTemplate extends Template
     {
         $text = $this->option('prev_message');
         $class = $this->option('css_prev_class');
+        $rel = $this->option('rel_previous');
 
-        return $this->pageWithTextAndClass($page, $text, $class);
+        return $this->pageWithTextAndClass($page, $text, $class, $rel);
     }
 
     public function nextDisabled()
@@ -99,8 +102,9 @@ class TwitterBootstrapTemplate extends Template
     {
         $text = $this->option('next_message');
         $class = $this->option('css_next_class');
+        $rel = $this->option('rel_next');
 
-        return $this->pageWithTextAndClass($page, $text, $class);
+        return $this->pageWithTextAndClass($page, $text, $class, $rel);
     }
 
     public function first()
@@ -130,10 +134,11 @@ class TwitterBootstrapTemplate extends Template
         return $this->li($class, $href, $text);
     }
 
-    private function li($class, $href, $text)
+    private function li($class, $href, $text, $rel = null)
     {
         $liClass = $class ? sprintf(' class="%s"', $class) : '';
+        $rel = $rel ? sprintf(' rel="%s"', $rel) : '';
 
-        return sprintf('<li%s><a href="%s">%s</a></li>', $liClass, $href, $text);
+        return sprintf('<li%s><a href="%s"%s>%s</a></li>', $liClass, $href, $rel, $text);
     }
 }

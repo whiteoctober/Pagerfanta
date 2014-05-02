@@ -20,7 +20,7 @@ class DefaultViewTest extends ViewTestCase
 
         $this->assertRenderedView(<<<EOF
 <nav>
-    <a href="|9|">Previous</a>
+    <a href="|9|" rel="prev">Previous</a>
     <a href="|1|">1</a>
     <span class="dots">...</span>
     <a href="|8|">8</a>
@@ -30,10 +30,10 @@ class DefaultViewTest extends ViewTestCase
     <a href="|12|">12</a>
     <span class="dots">...</span>
     <a href="|100|">100</a>
-    <a href="|11|">Next</a>
+    <a href="|11|" rel="next">Next</a>
 </nav>
 EOF
-        , $this->renderView($options));
+            , $this->renderView($options));
     }
 
     public function testRenderFirstPage()
@@ -53,7 +53,7 @@ EOF
     <a href="|5|">5</a>
     <span class="dots">...</span>
     <a href="|100|">100</a>
-    <a href="|2|">Next</a>
+    <a href="|2|" rel="next">Next</a>
 </nav>
 EOF
         , $this->renderView($options));
@@ -68,7 +68,7 @@ EOF
 
         $this->assertRenderedView(<<<EOF
 <nav>
-    <a href="|99|">Previous</a>
+    <a href="|99|" rel="prev">Previous</a>
     <a href="|1|">1</a>
     <span class="dots">...</span>
     <a href="|96|">96</a>
@@ -91,7 +91,7 @@ EOF
 
         $this->assertRenderedView(<<<EOF
 <nav>
-    <a href="|3|">Previous</a>
+    <a href="|3|" rel="prev">Previous</a>
     <a href="|1|">1</a>
     <a href="|2|">2</a>
     <a href="|3|">3</a>
@@ -100,7 +100,7 @@ EOF
     <a href="|6|">6</a>
     <span class="dots">...</span>
     <a href="|100|">100</a>
-    <a href="|5|">Next</a>
+    <a href="|5|" rel="next">Next</a>
 </nav>
 EOF
         , $this->renderView($options));
@@ -115,7 +115,7 @@ EOF
 
         $this->assertRenderedView(<<<EOF
 <nav>
-    <a href="|4|">Previous</a>
+    <a href="|4|" rel="prev">Previous</a>
     <a href="|1|">1</a>
     <a href="|2|">2</a>
     <a href="|3|">3</a>
@@ -125,7 +125,7 @@ EOF
     <a href="|7|">7</a>
     <span class="dots">...</span>
     <a href="|100|">100</a>
-    <a href="|6|">Next</a>
+    <a href="|6|" rel="next">Next</a>
 </nav>
 EOF
         , $this->renderView($options));
@@ -140,7 +140,7 @@ EOF
 
         $this->assertRenderedView(<<<EOF
 <nav>
-    <a href="|96|">Previous</a>
+    <a href="|96|" rel="prev">Previous</a>
     <a href="|1|">1</a>
     <span class="dots">...</span>
     <a href="|95|">95</a>
@@ -149,7 +149,7 @@ EOF
     <a href="|98|">98</a>
     <a href="|99|">99</a>
     <a href="|100|">100</a>
-    <a href="|98|">Next</a>
+    <a href="|98|" rel="next">Next</a>
 </nav>
 EOF
         , $this->renderView($options));
@@ -164,7 +164,7 @@ EOF
 
         $this->assertRenderedView(<<<EOF
 <nav>
-    <a href="|95|">Previous</a>
+    <a href="|95|" rel="prev">Previous</a>
     <a href="|1|">1</a>
     <span class="dots">...</span>
     <a href="|94|">94</a>
@@ -174,7 +174,7 @@ EOF
     <a href="|98|">98</a>
     <a href="|99|">99</a>
     <a href="|100|">100</a>
-    <a href="|97|">Next</a>
+    <a href="|97|" rel="next">Next</a>
 </nav>
 EOF
         , $this->renderView($options));
@@ -189,7 +189,7 @@ EOF
 
         $this->assertRenderedView(<<<EOF
 <nav>
-    <a href="|9|">Previous</a>
+    <a href="|9|" rel="prev">Previous</a>
     <a href="|1|">1</a>
     <span class="dots">...</span>
     <a href="|7|">7</a>
@@ -201,7 +201,7 @@ EOF
     <a href="|13|">13</a>
     <span class="dots">...</span>
     <a href="|100|">100</a>
-    <a href="|11|">Next</a>
+    <a href="|11|" rel="next">Next</a>
 </nav>
 EOF
         , $this->renderView($options));
@@ -219,7 +219,7 @@ EOF
 
         $this->assertRenderedView(<<<EOF
 <nav>
-    <a href="|9|">Anterior</a>
+    <a href="|9|" rel="prev">Anterior</a>
     <a href="|1|">1</a>
     <span class="dots">...</span>
     <a href="|8|">8</a>
@@ -229,7 +229,7 @@ EOF
     <a href="|12|">12</a>
     <span class="dots">...</span>
     <a href="|100|">100</a>
-    <a href="|11|">Siguiente</a>
+    <a href="|11|" rel="next">Siguiente</a>
 </nav>
 EOF
         , $this->renderView($options));
@@ -256,7 +256,7 @@ EOF
     <a href="|5|">5</a>
     <span class="puntos">...</span>
     <a href="|100|">100</a>
-    <a href="|2|">Next</a>
+    <a href="|2|" rel="next">Next</a>
 </nav>
 EOF
         , $this->renderView($options));
