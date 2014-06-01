@@ -12,7 +12,6 @@
 namespace Pagerfanta\View;
 
 use Pagerfanta\View\Template\TwitterBootstrap3Template;
-use Pagerfanta\View\TwitterBootstrapView;
 
 /**
  * TwitterBootstrap3View.
