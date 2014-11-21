@@ -83,13 +83,25 @@ class DefaultView implements ViewInterface
     private function generate()
     {
         $pages = $this->generatePages();
+        $paginationData = $this->getPaginationData();
 
-        return $this->generateContainer($pages);
+        return $this->generateContainer($pages, $paginationData);
     }
 
-    private function generateContainer($pages)
+    private function generateContainer($pages, $paginationData)
     {
-        return str_replace('%pages%', $pages, $this->template->container());
+        return str_replace(array('%pages%', '%paginationData%'), array($pages, json_encode($paginationData)), $this->template->container());
+    }
+
+    private function getPaginationData(){
+        return array(
+            "url" => $this->template->generateRoute(null),
+            "totalResults" => $this->pagerfanta->getNbResults(),
+            "totalPages" => $this->pagerfanta->getNbPages(),
+            "currentPage" => $this->pagerfanta->getCurrentPage(),
+            "currentPageOffsetStart" => $this->pagerfanta->getCurrentPageOffsetStart(),
+            "currentPageOffsetEnd" => $this->pagerfanta->getCurrentPageOffsetEnd()
+        );
     }
 
     private function generatePages()

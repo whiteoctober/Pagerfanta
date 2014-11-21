@@ -41,7 +41,7 @@ abstract class Template implements TemplateInterface
         $this->options = static::$defaultOptions;
     }
 
-    protected function generateRoute($page)
+    public function generateRoute($page)
     {
         return call_user_func($this->getRouteGenerator(), $page);
     }
