@@ -92,7 +92,7 @@ class DefaultView implements ViewInterface
         return str_replace('%pages%', $pages, $this->template->container());
     }
 
-    private function generatePages()
+    protected function generatePages()
     {
         $this->calculateStartAndEndPage();
 
@@ -107,7 +107,7 @@ class DefaultView implements ViewInterface
                $this->next();
     }
 
-    private function calculateStartAndEndPage()
+    protected function calculateStartAndEndPage()
     {
         $startPage = $this->currentPage - $this->proximity;
         $endPage = $this->currentPage + $this->proximity;
@@ -145,7 +145,7 @@ class DefaultView implements ViewInterface
         return max($startPage - ($endPage - $this->nbPages), 1);
     }
 
-    private function previous()
+    protected function previous()
     {
         if ($this->pagerfanta->hasPreviousPage()) {
             return $this->template->previousEnabled($this->pagerfanta->getPreviousPage());
@@ -154,28 +154,28 @@ class DefaultView implements ViewInterface
         return $this->template->previousDisabled();
     }
 
-    private function first()
+    protected function first()
     {
         if ($this->startPage > 1) {
             return $this->template->first();
         }
     }
 
-    private function secondIfStartIs3()
+    protected function secondIfStartIs3()
     {
         if ($this->startPage == 3) {
             return $this->template->page(2);
         }
     }
 
-    private function dotsIfStartIsOver3()
+    protected function dotsIfStartIsOver3()
     {
         if ($this->startPage > 3) {
             return $this->template->separator();
         }
     }
 
-    private function pages()
+    protected function pages()
     {
         $pages = '';
 
@@ -195,14 +195,14 @@ class DefaultView implements ViewInterface
         return $this->template->page($page);
     }
 
-    private function dotsIfEndIsUnder3ToLast()
+    protected function dotsIfEndIsUnder3ToLast()
     {
         if ($this->endPage < $this->toLast(3)) {
             return $this->template->separator();
         }
     }
 
-    private function secondToLastIfEndIs3ToLast()
+    protected function secondToLastIfEndIs3ToLast()
     {
         if ($this->endPage == $this->toLast(3)) {
             return $this->template->page($this->toLast(2));
@@ -214,14 +214,14 @@ class DefaultView implements ViewInterface
         return $this->pagerfanta->getNbPages() - ($n - 1);
     }
 
-    private function last()
+    protected function last()
     {
         if ($this->pagerfanta->getNbPages() > $this->endPage) {
             return $this->template->last($this->pagerfanta->getNbPages());
         }
     }
 
-    private function next()
+    protected function next()
     {
         if ($this->pagerfanta->hasNextPage()) {
             return $this->template->nextEnabled($this->pagerfanta->getNextPage());
