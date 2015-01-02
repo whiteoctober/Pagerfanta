@@ -83,7 +83,7 @@ class DoctrineORMNativeQueryAdapter implements AdapterInterface
     {
         $query = $this->cloneQuery();
 
-        if ($this->countQueryBuilderModifier !== null) {
+        if ($this->sliceQueryBuilderModifier !== null) {
             call_user_func($this->sliceQueryBuilderModifier, $query, $offset, $length);
         } else {
             $this->sliceQueryBuilder($query, $offset, $length);
@@ -116,7 +116,7 @@ class DoctrineORMNativeQueryAdapter implements AdapterInterface
     private function sliceQueryBuilder(NativeQuery $query, $offset, $length)
     {
         $sql = $query->getSql();
-        $sql .= ' LIMIT ' . $offset . ', '. $length;
+        $sql .= ' LIMIT ' . $length . ' OFFSET '. $offset;
         $query->setSQL($sql);
     }
 }

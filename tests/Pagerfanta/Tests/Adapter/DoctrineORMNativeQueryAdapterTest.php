@@ -21,11 +21,11 @@ class DoctrineORMNativeQueryAdapterTest extends DoctrineORMTestCase
         parent::setUp();
 
         $schemaTool = new SchemaTool($this->entityManager);
-        $schemaTool->createSchema([
+        $schemaTool->createSchema(array(
             $this->entityManager->getClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\User'),
             $this->entityManager->getClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\Group'),
             $this->entityManager->getClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\Person'),
-        ]);
+        ));
 
         $this->user1 = $user = new User();
         $this->user2 = $user2 = new User();
@@ -74,8 +74,8 @@ class DoctrineORMNativeQueryAdapterTest extends DoctrineORMTestCase
 
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\User', 'u');
-        $rsm->addJoinedEntityFromClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\Group', 'g', 'u', 'groups', ['id' => 'user_id']);
-        $sql = "SELECT " . $rsm->generateSelectClause(['u' => 'u', 'g' => 'g']) .
+        $rsm->addJoinedEntityFromClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\Group', 'g', 'u', 'groups', array('id' => 'user_id'));
+        $sql = "SELECT u.id AS id, g.id AS user_id" .
             " FROM User u INNER JOIN user_group ug ON u.id = ug.user_id LEFT JOIN groups g ON g.id = ug.group_id"
         ;
 
@@ -103,8 +103,8 @@ class DoctrineORMNativeQueryAdapterTest extends DoctrineORMTestCase
     {
         $rsm = new ResultSetMappingBuilder($this->entityManager);
         $rsm->addRootEntityFromClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\User', 'u');
-        $rsm->addJoinedEntityFromClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\Group', 'g', 'u', 'groups', ['id' => 'user_id']);
-        $sql = "SELECT " . $rsm->generateSelectClause(['u' => 'u', 'g' => 'g']) .
+        $rsm->addJoinedEntityFromClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\Group', 'g', 'u', 'groups', array('id' => 'user_id'));
+        $sql = "SELECT u.id AS id, g.id AS user_id" .
             " FROM User u INNER JOIN user_group ug ON u.id = ug.user_id LEFT JOIN groups g ON g.id = ug.group_id"
         ;
 
