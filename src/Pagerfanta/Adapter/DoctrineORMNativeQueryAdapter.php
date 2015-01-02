@@ -38,6 +38,7 @@ class DoctrineORMNativeQueryAdapter implements AdapterInterface
     /**
      * @param NativeQuery  $query                     A DBAL query builder.
      * @param callable     $countQueryBuilderModifier A callable to modify the query to count.
+     * @param callable     $sliceQueryBuilderModifier A callable to modify the query to slice it (the default should do the job most part of the time).
      * @throws InvalidArgumentException
      */
     public function __construct(NativeQuery $query, $countQueryBuilderModifier = null, $sliceQueryBuilderModifier = null)

@@ -194,6 +194,26 @@ $queryBuilder = $entityManager->createQueryBuilder()
 $adapter = new DoctrineORMAdapter($queryBuilder);
 ```
 
+### DoctrineORMNativeQueryAdapter
+
+To paginate [Doctrine native queries](http://doctrine-orm.readthedocs.org/en/latest/reference/native-sql.html) objects.
+
+```php
+<?php
+
+use Pagerfanta\Adapter\DoctrineORMNativeQueryAdapter;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
+
+$query = 'SELECT * FROM article';
+
+$rsm = new ResultSetMappingBuilder($entityManager);
+$rsm->addRootEntityFromClassMetadata('Pagerfanta\Tests\Adapter\DoctrineORM\User', 'u');
+
+$adapter = new DoctrineORMNativeQueryAdapter($nq);
+```
+
+> The adapter accept 2 callable that should modify a given (as parameter) native query to respectively: make a count query / make a slice query
+
 ### DoctrineODMMongoDBAdapter
 
 To paginate [DoctrineODMMongoDB](http://www.doctrine-project.org/docs/mongodb_odm/1.0/en/) query builders.
