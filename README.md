@@ -157,6 +157,8 @@ $countQueryBuilderModifier = function ($queryBuilder) {
 $adapter = new DoctrineDbalAdapter($queryBuilder, $countQueryBuilderModifier);
 ```
 
+**Notice:** When you are trying to paginate a query which contains a `GROUP BY` clause, make sure to add `->resetQueryPart('groupBy')` to the count query builder to remove it, otherwise it will always return 1 as a count. This also means that these types of queries won't work with `DoctrineDbalSingleTableAdapter`.
+
 ### DoctrineDbalSingleTableAdapter
 
 To simplify the pagination of single table
