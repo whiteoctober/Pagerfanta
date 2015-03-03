@@ -31,7 +31,7 @@ class TwitterBootstrapTemplate extends Template
 
     public function container()
     {
-        return sprintf('<div class="%s"><ul>%%pages%%</ul></div>',
+        return sprintf('<div><ul class="%s">%%pages%%</ul></div>',
             $this->option('css_container_class')
         );
     }
