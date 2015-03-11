@@ -62,7 +62,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
      *
      * @param bool $value
      *
-     * @return Pagerfanta
+     * @return self
      */
     public function setAllowOutOfRangePages($value)
     {
@@ -86,7 +86,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
      *
      * @param bool $value
      *
-     * @return Pagerfanta
+     * @return self
      */
     public function setNormalizeOutOfRangePages($value)
     {
@@ -106,9 +106,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     }
 
     /**
-     * @param bool $value
-     *
-     * @throws NotBooleanException If the value is not a boolean
+     * @throws NotBooleanException If the value is not a boolean.
      * @return bool
      */
     private function filterBoolean($value)
@@ -127,7 +125,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
      *
      * @param int $maxPerPage
      *
-     * @return Pagerfanta
+     * @return self
      *
      * @throws NotIntegerMaxPerPageException If the max per page is not an integer even converting.
      * @throws LessThan1MaxPerPageException  If the max per page is less than 1.
@@ -192,7 +190,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
      *
      * @param int $currentPage
      *
-     * @return PagerFanta
+     * @return self
      *
      * @throws NotIntegerCurrentPageException If the current page is not an integer even converting.
      * @throws LessThan1CurrentPageException  If the current page is less than 1.

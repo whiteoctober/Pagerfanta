@@ -33,17 +33,11 @@ class DefaultView implements ViewInterface
     private $startPage;
     private $endPage;
 
-    /**
-     * @param TemplateInterface $template
-     */
     public function __construct(TemplateInterface $template = null)
     {
         $this->template = $template ?: $this->createDefaultTemplate();
     }
 
-    /**
-     * @return DefaultTemplate
-     */
     protected function createDefaultTemplate()
     {
         return new DefaultTemplate();
@@ -62,9 +56,6 @@ class DefaultView implements ViewInterface
         return $this->generate();
     }
 
-    /**
-     * @param PagerfantaInterface $pagerfanta
-     */
     private function initializePagerfanta(PagerfantaInterface $pagerfanta)
     {
         $this->pagerfanta = $pagerfanta;
