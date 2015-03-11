@@ -11,6 +11,7 @@
 
 namespace Pagerfanta\View;
 
+use Pagerfanta\Pagerfanta;
 use Pagerfanta\PagerfantaInterface;
 use Pagerfanta\View\Template\TemplateInterface;
 use Pagerfanta\View\Template\DefaultTemplate;
@@ -22,6 +23,7 @@ class DefaultView implements ViewInterface
 {
     private $template;
 
+    /** @var PagerFanta */
     private $pagerfanta;
     private $proximity;
 
@@ -31,11 +33,17 @@ class DefaultView implements ViewInterface
     private $startPage;
     private $endPage;
 
+    /**
+     * @param TemplateInterface $template
+     */
     public function __construct(TemplateInterface $template = null)
     {
         $this->template = $template ?: $this->createDefaultTemplate();
     }
 
+    /**
+     * @return DefaultTemplate
+     */
     protected function createDefaultTemplate()
     {
         return new DefaultTemplate();
@@ -54,6 +62,9 @@ class DefaultView implements ViewInterface
         return $this->generate();
     }
 
+    /**
+     * @param PagerfantaInterface $pagerfanta
+     */
     private function initializePagerfanta(PagerfantaInterface $pagerfanta)
     {
         $this->pagerfanta = $pagerfanta;
@@ -62,6 +73,9 @@ class DefaultView implements ViewInterface
         $this->nbPages = $pagerfanta->getNbPages();
     }
 
+    /**
+     * @param $options
+     */
     private function initializeOptions($options)
     {
         $this->proximity = isset($options['proximity']) ?
@@ -69,17 +83,27 @@ class DefaultView implements ViewInterface
                            $this->getDefaultProximity();
     }
 
+    /**
+     * @return int
+     */
     protected function getDefaultProximity()
     {
         return 2;
     }
 
+    /**
+     * @param $routeGenerator
+     * @param $options
+     */
     private function configureTemplate($routeGenerator, $options)
     {
         $this->template->setRouteGenerator($routeGenerator);
         $this->template->setOptions($options);
     }
 
+    /**
+     * @return mixed
+     */
     private function generate()
     {
         $pages = $this->generatePages();
@@ -87,11 +111,19 @@ class DefaultView implements ViewInterface
         return $this->generateContainer($pages);
     }
 
+    /**
+     * @param $pages
+     *
+     * @return mixed
+     */
     private function generateContainer($pages)
     {
         return str_replace('%pages%', $pages, $this->template->container());
     }
 
+    /**
+     * @return string
+     */
     private function generatePages()
     {
         $this->calculateStartAndEndPage();
@@ -125,26 +157,51 @@ class DefaultView implements ViewInterface
         $this->endPage = $endPage;
     }
 
+    /**
+     * @param $startPage
+     *
+     * @return bool
+     */
     private function startPageUnderflow($startPage)
     {
         return $startPage < 1;
     }
 
+    /**
+     * @param $endPage
+     *
+     * @return bool
+     */
     private function endPageOverflow($endPage)
     {
         return $endPage > $this->nbPages;
     }
 
+    /**
+     * @param $startPage
+     * @param $endPage
+     *
+     * @return mixed
+     */
     private function calculateEndPageForStartPageUnderflow($startPage, $endPage)
     {
         return min($endPage + (1 - $startPage), $this->nbPages);
     }
 
+    /**
+     * @param $startPage
+     * @param $endPage
+     *
+     * @return mixed
+     */
     private function calculateStartPageForEndPageOverflow($startPage, $endPage)
     {
         return max($startPage - ($endPage - $this->nbPages), 1);
     }
 
+    /**
+     * @return mixed
+     */
     private function previous()
     {
         if ($this->pagerfanta->hasPreviousPage()) {
@@ -154,6 +211,9 @@ class DefaultView implements ViewInterface
         return $this->template->previousDisabled();
     }
 
+    /**
+     * @return mixed
+     */
     private function first()
     {
         if ($this->startPage > 1) {
@@ -161,6 +221,9 @@ class DefaultView implements ViewInterface
         }
     }
 
+    /**
+     * @return mixed
+     */
     private function secondIfStartIs3()
     {
         if ($this->startPage == 3) {
@@ -168,6 +231,9 @@ class DefaultView implements ViewInterface
         }
     }
 
+    /**
+     * @return mixed
+     */
     private function dotsIfStartIsOver3()
     {
         if ($this->startPage > 3) {
@@ -175,6 +241,9 @@ class DefaultView implements ViewInterface
         }
     }
 
+    /**
+     * @return string
+     */
     private function pages()
     {
         $pages = '';
@@ -186,6 +255,11 @@ class DefaultView implements ViewInterface
         return $pages;
     }
 
+    /**
+     * @param $page
+     *
+     * @return mixed
+     */
     private function page($page)
     {
         if ($page == $this->currentPage) {
@@ -195,6 +269,9 @@ class DefaultView implements ViewInterface
         return $this->template->page($page);
     }
 
+    /**
+     * @return mixed
+     */
     private function dotsIfEndIsUnder3ToLast()
     {
         if ($this->endPage < $this->toLast(3)) {
@@ -202,6 +279,9 @@ class DefaultView implements ViewInterface
         }
     }
 
+    /**
+     * @return mixed
+     */
     private function secondToLastIfEndIs3ToLast()
     {
         if ($this->endPage == $this->toLast(3)) {
@@ -209,11 +289,19 @@ class DefaultView implements ViewInterface
         }
     }
 
+    /**
+     * @param $n
+     *
+     * @return int
+     */
     private function toLast($n)
     {
         return $this->pagerfanta->getNbPages() - ($n - 1);
     }
 
+    /**
+     * @return mixed
+     */
     private function last()
     {
         if ($this->pagerfanta->getNbPages() > $this->endPage) {
@@ -221,6 +309,9 @@ class DefaultView implements ViewInterface
         }
     }
 
+    /**
+     * @return mixed
+     */
     private function next()
     {
         if ($this->pagerfanta->hasNextPage()) {
@@ -238,64 +329,3 @@ class DefaultView implements ViewInterface
         return 'default';
     }
 }
-
-/*
-
-CSS:
-
-.pagerfanta {
-}
-
-.pagerfanta a,
-.pagerfanta span {
-    display: inline-block;
-    border: 1px solid blue;
-    color: blue;
-    margin-right: .2em;
-    padding: .25em .35em;
-}
-
-.pagerfanta a {
-    text-decoration: none;
-}
-
-.pagerfanta a:hover {
-    background: #ccf;
-}
-
-.pagerfanta .dots {
-    border-width: 0;
-}
-
-.pagerfanta .current {
-    background: #ccf;
-    font-weight: bold;
-}
-
-.pagerfanta .disabled {
-    border-color: #ccf;
-    color: #ccf;
-}
-
-COLORS:
-
-.pagerfanta a,
-.pagerfanta span {
-    border-color: blue;
-    color: blue;
-}
-
-.pagerfanta a:hover {
-    background: #ccf;
-}
-
-.pagerfanta .current {
-    background: #ccf;
-}
-
-.pagerfanta .disabled {
-    border-color: #ccf;
-    color: #cf;
-}
-
-*/

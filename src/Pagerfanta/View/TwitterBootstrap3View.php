@@ -23,6 +23,9 @@ use Pagerfanta\View\Template\TwitterBootstrap3Template;
  */
 class TwitterBootstrap3View extends TwitterBootstrapView
 {
+    /**
+     * @return TwitterBootstrap3Template
+     */
     protected function createDefaultTemplate()
     {
         return new TwitterBootstrap3Template();

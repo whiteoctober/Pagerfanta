@@ -29,6 +29,9 @@ class TwitterBootstrapTemplate extends Template
         'css_active_class'    => 'active',
     );
 
+    /**
+     * @return string
+     */
     public function container()
     {
         return sprintf('<div class="%s"><ul>%%pages%%</ul></div>',
@@ -36,6 +39,11 @@ class TwitterBootstrapTemplate extends Template
         );
     }
 
+    /**
+     * @param int $page
+     *
+     * @return string
+     */
     public function page($page)
     {
         $text = $page;
@@ -43,6 +51,12 @@ class TwitterBootstrapTemplate extends Template
         return $this->pageWithText($page, $text);
     }
 
+    /**
+     * @param int    $page
+     * @param string $text
+     *
+     * @return string
+     */
     public function pageWithText($page, $text)
     {
         $class = null;
@@ -50,6 +64,13 @@ class TwitterBootstrapTemplate extends Template
         return $this->pageWithTextAndClass($page, $text, $class);
     }
 
+    /**
+     * @param $page
+     * @param $text
+     * @param $class
+     *
+     * @return string
+     */
     private function pageWithTextAndClass($page, $text, $class)
     {
         $href = $this->generateRoute($page);
@@ -57,6 +78,9 @@ class TwitterBootstrapTemplate extends Template
         return $this->linkLi($class, $href, $text);
     }
 
+    /**
+     * @return string
+     */
     public function previousDisabled()
     {
         $class = $this->previousDisabledClass();
@@ -65,11 +89,19 @@ class TwitterBootstrapTemplate extends Template
         return $this->spanLi($class, $text);
     }
 
+    /**
+     * @return string
+     */
     private function previousDisabledClass()
     {
         return $this->option('css_prev_class').' '.$this->option('css_disabled_class');
     }
 
+    /**
+     * @param int $page
+     *
+     * @return string
+     */
     public function previousEnabled($page)
     {
         $text = $this->option('prev_message');
@@ -78,6 +110,9 @@ class TwitterBootstrapTemplate extends Template
         return $this->pageWithTextAndClass($page, $text, $class);
     }
 
+    /**
+     * @return string
+     */
     public function nextDisabled()
     {
         $class = $this->nextDisabledClass();
@@ -86,11 +121,19 @@ class TwitterBootstrapTemplate extends Template
         return $this->spanLi($class, $text);
     }
 
+    /**
+     * @return string
+     */
     private function nextDisabledClass()
     {
         return $this->option('css_next_class').' '.$this->option('css_disabled_class');
     }
 
+    /**
+     * @param int $page
+     *
+     * @return string
+     */
     public function nextEnabled($page)
     {
         $text = $this->option('next_message');
@@ -99,16 +142,29 @@ class TwitterBootstrapTemplate extends Template
         return $this->pageWithTextAndClass($page, $text, $class);
     }
 
+    /**
+     * @return string
+     */
     public function first()
     {
         return $this->page(1);
     }
 
+    /**
+     * @param int $page
+     *
+     * @return string
+     */
     public function last($page)
     {
         return $this->page($page);
     }
 
+    /**
+     * @param int $page
+     *
+     * @return string
+     */
     public function current($page)
     {
         $text = trim($page.' '.$this->option('active_suffix'));
@@ -117,6 +173,9 @@ class TwitterBootstrapTemplate extends Template
         return $this->spanLi($class, $text);
     }
 
+    /**
+     * @return string
+     */
     public function separator()
     {
         $class = $this->option('css_dots_class');
@@ -125,6 +184,13 @@ class TwitterBootstrapTemplate extends Template
         return $this->spanLi($class, $text);
     }
 
+    /**
+     * @param $class
+     * @param $href
+     * @param $text
+     *
+     * @return string
+     */
     private function linkLi($class, $href, $text)
     {
         $liClass = $class ? sprintf(' class="%s"', $class) : '';
@@ -132,6 +198,12 @@ class TwitterBootstrapTemplate extends Template
         return sprintf('<li%s><a href="%s">%s</a></li>', $liClass, $href, $text);
     }
 
+    /**
+     * @param $class
+     * @param $text
+     *
+     * @return string
+     */
     private function spanLi($class, $text)
     {
         $liClass = $class ? sprintf(' class="%s"', $class) : '';

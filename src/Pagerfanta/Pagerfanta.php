@@ -105,6 +105,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this->normalizeOutOfRangePages;
     }
 
+    /**
+     * @param $value
+     *
+     * @return mixed
+     */
     private function filterBoolean($value)
     {
         if (!is_bool($value)) {
@@ -134,6 +139,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this;
     }
 
+    /**
+     * @param $maxPerPage
+     *
+     * @return int
+     */
     private function filterMaxPerPage($maxPerPage)
     {
         $maxPerPage = $this->toInteger($maxPerPage);
@@ -142,6 +152,9 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $maxPerPage;
     }
 
+    /**
+     * @param $maxPerPage
+     */
     private function checkMaxPerPage($maxPerPage)
     {
         if (!is_int($maxPerPage)) {
@@ -192,12 +205,18 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this;
     }
 
+    /**
+     * @param $arguments
+     */
     private function useDeprecatedCurrentPageBooleanArguments($arguments)
     {
         $this->useDeprecatedCurrentPageAllowOutOfRangePagesBooleanArgument($arguments);
         $this->useDeprecatedCurrentPageNormalizeOutOfRangePagesBooleanArgument($arguments);
     }
 
+    /**
+     * @param $arguments
+     */
     private function useDeprecatedCurrentPageAllowOutOfRangePagesBooleanArgument($arguments)
     {
         $index = 1;
@@ -206,6 +225,9 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         $this->useDeprecatedBooleanArgument($arguments, $index, $method);
     }
 
+    /**
+     * @param $arguments
+     */
     private function useDeprecatedCurrentPageNormalizeOutOfRangePagesBooleanArgument($arguments)
     {
         $index = 2;
@@ -214,6 +236,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         $this->useDeprecatedBooleanArgument($arguments, $index, $method);
     }
 
+    /**
+     * @param $arguments
+     * @param $index
+     * @param $method
+     */
     private function useDeprecatedBooleanArgument($arguments, $index, $method)
     {
         if (isset($arguments[$index])) {
@@ -221,6 +248,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         }
     }
 
+    /**
+     * @param $currentPage
+     *
+     * @return int
+     */
     private function filterCurrentPage($currentPage)
     {
         $currentPage = $this->toInteger($currentPage);
@@ -230,6 +262,9 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $currentPage;
     }
 
+    /**
+     * @param $currentPage
+     */
     private function checkCurrentPage($currentPage)
     {
         if (!is_int($currentPage)) {
@@ -241,6 +276,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         }
     }
 
+    /**
+     * @param $currentPage
+     *
+     * @return int
+     */
     private function filterOutOfRangeCurrentPage($currentPage)
     {
         if ($this->notAllowedCurrentPageOutOfRange($currentPage)) {
@@ -250,12 +290,22 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $currentPage;
     }
 
+    /**
+     * @param $currentPage
+     *
+     * @return bool
+     */
     private function notAllowedCurrentPageOutOfRange($currentPage)
     {
         return !$this->getAllowOutOfRangePages() &&
                $this->currentPageOutOfRange($currentPage);
     }
 
+    /**
+     * @param $currentPage
+     *
+     * @return bool
+     */
     private function currentPageOutOfRange($currentPage)
     {
         return $currentPage > 1 && $currentPage > $this->getNbPages();
@@ -306,11 +356,17 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this->currentPageResults;
     }
 
+    /**
+     * @return bool
+     */
     private function notCachedCurrentPageResults()
     {
         return $this->currentPageResults === null;
     }
 
+    /**
+     * @return array|\Traversable
+     */
     private function getCurrentPageResultsFromAdapter()
     {
         $offset = $this->calculateOffsetForCurrentPageResults();
@@ -319,6 +375,9 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this->adapter->getSlice($offset, $length);
     }
 
+    /**
+     * @return int
+     */
     private function calculateOffsetForCurrentPageResults()
     {
         return ($this->getCurrentPage() - 1) * $this->getMaxPerPage();
@@ -362,6 +421,9 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this->nbResults;
     }
 
+    /**
+     * @return bool
+     */
     private function notCachedNbResults()
     {
         return $this->nbResults === null;
@@ -383,11 +445,17 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $nbPages;
     }
 
+    /**
+     * @return int
+     */
     private function calculateNbPages()
     {
         return (int) ceil($this->getNbResults() / $this->getMaxPerPage());
     }
 
+    /**
+     * @return int
+     */
     private function minimumNbPages()
     {
         return 1;
@@ -485,6 +553,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return new \ArrayIterator($results);
     }
 
+    /**
+     * @param $value
+     *
+     * @return int
+     */
     private function toInteger($value)
     {
         if ($this->needsToIntegerConversion($value)) {
@@ -494,6 +567,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $value;
     }
 
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
     private function needsToIntegerConversion($value)
     {
         return (is_string($value) || is_float($value)) && (int) $value == $value;
