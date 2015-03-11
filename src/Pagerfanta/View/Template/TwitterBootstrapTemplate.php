@@ -65,9 +65,9 @@ class TwitterBootstrapTemplate extends Template
     }
 
     /**
-     * @param $page
-     * @param $text
-     * @param $class
+     * @param int    $page
+     * @param string $text
+     * @param string $class
      *
      * @return string
      */
@@ -185,9 +185,9 @@ class TwitterBootstrapTemplate extends Template
     }
 
     /**
-     * @param $class
-     * @param $href
-     * @param $text
+     * @param string $class
+     * @param string $href
+     * @param string $text
      *
      * @return string
      */
@@ -199,8 +199,8 @@ class TwitterBootstrapTemplate extends Template
     }
 
     /**
-     * @param $class
-     * @param $text
+     * @param string $class
+     * @param string $text
      *
      * @return string
      */

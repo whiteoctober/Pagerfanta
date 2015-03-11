@@ -26,17 +26,11 @@ abstract class Template implements TemplateInterface
         $this->initializeOptions();
     }
 
-    /**
-     * @param $routeGenerator
-     */
     public function setRouteGenerator($routeGenerator)
     {
         $this->routeGenerator = $routeGenerator;
     }
 
-    /**
-     * @param array $options
-     */
     public function setOptions(array $options)
     {
         $this->options = array_merge($this->options, $options);
@@ -47,19 +41,11 @@ abstract class Template implements TemplateInterface
         $this->options = static::$defaultOptions;
     }
 
-    /**
-     * @param $page
-     *
-     * @return mixed
-     */
     protected function generateRoute($page)
     {
         return call_user_func($this->getRouteGenerator(), $page);
     }
 
-    /**
-     * @return mixed
-     */
     private function getRouteGenerator()
     {
         if (!$this->routeGenerator) {
@@ -69,11 +55,6 @@ abstract class Template implements TemplateInterface
         return $this->routeGenerator;
     }
 
-    /**
-     * @param $name
-     *
-     * @return mixed
-     */
     protected function option($name)
     {
         if (!isset($this->options[$name])) {

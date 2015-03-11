@@ -73,9 +73,6 @@ class DefaultView implements ViewInterface
         $this->nbPages = $pagerfanta->getNbPages();
     }
 
-    /**
-     * @param $options
-     */
     private function initializeOptions($options)
     {
         $this->proximity = isset($options['proximity']) ?
@@ -91,19 +88,12 @@ class DefaultView implements ViewInterface
         return 2;
     }
 
-    /**
-     * @param $routeGenerator
-     * @param $options
-     */
     private function configureTemplate($routeGenerator, $options)
     {
         $this->template->setRouteGenerator($routeGenerator);
         $this->template->setOptions($options);
     }
 
-    /**
-     * @return mixed
-     */
     private function generate()
     {
         $pages = $this->generatePages();
@@ -111,11 +101,6 @@ class DefaultView implements ViewInterface
         return $this->generateContainer($pages);
     }
 
-    /**
-     * @param $pages
-     *
-     * @return mixed
-     */
     private function generateContainer($pages)
     {
         return str_replace('%pages%', $pages, $this->template->container());
@@ -158,7 +143,7 @@ class DefaultView implements ViewInterface
     }
 
     /**
-     * @param $startPage
+     * @param int $startPage
      *
      * @return bool
      */
@@ -168,7 +153,7 @@ class DefaultView implements ViewInterface
     }
 
     /**
-     * @param $endPage
+     * @param int $endPage
      *
      * @return bool
      */
@@ -178,10 +163,10 @@ class DefaultView implements ViewInterface
     }
 
     /**
-     * @param $startPage
-     * @param $endPage
+     * @param int $startPage
+     * @param int $endPage
      *
-     * @return mixed
+     * @return int
      */
     private function calculateEndPageForStartPageUnderflow($startPage, $endPage)
     {
@@ -189,19 +174,16 @@ class DefaultView implements ViewInterface
     }
 
     /**
-     * @param $startPage
-     * @param $endPage
+     * @param int $startPage
+     * @param int $endPage
      *
-     * @return mixed
+     * @return int
      */
     private function calculateStartPageForEndPageOverflow($startPage, $endPage)
     {
         return max($startPage - ($endPage - $this->nbPages), 1);
     }
 
-    /**
-     * @return mixed
-     */
     private function previous()
     {
         if ($this->pagerfanta->hasPreviousPage()) {
@@ -211,9 +193,6 @@ class DefaultView implements ViewInterface
         return $this->template->previousDisabled();
     }
 
-    /**
-     * @return mixed
-     */
     private function first()
     {
         if ($this->startPage > 1) {
@@ -221,9 +200,6 @@ class DefaultView implements ViewInterface
         }
     }
 
-    /**
-     * @return mixed
-     */
     private function secondIfStartIs3()
     {
         if ($this->startPage == 3) {
@@ -231,9 +207,6 @@ class DefaultView implements ViewInterface
         }
     }
 
-    /**
-     * @return mixed
-     */
     private function dotsIfStartIsOver3()
     {
         if ($this->startPage > 3) {
@@ -255,11 +228,6 @@ class DefaultView implements ViewInterface
         return $pages;
     }
 
-    /**
-     * @param $page
-     *
-     * @return mixed
-     */
     private function page($page)
     {
         if ($page == $this->currentPage) {
@@ -269,9 +237,6 @@ class DefaultView implements ViewInterface
         return $this->template->page($page);
     }
 
-    /**
-     * @return mixed
-     */
     private function dotsIfEndIsUnder3ToLast()
     {
         if ($this->endPage < $this->toLast(3)) {
@@ -279,9 +244,6 @@ class DefaultView implements ViewInterface
         }
     }
 
-    /**
-     * @return mixed
-     */
     private function secondToLastIfEndIs3ToLast()
     {
         if ($this->endPage == $this->toLast(3)) {
@@ -289,19 +251,11 @@ class DefaultView implements ViewInterface
         }
     }
 
-    /**
-     * @param $n
-     *
-     * @return int
-     */
     private function toLast($n)
     {
         return $this->pagerfanta->getNbPages() - ($n - 1);
     }
 
-    /**
-     * @return mixed
-     */
     private function last()
     {
         if ($this->pagerfanta->getNbPages() > $this->endPage) {
@@ -309,9 +263,6 @@ class DefaultView implements ViewInterface
         }
     }
 
-    /**
-     * @return mixed
-     */
     private function next()
     {
         if ($this->pagerfanta->hasNextPage()) {

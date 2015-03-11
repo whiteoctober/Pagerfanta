@@ -29,7 +29,7 @@ class DefaultTemplate extends Template
     );
 
     /**
-     * @return mixed
+     * @return string
      */
     public function container()
     {
@@ -39,7 +39,7 @@ class DefaultTemplate extends Template
     /**
      * @param int $page
      *
-     * @return mixed
+     * @return string
      */
     public function page($page)
     {
@@ -52,7 +52,7 @@ class DefaultTemplate extends Template
      * @param int    $page
      * @param string $text
      *
-     * @return mixed
+     * @return string
      */
     public function pageWithText($page, $text)
     {
@@ -65,7 +65,7 @@ class DefaultTemplate extends Template
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function previousDisabled()
     {
@@ -75,7 +75,7 @@ class DefaultTemplate extends Template
     /**
      * @param int $page
      *
-     * @return mixed
+     * @return string
      */
     public function previousEnabled($page)
     {
@@ -83,7 +83,7 @@ class DefaultTemplate extends Template
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function nextDisabled()
     {
@@ -93,7 +93,7 @@ class DefaultTemplate extends Template
     /**
      * @param int $page
      *
-     * @return mixed
+     * @return string
      */
     public function nextEnabled($page)
     {
@@ -101,7 +101,7 @@ class DefaultTemplate extends Template
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function first()
     {
@@ -111,7 +111,7 @@ class DefaultTemplate extends Template
     /**
      * @param int $page
      *
-     * @return mixed
+     * @return string
      */
     public function last($page)
     {
@@ -121,7 +121,7 @@ class DefaultTemplate extends Template
     /**
      * @param int $page
      *
-     * @return mixed
+     * @return string
      */
     public function current($page)
     {
@@ -129,7 +129,7 @@ class DefaultTemplate extends Template
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function separator()
     {
@@ -137,8 +137,8 @@ class DefaultTemplate extends Template
     }
 
     /**
-     * @param $class
-     * @param $page
+     * @param string $class
+     * @param int    $page
      *
      * @return mixed
      */

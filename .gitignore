@@ -2,4 +2,3 @@ composer.lock
 Guardfile
 phpunit.xml
 /vendor/
-.idea/
