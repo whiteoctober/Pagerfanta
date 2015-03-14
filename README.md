@@ -288,6 +288,27 @@ $query = new Query::create(new Term(array(
 $adapter = new ElasticaAdapter($searchable, $query);
 ```
 
+### ElasticaSearchAdapter
+
+To paginate an [Elastica\Search](http://elastica.io/getting-started/search-documents.html#section-search):
+
+```php
+<?php
+
+use Elastica\Search;
+use Elastica\Query\MatchAll;
+use Pagerfanta\Adapter\ElasticaSearchAdapter;
+
+$search = new Search($elasticaClient);
+// search supports Multi-index, Multitype search
+$search->addIndices(array('GB', 'US'));
+$search->addTypes(array('tweet'));
+// set query before creating adapter
+$search->setQuery(new MatchAll());
+
+$adapter = new ElasticaSearchAdapter($search);
+```
+
 ### PropelAdapter
 
 To paginate a propel query:
