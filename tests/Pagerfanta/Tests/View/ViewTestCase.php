@@ -61,6 +61,13 @@ abstract class ViewTestCase extends \PHPUnit_Framework_TestCase
         return $this->view->render($this->pagerfanta, $routeGenerator, $options);
     }
 
+    protected function renderViewNeedsEscaping($options)
+    {
+        $routeGenerator = function ($page) { return '|&'.$page.'|'; };
+
+        return $this->view->render($this->pagerfanta, $routeGenerator, $options);
+    }
+
     protected function createRouteGenerator()
     {
         return function ($page) { return '|'.$page.'|'; };

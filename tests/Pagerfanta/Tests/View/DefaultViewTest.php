@@ -291,6 +291,36 @@ EOF
         , $this->renderView($options));
     }
 
+    public function testRenderUrlEscaping()
+    {
+        $this->setNbPages(10);
+        $this->setCurrentPage(1);
+
+        $options = array(
+            'container_template' => '<nav><ul>%pages%</ul></nav>',
+            'page_template'      => '<li><a href="%href%">%text%</a></li>',
+            'span_template'      => '<li><span class="%class%">%text%</span></li>',
+        );
+
+        $this->assertRenderedView(<<<EOF
+<nav>
+    <ul>
+        <li><span class="disabled">Previous</span></li>
+        <li><span class="current">1</span></li>
+        <li><a href="|&amp;2|">2</a></li>
+        <li><a href="|&amp;3|">3</a></li>
+        <li><a href="|&amp;4|">4</a></li>
+        <li><a href="|&amp;5|">5</a></li>
+        <li><span class="dots">...</span></li>
+        <li><a href="|&amp;10|">10</a></li>
+        <li><a href="|&amp;2|">Next</a></li>
+    </ul>
+</nav>
+EOF
+            , $this->renderViewNeedsEscaping($options));
+
+    }
+
     protected function filterExpectedView($expected)
     {
         return $this->removeWhitespacesBetweenTags($expected);

@@ -45,7 +45,7 @@ class DefaultTemplate extends Template
         $search = array('%href%', '%text%');
 
         $href = $this->generateRoute($page);
-        $replace = array($href, $text);
+        $replace = array($this->escape($href), $text);
 
         return str_replace($search, $replace, $this->option('page_template'));
     }
