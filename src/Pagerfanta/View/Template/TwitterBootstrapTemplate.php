@@ -40,7 +40,7 @@ class TwitterBootstrapTemplate extends Template
     {
         $text = $page;
 
-        return $this->pageWithText($page, $text);
+        return $this->pageWithText($page, $this->escape($text));
     }
 
     public function pageWithText($page, $text)
