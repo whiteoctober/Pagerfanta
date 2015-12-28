@@ -57,4 +57,12 @@ class MappingAdapterTest extends \PHPUnit_Framework_TestCase
             68,
         ), $this->adapter->getSlice(2, 1));
     }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testConstructorWithNonCallableForCallback()
+    {
+        new MappingAdapter(new ArrayAdapter(array()), 'bla');
+    }
 }
