@@ -333,6 +333,24 @@ $results = array(/* ... */);
 $adapter = new FixedAdapter($nbResults, $results);
 ```
 
+### MappingAdapter
+
+This adapter allows you to define a callback t be applied to all items coming out of the adapter.
+Useful when you need to do something simple to the items that you only need to do when they 
+are paginated.
+
+```php
+<?php
+
+use Pagerfanta\Adapter\MappingAdapter;
+
+$results = array(/* ... */);
+
+$adapter = new MappingAdapter(new ArrayAdapter($results), function ($item) {
+   return $item + 1;
+});
+```
+
 ## Views
 
 Views are to render pagerfantas, this way you can reuse your
