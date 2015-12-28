@@ -333,6 +333,38 @@ $results = array(/* ... */);
 $adapter = new FixedAdapter($nbResults, $results);
 ```
 
+### AdaptersAdapter
+
+This adapter can take an array of any other adapters and go through them
+one after another and act as if they were all one adapter.
+
+Use case is when you have 2 different places you want to load your
+items.
+
+```php
+<?php
+
+use Pagerfanta\Adapter\AdaptersAdapter;
+
+use Elastica\Index;
+use Elastica\Query;
+use Elastica\Query\Term;
+use Pagerfanta\Adapter\ElasticaAdapter;
+use Pagerfanta\Adapter\DoctrineCollectionAdapter;
+
+$user = $em->find("Pagerfanta\Tests\Adapter\DoctrineORM\User", 1);
+
+$searchable = new Index($elasticaClient, 'index_name');
+$query = new Query::create(new Term(array(
+    'name' => 'Fred'
+));
+
+$adapter = new AdaptersAdapter(array(
+    new ElasticaAdapter($searchable, $query),
+    new DoctrineCollectionAdapter($user->getGroups())
+));
+```
+
 ## Views
 
 Views are to render pagerfantas, this way you can reuse your
