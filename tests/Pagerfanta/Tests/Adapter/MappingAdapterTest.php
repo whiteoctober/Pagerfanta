@@ -27,8 +27,13 @@ class MappingAdapterTest extends \PHPUnit_Framework_TestCase
             45,
             67,
             12
-        )), function ($item) {
-            return $item + 1;
+        )), function (array $items) {
+            return array_map(
+                function ($item) {
+                    return $item + 1;
+                },
+                $items
+            );
         });
     }
 

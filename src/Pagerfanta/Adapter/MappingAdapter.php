@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Pagerfanta\Adapter;
 
 class MappingAdapter implements AdapterInterface
@@ -20,12 +19,12 @@ class MappingAdapter implements AdapterInterface
     /**
      * MappingAdapter constructor.
      * @param AdapterInterface $innerAdapter
-     * @param $callback
+     * @param callable $callback
      */
     public function __construct(AdapterInterface $innerAdapter, $callback)
     {
         if (!is_callable($callback)) {
-            throw new \InvalidArgumentException(sprintf('$callable must be callback'));
+            throw new \InvalidArgumentException('$callable must be callback');
         }
         
         $this->innerAdapter = $innerAdapter;
@@ -33,9 +32,7 @@ class MappingAdapter implements AdapterInterface
     }
 
     /**
-     * Returns the number of results.
-     *
-     * @return integer The number of results.
+     * {@inheritdoc}
      */
     public function getNbResults()
     {
@@ -43,23 +40,10 @@ class MappingAdapter implements AdapterInterface
     }
 
     /**
-     * Returns an slice of the results.
-     *
-     * @param integer $offset The offset.
-     * @param integer $length The length.
-     *
-     * @return array|\Traversable The slice.
+     * {@inheritdoc}
      */
     public function getSlice($offset, $length)
     {
-        $slice = $this->innerAdapter->getSlice($offset, $length);
-
-        $newSlice = array();
-        
-        foreach ($slice as $index => $item) {
-            $newSlice[$index] = call_user_func($this->callback, $item);
-        }
-        
-        return $newSlice;
+        return call_user_func($this->callback, $this->innerAdapter->getSlice($offset, $length));
     }
 }
