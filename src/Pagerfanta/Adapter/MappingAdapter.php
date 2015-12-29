@@ -54,10 +54,12 @@ class MappingAdapter implements AdapterInterface
     {
         $slice = $this->innerAdapter->getSlice($offset, $length);
 
+        $newSlice = array();
+        
         foreach ($slice as $index => $item) {
-            $slice[$index] = call_user_func($this->callback, $item);
+            $newSlice[$index] = call_user_func($this->callback, $item);
         }
         
-        return $slice;
+        return $newSlice;
     }
 }
