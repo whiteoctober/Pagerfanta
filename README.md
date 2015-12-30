@@ -346,8 +346,10 @@ use Pagerfanta\Adapter\MappingAdapter;
 
 $results = array(/* ... */);
 
-$adapter = new MappingAdapter(new ArrayAdapter($results), function ($item) {
-   return $item + 1;
+$adapter = new MappingAdapter(new ArrayAdapter($results), function (array $items) {
+   return array_map(function ($item) {
+       return $item + 1;
+   }, $items);
 });
 ```
 

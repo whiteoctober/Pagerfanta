@@ -10,7 +10,7 @@
  */
 
 
-namespace Omni\CommonBundle\Tests\Pagerfanta;
+namespace Pagerfanta\Tests\Adapter;
 
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Adapter\MappingAdapter;

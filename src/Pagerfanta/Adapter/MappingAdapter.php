@@ -13,11 +13,10 @@ namespace Pagerfanta\Adapter;
 
 class MappingAdapter implements AdapterInterface
 {
-    protected $innerAdapter;
-    protected $callback;
+    private $innerAdapter;
+    private $callback;
 
     /**
-     * MappingAdapter constructor.
      * @param AdapterInterface $innerAdapter
      * @param callable $callback
      */
