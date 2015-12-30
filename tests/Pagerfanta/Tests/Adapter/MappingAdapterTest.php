@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Pagerfanta\Tests\Adapter;
 
 use Pagerfanta\Adapter\ArrayAdapter;
