@@ -335,7 +335,7 @@ $adapter = new FixedAdapter($nbResults, $results);
 
 ### MappingAdapter
 
-This adapter allows you to define a callback t be applied to all items coming out of the adapter.
+This adapter allows you to define a callback to be applied to all items coming out of the adapter.
 Useful when you need to do something simple to the items that you only need to do when they 
 are paginated.
 

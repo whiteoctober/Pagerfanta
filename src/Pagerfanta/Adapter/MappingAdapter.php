@@ -23,7 +23,7 @@ class MappingAdapter implements AdapterInterface
     public function __construct(AdapterInterface $innerAdapter, $callback)
     {
         if (!is_callable($callback)) {
-            throw new \InvalidArgumentException('$callable must be callback');
+            throw new \InvalidArgumentException('$callback must be callable');
         }
         
         $this->innerAdapter = $innerAdapter;
