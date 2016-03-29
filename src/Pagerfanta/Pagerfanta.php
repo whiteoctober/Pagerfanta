@@ -45,8 +45,8 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         $this->adapter = $adapter;
         $this->allowOutOfRangePages = false;
         $this->normalizeOutOfRangePages = false;
-        $this->maxPerPage = $maxPerPage;
-        $this->currentPage = $currentPage;
+        $this->setMaxPerPage($maxPerPage);
+        $this->setCurrentPage($currentPage);
     }
 
     /**
