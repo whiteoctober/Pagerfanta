@@ -27,10 +27,10 @@ class TelegramInlineTemplate extends Template
 
     public function pageWithText($page, $text)
     {
-        return [
+        return array(
             'text' => str_replace('%text%', $text, $this->option('page_template')),
             'callback_data' => $this->generateRoute($page)
-        ];
+        );
     }
 
     public function previousDisabled() { }
