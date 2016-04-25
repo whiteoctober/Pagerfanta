@@ -85,22 +85,9 @@ class TelegramInlineView implements ViewInterface
         $this->calculateStartAndEndPage();
 
         $this->first();
-        if($this->currentPage > $this->maxPerPage) {
-            $this->previous();
-            if($this->nbPages - $this->maxPerPage <= $this->startPage) {
-                $this->startPage++;
-            }
-        }
-        if($this->pagerfanta->hasNextPage() && $this->currentPage >= $this->maxPerPage && $this->nbPages - $this->endPage >= 1) {
-            $this->endPage--;
-            $this->pages();
-        } else {
-            $this->pages();
-        }
+        $this->previous();
+        $this->pages();
         $this->next();
-        if($this->pagerfanta->hasNextPage() && $this->currentPage >= $this->maxPerPage && $this->nbPages > $this->endPage) {
-            $this->endPage++;
-        }
         $this->last();
         return (string)$this;
     }
@@ -148,13 +135,25 @@ class TelegramInlineView implements ViewInterface
     {
         if ($this->currentPage > $this->maxPerPage) {
             if($this->nbPages - $this->maxPerPage > $this->startPage) {
-                $this->pushNewButton(
-                    $this->template->previousEnabled($this->startPage - 1)
-                );
+                if($this->maxPerPage > $this->startPage) {
+                    $this->pushNewButton(
+                        $this->template->previousEnabled($this->startPage -1)
+                    );
+                } else {
+                    $this->pushNewButton(
+                        $this->template->previousEnabled($this->startPage)
+                    );
+                }
             } else {
-                $this->pushNewButton(
-                    $this->template->previousEnabled($this->startPage)
-                );
+                if($this->nbPages - $this->maxPerPage < $this->startPage) {
+                    $this->pushNewButton(
+                        $this->template->previousEnabled($this->startPage -1)
+                    );
+                } else {
+                    $this->pushNewButton(
+                        $this->template->previousEnabled($this->startPage)
+                    );
+                }
             }
         }
     }
@@ -176,7 +175,19 @@ class TelegramInlineView implements ViewInterface
 
     private function pages()
     {
-        foreach (range($this->startPage, $this->endPage) as $page) {
+        $startPage = $this->startPage;
+        if($this->startPage >= $this->maxPerPage) {
+            if($this->nbPages - $this->maxPerPage +1 < $this->startPage) {
+                $startPage++;
+            }
+        }
+        $endPage = $this->endPage;
+        if($this->endPage > $this->maxPerPage) {
+            if($this->nbPages - $this->maxPerPage+1 < $this->startPage) {
+                $endPage--;
+            }
+        }
+        foreach (range($startPage, $endPage) as $page) {
             $this->page($page);
         }
     }
@@ -205,15 +216,21 @@ class TelegramInlineView implements ViewInterface
 
     private function last()
     {
-        if ($this->pagerfanta->getNbPages() > $this->endPage) {
+        if ($this->nbPages > $this->endPage) {
             if($this->nbPages - $this->endPage <= 1) {
                 $this->pushNewButton(
-                    $this->template->page($this->pagerfanta->getNbPages())
+                    $this->template->page($this->nbPages)
                 );
             } else {
-                $this->pushNewButton(
-                    $this->template->last($this->pagerfanta->getNbPages())
-                );
+                if($this->endPage +2 >= $this->nbPages) {
+                    $this->pushNewButton(
+                        $this->template->page($this->nbPages)
+                    );
+                } else {
+                    $this->pushNewButton(
+                        $this->template->last($this->nbPages)
+                    );
+                }
             }
         }
     }
@@ -221,14 +238,28 @@ class TelegramInlineView implements ViewInterface
     private function next()
     {
         if ($this->pagerfanta->hasNextPage()) {
-            if($this->nbPages - $this->endPage <= 2) {
-                $this->pushNewButton(
-                    $this->template->page($this->endPage + 1)
-                );
-            } else {
-                $this->pushNewButton(
-                    $this->template->nextEnabled($this->endPage + 1)
-                );
+            if($this->endPage + 1 < $this->nbPages) {
+                if($this->endPage > $this->maxPerPage) {
+                    $this->pushNewButton(
+                        $this->template->nextEnabled($this->endPage)
+                    );
+                } else {
+                    if($this->endPage +2 >= $this->nbPages) {
+                        $this->pushNewButton(
+                            $this->template->page($this->endPage + 1)
+                        );
+                    } else {
+                        $this->pushNewButton(
+                            $this->template->nextEnabled($this->endPage + 1)
+                        );
+                    }
+                }
+            } elseif($this->nbPages > $this->maxPerPage) {
+                if($this->nbPages - $this->maxPerPage +1 < $this->startPage) {
+                    $this->pushNewButton(
+                        $this->template->page($this->endPage)
+                    );
+                }
             }
         }
     }

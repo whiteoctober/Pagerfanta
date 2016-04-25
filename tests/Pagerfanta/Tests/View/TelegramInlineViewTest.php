@@ -19,7 +19,7 @@ class TelegramInlineViewTest extends ViewTestCase
         $options = array();
 
         $this->assertRenderedView(<<<EOF
-{"inline_keyboard":[[{"text":"1","callback_data":"|1|"},{"text":"8","callback_data":"|8|"},{"text":"9","callback_data":"|9|"},{"text":"· 10 ·","callback_data":"|10|"},{"text":"11","callback_data":"|11|"},{"text":"12 ›","callback_data":"|12|"},{"text":"100 »","callback_data":"|100|"}]]}
+{"inline_keyboard":[[{"text":"1","callback_data":"|1|"},{"text":"8","callback_data":"|8|"},{"text":"9","callback_data":"|9|"},{"text":"· 10 ·","callback_data":"|10|"},{"text":"11","callback_data":"|11|"},{"text":"12","callback_data":"|12|"},{"text":"12 ›","callback_data":"|12|"},{"text":"100 »","callback_data":"|100|"}]]}
 EOF
         , $this->renderView($options));
     }
@@ -45,7 +45,7 @@ EOF
         $options = array();
 
         $this->assertRenderedView(<<<EOF
-{"inline_keyboard":[[{"text":"« 1","callback_data":"|1|"},{"text":"‹ 96","callback_data":"|96|"},{"text":"97","callback_data":"|97|"},{"text":"98","callback_data":"|98|"},{"text":"99","callback_data":"|99|"},{"text":"· 100 ·","callback_data":"|100|"}]]}
+{"inline_keyboard":[[{"text":"« 1","callback_data":"|1|"},{"text":"‹ 95","callback_data":"|95|"},{"text":"97","callback_data":"|97|"},{"text":"98","callback_data":"|98|"},{"text":"99","callback_data":"|99|"}]]}
 EOF
         , $this->renderView($options));
     }
@@ -84,7 +84,7 @@ EOF
         $options = array();
 
         $this->assertRenderedView(<<<EOF
-{"inline_keyboard":[[{"text":"« 1","callback_data":"|1|"},{"text":"‹ 95","callback_data":"|95|"},{"text":"96","callback_data":"|96|"},{"text":"· 97 ·","callback_data":"|97|"},{"text":"98","callback_data":"|98|"},{"text":"99","callback_data":"|99|"},{"text":"100","callback_data":"|100|"}]]}
+{"inline_keyboard":[[{"text":"« 1","callback_data":"|1|"},{"text":"‹ 94","callback_data":"|94|"},{"text":"96","callback_data":"|96|"},{"text":"· 97 ·","callback_data":"|97|"},{"text":"98","callback_data":"|98|"},{"text":"99","callback_data":"|99|"},{"text":"100","callback_data":"|100|"}]]}
 EOF
         , $this->renderView($options));
     }
@@ -97,7 +97,7 @@ EOF
         $options = array();
 
         $this->assertRenderedView(<<<EOF
-{"inline_keyboard":[[{"text":"« 1","callback_data":"|1|"},{"text":"‹ 94","callback_data":"|94|"},{"text":"95","callback_data":"|95|"},{"text":"· 96 ·","callback_data":"|96|"},{"text":"97","callback_data":"|97|"},{"text":"98 ›","callback_data":"|98|"},{"text":"100 »","callback_data":"|100|"}]]}
+{"inline_keyboard":[[{"text":"« 1","callback_data":"|1|"},{"text":"‹ 93","callback_data":"|93|"},{"text":"95","callback_data":"|95|"},{"text":"· 96 ·","callback_data":"|96|"},{"text":"97","callback_data":"|97|"},{"text":"98 ›","callback_data":"|98|"},{"text":"100","callback_data":"|100|"}]]}
 EOF
         , $this->renderView($options));
     }
@@ -110,7 +110,7 @@ EOF
         $options = array('proximity' => 3);
 
         $this->assertRenderedView(<<<EOF
-{"inline_keyboard":[[{"text":"1","callback_data":"|1|"},{"text":"7","callback_data":"|7|"},{"text":"8","callback_data":"|8|"},{"text":"9","callback_data":"|9|"},{"text":"· 10 ·","callback_data":"|10|"},{"text":"11","callback_data":"|11|"},{"text":"12","callback_data":"|12|"},{"text":"13 ›","callback_data":"|13|"},{"text":"100 »","callback_data":"|100|"}]]}
+{"inline_keyboard":[[{"text":"1","callback_data":"|1|"},{"text":"7","callback_data":"|7|"},{"text":"8","callback_data":"|8|"},{"text":"9","callback_data":"|9|"},{"text":"· 10 ·","callback_data":"|10|"},{"text":"11","callback_data":"|11|"},{"text":"12","callback_data":"|12|"},{"text":"13","callback_data":"|13|"},{"text":"13 ›","callback_data":"|13|"},{"text":"100 »","callback_data":"|100|"}]]}
 EOF
         , $this->renderView($options));
     }
@@ -126,7 +126,7 @@ EOF
         );
 
         $this->assertRenderedView(<<<EOF
-{"inline_keyboard":[[{"text":"1","callback_data":"|1|"},{"text":"8","callback_data":"|8|"},{"text":"9","callback_data":"|9|"},{"text":"· 10 ·","callback_data":"|10|"},{"text":"11","callback_data":"|11|"},{"text":"12 >","callback_data":"|12|"},{"text":"100 »","callback_data":"|100|"}]]}
+{"inline_keyboard":[[{"text":"1","callback_data":"|1|"},{"text":"8","callback_data":"|8|"},{"text":"9","callback_data":"|9|"},{"text":"· 10 ·","callback_data":"|10|"},{"text":"11","callback_data":"|11|"},{"text":"12","callback_data":"|12|"},{"text":"12 >","callback_data":"|12|"},{"text":"100 »","callback_data":"|100|"}]]}
 EOF
         , $this->renderView($options));
     }
