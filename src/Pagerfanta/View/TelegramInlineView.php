@@ -185,6 +185,8 @@ class TelegramInlineView implements ViewInterface
         if($this->endPage > $this->maxPerPage) {
             if($this->nbPages - $this->maxPerPage+1 < $this->startPage) {
                 $endPage--;
+            } elseif($this->maxPerPage +1 == $this->endPage) {
+                $endPage--;
             }
         }
         foreach (range($startPage, $endPage) as $page) {
