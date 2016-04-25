@@ -88,12 +88,13 @@ class TelegramInlineView implements ViewInterface
 
         $this->page($this->currentPage);
         $this->first();
+        $this->last();
         $this->previous();
         $this->next();
-        $this->last();
         $this->pages();
         ksort($this->buttons->inline_keyboard[0]);
-        return (string)$this;
+        $this->buttons->inline_keyboard[0] = array_values($this->buttons->inline_keyboard[0]);
+        return $this;
     }
 
     private function calculateStartAndEndPage()
@@ -232,10 +233,9 @@ class TelegramInlineView implements ViewInterface
     private function next()
     {
         if ($this->pagerfanta->hasNextPage()) {
-            if(!$this->pageExists($this->endPage)) {
-                $next = $this->endPage;
-            } else {
-                $next = $this->endPage+1;
+            $next = $this->endPage;
+            if($this->pageExists($next) || $next == $this->maxPerPage) {
+                $next++;
             }
             if($next < $this->nbPages) {
                 $this->pushNewButton(
