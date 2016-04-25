@@ -94,7 +94,7 @@ class TelegramInlineView implements ViewInterface
         $this->pages();
         ksort($this->buttons->inline_keyboard[0]);
         $this->buttons->inline_keyboard[0] = array_values($this->buttons->inline_keyboard[0]);
-        return $this;
+        return (string)$this;
     }
 
     private function calculateStartAndEndPage()
