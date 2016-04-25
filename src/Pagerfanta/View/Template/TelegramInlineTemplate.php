@@ -29,7 +29,8 @@ class TelegramInlineTemplate extends Template
     {
         return array(
             'text' => str_replace('%text%', $text, $this->option('page_template')),
-            'callback_data' => $this->generateRoute($page)
+            'callback_data' => $this->generateRoute($page),
+            'page' => $page
         );
     }
 

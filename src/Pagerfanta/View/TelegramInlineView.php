@@ -25,6 +25,8 @@ class TelegramInlineView implements ViewInterface
     private $maxPerPage;
     
     private $buttons;
+    
+    private $maxButtons;
 
     public function __construct(TemplateInterface $template = null)
     {
@@ -84,11 +86,13 @@ class TelegramInlineView implements ViewInterface
     {
         $this->calculateStartAndEndPage();
 
+        $this->page($this->currentPage);
         $this->first();
         $this->previous();
-        $this->pages();
         $this->next();
         $this->last();
+        $this->pages();
+        ksort($this->buttons->inline_keyboard[0]);
         return (string)$this;
     }
 
@@ -134,63 +138,37 @@ class TelegramInlineView implements ViewInterface
     private function previous()
     {
         if ($this->currentPage > $this->maxPerPage) {
-            if($this->nbPages - $this->maxPerPage > $this->startPage) {
-                if($this->maxPerPage > $this->startPage) {
-                    $this->pushNewButton(
-                        $this->template->previousEnabled($this->startPage -1)
-                    );
-                } else {
-                    $this->pushNewButton(
-                        $this->template->previousEnabled($this->startPage)
-                    );
-                }
-            } else {
-                if($this->nbPages - $this->maxPerPage < $this->startPage) {
-                    $this->pushNewButton(
-                        $this->template->previousEnabled($this->startPage -1)
-                    );
-                } else {
-                    $this->pushNewButton(
-                        $this->template->previousEnabled($this->startPage)
-                    );
-                }
+            $prev = $this->startPage;
+            if($this->startPage+$this->maxPerPage-1 >= $this->nbPages) {
+                $prev--;
             }
+            $this->pushNewButton(
+                $this->template->previousEnabled($prev)
+            );
         }
     }
 
     private function first()
     {
-        if ($this->startPage > 1) {
+        if(!$this->pageExists(1)) {
             if($this->currentPage > $this->maxPerPage) {
                 $this->pushNewButton(
                     $this->template->first()
                 );
             } else {
-                $this->pushNewButton(
-                    $this->template->page(1)
-                );
+                $this->page(1);
             }
         }
     }
 
     private function pages()
     {
-        $startPage = $this->startPage;
-        if($this->startPage >= $this->maxPerPage) {
-            if($this->nbPages - $this->maxPerPage +1 < $this->startPage) {
-                $startPage++;
+        foreach (range($this->startPage, $this->endPage) as $page) {
+            if(!$this->pageExists($page)) {
+                if(count($this->buttons->inline_keyboard[0]) < $this->maxButtons) {
+                    $this->page($page);
+                }
             }
-        }
-        $endPage = $this->endPage;
-        if($this->endPage > $this->maxPerPage) {
-            if($this->nbPages - $this->maxPerPage+1 < $this->startPage) {
-                $endPage--;
-            } elseif($this->maxPerPage +1 >= $this->endPage) {
-                $endPage--;
-            }
-        }
-        foreach (range($startPage, $endPage) as $page) {
-            $this->page($page);
         }
     }
 
@@ -208,7 +186,21 @@ class TelegramInlineView implements ViewInterface
     }
     
     private function pushNewButton(array $params) {
-        $this->buttons->inline_keyboard[0][] = (object)$params;
+        $params = (object)$params;
+        $page = $params->page;
+        unset($params->page);
+        $this->buttons->inline_keyboard[0][$page] = $params;
+    }
+    
+    private function pageOfPreviousButton()
+    {
+        $keys = array_keys($this->buttons->inline_keyboard[0]);
+        array_pop($keys);
+        return array_pop($keys);
+    }
+
+    private function pageExists($page) {
+        return isset($this->buttons->inline_keyboard[0][$page]);
     }
 
     private function toLast($n)
@@ -240,30 +232,26 @@ class TelegramInlineView implements ViewInterface
     private function next()
     {
         if ($this->pagerfanta->hasNextPage()) {
-            if($this->endPage + 1 < $this->nbPages) {
-                if($this->endPage > $this->maxPerPage) {
-                    $this->pushNewButton(
-                        $this->template->nextEnabled($this->endPage)
-                    );
-                } else {
-                    if($this->endPage +2 >= $this->nbPages) {
-                        $this->pushNewButton(
-                            $this->template->page($this->endPage + 1)
-                        );
-                    } else {
-                        $this->pushNewButton(
-                            $this->template->nextEnabled($this->endPage + 1)
-                        );
-                    }
-                }
-            } elseif($this->nbPages > $this->maxPerPage) {
-                if($this->nbPages - $this->maxPerPage +1 < $this->startPage) {
-                    $this->pushNewButton(
-                        $this->template->page($this->endPage)
-                    );
-                }
+            if(!$this->pageExists($this->endPage)) {
+                $next = $this->endPage;
+            } else {
+                $next = $this->endPage+1;
+            }
+            if($next < $this->nbPages) {
+                $this->pushNewButton(
+                    $this->template->nextEnabled($next)
+                );
+            } else {
+                $this->pushNewButton(
+                    $this->template->page($next)
+                );
             }
         }
+    }
+    
+    public function setMaxButtons($max)
+    {
+        $this->maxButtons = $max;
     }
 
     /**
