@@ -41,7 +41,7 @@ class ElasticsearchAdapter implements AdapterInterface
    * @param array $params The array of parameters to use for performing the search.
    * @param Client $client The Elasticsearch client.
    */
-  public function __construct(array $params, $client)
+  public function __construct(array $params, Client $client)
   {
     $this->params = $params;
     $this->client = $client;
