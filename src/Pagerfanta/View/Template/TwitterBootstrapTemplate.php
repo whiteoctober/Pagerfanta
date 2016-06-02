@@ -129,7 +129,7 @@ class TwitterBootstrapTemplate extends Template
     {
         $liClass = $class ? sprintf(' class="%s"', $class) : '';
 
-        return sprintf('<li%s><a href="%s">%s</a></li>', $liClass, $href, $text);
+        return sprintf('<li%s><a href="%s">%s</a></li>', $liClass, htmlspecialchars($href), $text);
     }
 
     private function spanLi($class, $text)
