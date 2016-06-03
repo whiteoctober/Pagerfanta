@@ -25,11 +25,17 @@ use Pagerfanta\View\Template\TwitterBootstrapTemplate;
  */
 class TwitterBootstrapView extends DefaultView
 {
+    /**
+     * @return TwitterBootstrapTemplate
+     */
     protected function createDefaultTemplate()
     {
         return new TwitterBootstrapTemplate();
     }
 
+    /**
+     * @return int
+     */
     protected function getDefaultProximity()
     {
         return 3;

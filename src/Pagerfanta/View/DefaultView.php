@@ -11,6 +11,7 @@
 
 namespace Pagerfanta\View;
 
+use Pagerfanta\Pagerfanta;
 use Pagerfanta\PagerfantaInterface;
 use Pagerfanta\View\Template\TemplateInterface;
 use Pagerfanta\View\Template\DefaultTemplate;
@@ -22,6 +23,7 @@ class DefaultView implements ViewInterface
 {
     private $template;
 
+    /** @var PagerFanta */
     private $pagerfanta;
     private $proximity;
 
@@ -69,6 +71,9 @@ class DefaultView implements ViewInterface
                            $this->getDefaultProximity();
     }
 
+    /**
+     * @return int
+     */
     protected function getDefaultProximity()
     {
         return 2;
@@ -92,6 +97,9 @@ class DefaultView implements ViewInterface
         return str_replace('%pages%', $pages, $this->template->container());
     }
 
+    /**
+     * @return string
+     */
     private function generatePages()
     {
         $this->calculateStartAndEndPage();
@@ -125,21 +133,43 @@ class DefaultView implements ViewInterface
         $this->endPage = $endPage;
     }
 
+    /**
+     * @param int $startPage
+     *
+     * @return bool
+     */
     private function startPageUnderflow($startPage)
     {
         return $startPage < 1;
     }
 
+    /**
+     * @param int $endPage
+     *
+     * @return bool
+     */
     private function endPageOverflow($endPage)
     {
         return $endPage > $this->nbPages;
     }
 
+    /**
+     * @param int $startPage
+     * @param int $endPage
+     *
+     * @return int
+     */
     private function calculateEndPageForStartPageUnderflow($startPage, $endPage)
     {
         return min($endPage + (1 - $startPage), $this->nbPages);
     }
 
+    /**
+     * @param int $startPage
+     * @param int $endPage
+     *
+     * @return int
+     */
     private function calculateStartPageForEndPageOverflow($startPage, $endPage)
     {
         return max($startPage - ($endPage - $this->nbPages), 1);
@@ -175,6 +205,9 @@ class DefaultView implements ViewInterface
         }
     }
 
+    /**
+     * @return string
+     */
     private function pages()
     {
         $pages = '';
@@ -238,64 +271,3 @@ class DefaultView implements ViewInterface
         return 'default';
     }
 }
-
-/*
-
-CSS:
-
-.pagerfanta {
-}
-
-.pagerfanta a,
-.pagerfanta span {
-    display: inline-block;
-    border: 1px solid blue;
-    color: blue;
-    margin-right: .2em;
-    padding: .25em .35em;
-}
-
-.pagerfanta a {
-    text-decoration: none;
-}
-
-.pagerfanta a:hover {
-    background: #ccf;
-}
-
-.pagerfanta .dots {
-    border-width: 0;
-}
-
-.pagerfanta .current {
-    background: #ccf;
-    font-weight: bold;
-}
-
-.pagerfanta .disabled {
-    border-color: #ccf;
-    color: #ccf;
-}
-
-COLORS:
-
-.pagerfanta a,
-.pagerfanta span {
-    border-color: blue;
-    color: blue;
-}
-
-.pagerfanta a:hover {
-    background: #ccf;
-}
-
-.pagerfanta .current {
-    background: #ccf;
-}
-
-.pagerfanta .disabled {
-    border-color: #ccf;
-    color: #cf;
-}
-
-*/

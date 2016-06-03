@@ -23,6 +23,9 @@ class TwitterBootstrap3Template extends TwitterBootstrapTemplate
         $this->setOptions(array('active_suffix' => '<span class="sr-only">(current)</span>'));
     }
 
+    /**
+     * @return string
+     */
     public function container()
     {
         return sprintf('<ul class="%s">%%pages%%</ul>',

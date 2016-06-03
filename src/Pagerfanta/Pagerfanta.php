@@ -60,7 +60,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Sets whether or not allow out of range pages.
      *
-     * @param Boolean $value
+     * @param bool $value
      *
      * @return self
      */
@@ -74,7 +74,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns whether or not allow out of range pages.
      *
-     * @return Boolean
+     * @return bool
      */
     public function getAllowOutOfRangePages()
     {
@@ -84,7 +84,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Sets whether or not normalize out of range pages.
      *
-     * @param Boolean $value
+     * @param bool $value
      *
      * @return self
      */
@@ -98,13 +98,17 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns whether or not normalize out of range pages.
      *
-     * @return Boolean
+     * @return bool
      */
     public function getNormalizeOutOfRangePages()
     {
         return $this->normalizeOutOfRangePages;
     }
 
+    /**
+     * @throws NotBooleanException If the value is not a boolean.
+     * @return bool
+     */
     private function filterBoolean($value)
     {
         if (!is_bool($value)) {
@@ -119,7 +123,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
      *
      * Tries to convert from string and float.
      *
-     * @param integer $maxPerPage
+     * @param int $maxPerPage
      *
      * @return self
      *
@@ -134,6 +138,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this;
     }
 
+    /**
+     * @param int $maxPerPage
+     *
+     * @return int
+     */
     private function filterMaxPerPage($maxPerPage)
     {
         $maxPerPage = $this->toInteger($maxPerPage);
@@ -142,6 +151,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $maxPerPage;
     }
 
+    /**
+     * @param int $maxPerPage
+     * @throws NotIntegerMaxPerPageException If $maxPerPage is not an integer.
+     * @throws LessThan1MaxPerPageException  If $maxPerPage is lower than 1.
+     */
     private function checkMaxPerPage($maxPerPage)
     {
         if (!is_int($maxPerPage)) {
@@ -162,7 +176,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns the max per page.
      *
-     * @return integer
+     * @return int
      */
     public function getMaxPerPage()
     {
@@ -174,7 +188,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
      *
      * Tries to convert from string and float.
      *
-     * @param integer $currentPage
+     * @param int $currentPage
      *
      * @return self
      *
@@ -230,6 +244,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $currentPage;
     }
 
+    /**
+     * @param int $currentPage
+     * @throws NotIntegerCurrentPageException If $currentPage is not an integer.
+     * @throws LessThan1CurrentPageException  If $currentPage is lower than 1.
+     */
     private function checkCurrentPage($currentPage)
     {
         if (!is_int($currentPage)) {
@@ -285,7 +304,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns the current page.
      *
-     * @return integer
+     * @return int
      */
     public function getCurrentPage()
     {
@@ -306,11 +325,17 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this->currentPageResults;
     }
 
+    /**
+     * @return bool
+     */
     private function notCachedCurrentPageResults()
     {
         return $this->currentPageResults === null;
     }
 
+    /**
+     * @return array|\Traversable
+     */
     private function getCurrentPageResultsFromAdapter()
     {
         $offset = $this->calculateOffsetForCurrentPageResults();
@@ -319,6 +344,9 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this->adapter->getSlice($offset, $length);
     }
 
+    /**
+     * @return int
+     */
     private function calculateOffsetForCurrentPageResults()
     {
         return ($this->getCurrentPage() - 1) * $this->getMaxPerPage();
@@ -351,7 +379,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns the number of results.
      *
-     * @return integer
+     * @return int
      */
     public function getNbResults()
     {
@@ -362,6 +390,9 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $this->nbResults;
     }
 
+    /**
+     * @return bool
+     */
     private function notCachedNbResults()
     {
         return $this->nbResults === null;
@@ -370,7 +401,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns the number of pages.
      *
-     * @return integer
+     * @return int
      */
     public function getNbPages()
     {
@@ -383,11 +414,17 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
         return $nbPages;
     }
 
+    /**
+     * @return int
+     */
     private function calculateNbPages()
     {
         return (int) ceil($this->getNbResults() / $this->getMaxPerPage());
     }
 
+    /**
+     * @return int
+     */
     private function minimumNbPages()
     {
         return 1;
@@ -396,7 +433,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns if the number of results is higher than the max per page.
      *
-     * @return Boolean
+     * @return bool
      */
     public function haveToPaginate()
     {
@@ -406,7 +443,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns whether there is previous page or not.
      *
-     * @return Boolean
+     * @return bool
      */
     public function hasPreviousPage()
     {
@@ -416,7 +453,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns the previous page.
      *
-     * @return integer
+     * @return int
      *
      * @throws LogicException If there is no previous page.
      */
@@ -432,7 +469,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns whether there is next page or not.
      *
-     * @return Boolean
+     * @return bool
      */
     public function hasNextPage()
     {
@@ -442,7 +479,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Returns the next page.
      *
-     * @return integer
+     * @return int
      *
      * @throws LogicException If there is no next page.
      */
@@ -458,7 +495,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     /**
      * Implements the \Countable interface.
      *
-     * Return integer The number of results.
+     * Return int The number of results.
      */
     public function count()
     {
