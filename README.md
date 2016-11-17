@@ -333,6 +333,32 @@ $results = array(/* ... */);
 $adapter = new FixedAdapter($nbResults, $results);
 ```
 
+## Iterator
+
+Traverse all the pages of a Pagerfanta instance:
+
+```php
+use Pagerfanta\Iterator\PagerfantaIterator;
+
+$pager->setMaxPerPage(10);
+
+foreach (PagerfantaIterator::iterateOverPages($pager) as $page => $pageResults) {
+
+}
+```
+
+Traverse all the elements of all the pages:
+
+```php
+use Pagerfanta\Iterator\PagerfantaIterator;
+
+$pager->setMaxPerPage(10);
+
+foreach (PagerfantaIterator::iterateOverElements($pager) as $index => $element) {
+
+}
+```
+
 ## Views
 
 Views are to render pagerfantas, this way you can reuse your
