@@ -36,6 +36,11 @@ abstract class Template implements TemplateInterface
         $this->options = array_merge($this->options, $options);
     }
 
+    public function getOptions()
+    {
+        return $this->options;
+    }
+    
     private function initializeOptions()
     {
         $this->options = static::$defaultOptions;
