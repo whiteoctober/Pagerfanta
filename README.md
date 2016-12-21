@@ -323,11 +323,12 @@ To paginate a [Sphinx](http://php.net/manual/en/class.sphinxclient.php) query:
 
 use Pagerfanta\Adapter\SphinxAdapter;
 
-$index = 'example_index';
 $query = '*';
+$index = 'example_index';
+$comment = '';
 
 $sphinxClient = new SphinxClient();
-$adapter = new SphinxAdapter($sphinxClient, $query, $index);
+$adapter = new SphinxAdapter($sphinxClient, $query, $index, $comment);
 ```
 
 ### FixedAdapter
