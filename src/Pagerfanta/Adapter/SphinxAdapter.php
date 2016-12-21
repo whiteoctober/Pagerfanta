@@ -19,6 +19,8 @@ class SphinxAdapter implements AdapterInterface
     private $index;
     private $comment;
     private $results;
+    private $maxMatches = 0;
+    private $cutoff = 0;
 	
 	/**
 	 * Constructor.
@@ -48,13 +50,33 @@ class SphinxAdapter implements AdapterInterface
         return $this->results['total_found'];
     }
 
+    /*
+     * setMaxMatches
+     *
+     * @param $maxMatches Controls how much matches searchd will keep in RAM while searching.
+     */
+    public function setMaxMatches($maxMatches)
+    {
+        $this->maxMatches = $maxMatches;
+    }
+
+    /*
+     * setCutoff
+     *
+     * @param $maxMatches Used for advanced performance control. It tells searchd to forcibly stop search query once cutoff matches have been found and processed.
+     */
+    public function setCutoff($cutoff)
+    {
+        $this->cutoff = $cutoff;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getSlice($offset, $limit)
     {
         // Set limit
-        $this->client->setLimits($offset,$limit);
+        $this->client->setLimits($offset, $limit, $this->maxMatches, $this->cutoff);
         
         return $this->results = $this->client
             ->query($this->query, $this->index, $this->comment);
