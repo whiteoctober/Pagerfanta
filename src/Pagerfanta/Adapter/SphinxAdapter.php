@@ -44,10 +44,10 @@ class SphinxAdapter implements AdapterInterface
     public function getNbResults()
     {
         if (!$this->results) {
-           return $this->client->query($this->query, $this->index, $this->comment)['total_found'];
+           return $this->client->query($this->query, $this->index, $this->comment)['total'];
         }
 
-        return $this->results['total_found'];
+        return $this->results['total'];
     }
 
     /*
