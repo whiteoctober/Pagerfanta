@@ -315,6 +315,21 @@ $query->setQuery('search term');
 $adapter = new SolariumAdapter($solarium, $query);
 ```
 
+### SphinxAdapter
+To paginate a [Sphinx](http://php.net/manual/en/class.sphinxclient.php) query:
+
+```php
+<?php
+
+use Pagerfanta\Adapter\SphinxAdapter;
+
+$index = 'example_index';
+$query = '*';
+
+$sphinxClient = new SphinxClient();
+$adapter = new SphinxAdapter($sphinxClient, $query, $index);
+```
+
 ### FixedAdapter
 
 Best used when you need to do a custom paging solution and
