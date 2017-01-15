@@ -166,9 +166,7 @@ class TelegramInlineView implements ViewInterface
     {
         foreach (range($this->startPage, $this->endPage) as $page) {
             if(!$this->pageExists($page)) {
-                if(count($this->buttons->inline_keyboard[0]) < $this->maxButtons) {
-                    $this->page($page);
-                }
+                $this->page($page);
             }
         }
     }
