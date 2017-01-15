@@ -1,4 +1,14 @@
-composer.lock
 Guardfile
 phpunit.xml
+
+# Composer dir and files
+composer.lock
 /vendor/
+
+# Eclipse
+.buildpath
+.project
+.settings
+
+# VI
+*.swp
