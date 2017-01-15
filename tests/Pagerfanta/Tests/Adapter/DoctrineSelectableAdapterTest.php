@@ -36,7 +36,7 @@ class DoctrineSelectableAdapterTest extends \PHPUnit_Framework_TestCase
 
     private function createSelectableMock()
     {
-        return $this->getMock('Doctrine\Common\Collections\Selectable');
+        return $this->getMockBuilder('Doctrine\Common\Collections\Selectable')->getMock();
     }
 
     private function createCriteria()
@@ -71,7 +71,7 @@ class DoctrineSelectableAdapterTest extends \PHPUnit_Framework_TestCase
 
     private function createCollectionMock()
     {
-        return $this->getMock('Doctrine\Common\Collections\Collection');
+        return $this->getMockBuilder('Doctrine\Common\Collections\Collection')->getMock();
     }
 
     public function testGetSlice()

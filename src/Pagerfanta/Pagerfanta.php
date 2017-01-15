@@ -423,7 +423,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     public function getPreviousPage()
     {
         if (!$this->hasPreviousPage()) {
-            throw new LogicException('There is not previous page.');
+            throw new LogicException('There is no previous page.');
         }
 
         return $this->currentPage - 1;
@@ -449,7 +449,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
     public function getNextPage()
     {
         if (!$this->hasNextPage()) {
-            throw new LogicException('There is not next page.');
+            throw new LogicException('There is no next page.');
         }
 
         return $this->currentPage + 1;

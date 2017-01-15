@@ -21,7 +21,7 @@ class TwitterBootstrapViewTest extends ViewTestCase
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|9|">&larr; Previous</a></li>
+        <li class="prev"><a href="|9|" rel="prev">&larr; Previous</a></li>
         <li><a href="|1|">1</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|7|">7</a></li>
@@ -33,7 +33,7 @@ class TwitterBootstrapViewTest extends ViewTestCase
         <li><a href="|13|">13</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|11|">Next &rarr;</a></li>
+        <li class="next"><a href="|11|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF
@@ -60,7 +60,7 @@ EOF
         <li><a href="|7|">7</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|2|">Next &rarr;</a></li>
+        <li class="next"><a href="|2|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF
@@ -77,7 +77,7 @@ EOF
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|99|">&larr; Previous</a></li>
+        <li class="prev"><a href="|99|" rel="prev">&larr; Previous</a></li>
         <li><a href="|1|">1</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|94|">94</a></li>
@@ -104,7 +104,7 @@ EOF
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|3|">&larr; Previous</a></li>
+        <li class="prev"><a href="|3|" rel="prev">&larr; Previous</a></li>
         <li><a href="|1|">1</a></li>
         <li><a href="|2|">2</a></li>
         <li><a href="|3|">3</a></li>
@@ -114,7 +114,7 @@ EOF
         <li><a href="|7|">7</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|5|">Next &rarr;</a></li>
+        <li class="next"><a href="|5|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF
@@ -131,7 +131,7 @@ EOF
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|4|">&larr; Previous</a></li>
+        <li class="prev"><a href="|4|" rel="prev">&larr; Previous</a></li>
         <li><a href="|1|">1</a></li>
         <li><a href="|2|">2</a></li>
         <li><a href="|3|">3</a></li>
@@ -142,7 +142,7 @@ EOF
         <li><a href="|8|">8</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|6|">Next &rarr;</a></li>
+        <li class="next"><a href="|6|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF
@@ -159,7 +159,7 @@ EOF
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|96|">&larr; Previous</a></li>
+        <li class="prev"><a href="|96|" rel="prev">&larr; Previous</a></li>
         <li><a href="|1|">1</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|94|">94</a></li>
@@ -169,7 +169,7 @@ EOF
         <li><a href="|98|">98</a></li>
         <li><a href="|99|">99</a></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|98|">Next &rarr;</a></li>
+        <li class="next"><a href="|98|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF
@@ -186,7 +186,7 @@ EOF
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|95|">&larr; Previous</a></li>
+        <li class="prev"><a href="|95|" rel="prev">&larr; Previous</a></li>
         <li><a href="|1|">1</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|93|">93</a></li>
@@ -197,7 +197,7 @@ EOF
         <li><a href="|98|">98</a></li>
         <li><a href="|99|">99</a></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|97|">Next &rarr;</a></li>
+        <li class="next"><a href="|97|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF
@@ -214,7 +214,7 @@ EOF
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|9|">&larr; Previous</a></li>
+        <li class="prev"><a href="|9|" rel="prev">&larr; Previous</a></li>
         <li><a href="|1|">1</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|8|">8</a></li>
@@ -224,7 +224,7 @@ EOF
         <li><a href="|12|">12</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|11|">Next &rarr;</a></li>
+        <li class="next"><a href="|11|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF
@@ -244,7 +244,7 @@ EOF
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|9|">Anterior</a></li>
+        <li class="prev"><a href="|9|" rel="prev">Anterior</a></li>
         <li><a href="|1|">1</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|7|">7</a></li>
@@ -256,7 +256,7 @@ EOF
         <li><a href="|13|">13</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|11|">Siguiente</a></li>
+        <li class="next"><a href="|11|" rel="next">Siguiente</a></li>
     </ul>
 </div>
 EOF
@@ -290,7 +290,7 @@ EOF
         <li><a href="|7|">7</a></li>
         <li class="puntos"><span>&hellip;</span></li>
         <li><a href="|100|">100</a></li>
-        <li class="siguiente"><a href="|2|">Next &rarr;</a></li>
+        <li class="siguiente"><a href="|2|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF

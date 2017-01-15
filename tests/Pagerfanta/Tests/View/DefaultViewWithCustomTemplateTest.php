@@ -24,7 +24,7 @@ class DefaultViewWithCustomTemplateTest extends ViewTestCase
         $this->assertRenderedView(<<<EOF
 <div class="pagination">
     <ul>
-        <li class="prev"><a href="|9|">&larr; Previous</a></li>
+        <li class="prev"><a href="|9|" rel="prev">&larr; Previous</a></li>
         <li><a href="|1|">1</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|8|">8</a></li>
@@ -34,7 +34,7 @@ class DefaultViewWithCustomTemplateTest extends ViewTestCase
         <li><a href="|12|">12</a></li>
         <li class="disabled"><span>&hellip;</span></li>
         <li><a href="|100|">100</a></li>
-        <li class="next"><a href="|11|">Next &rarr;</a></li>
+        <li class="next"><a href="|11|" rel="next">Next &rarr;</a></li>
     </ul>
 </div>
 EOF

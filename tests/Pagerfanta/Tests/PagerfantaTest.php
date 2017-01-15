@@ -29,7 +29,7 @@ class PagerfantaTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->adapter = $this->getMock('Pagerfanta\Adapter\AdapterInterface');
+        $this->adapter = $this->getMockBuilder('Pagerfanta\Adapter\AdapterInterface')->getMock();
         $this->pagerfanta = new Pagerfanta($this->adapter);
     }
 
