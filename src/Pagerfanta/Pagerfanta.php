@@ -274,7 +274,11 @@ class Pagerfanta implements \Countable, \IteratorAggregate, PagerfantaInterface
             return $this->getNbPages();
         }
 
-        throw new OutOfRangeCurrentPageException(sprintf('Page "%d" does not exist. The currentPage must be inferior to "%d"', $currentPage, $this->getNbPages()));
+        $e = new OutOfRangeCurrentPageException(sprintf('Page "%d" does not exist. The currentPage must be inferior to "%d"', $currentPage, $this->getNbPages()));
+        $e->setCurrentPage($currentPage);
+        $e->setMaxAllowedPage($this->getNbPages());
+
+        throw $e;
     }
 
     private function resetForCurrentPageChange()
