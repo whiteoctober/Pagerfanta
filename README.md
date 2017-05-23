@@ -184,7 +184,8 @@ $adapter = new DoctrineDbalSingleTableAdapter($queryBuilder, $countField);
 
 ### DoctrineORMAdapter
 
-To paginate [DoctrineORM](http://www.doctrine-project.org/projects/orm) query objects.
+To paginate [DoctrineORM](http://www.doctrine-project.org/projects/orm) query objects. By default `DoctrineORMAdapter` 
+won't work with single tables. Second parameter has to be set to `false` to make it work with single tables.
 
 ```php
 <?php
@@ -194,7 +195,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 $queryBuilder = $entityManager->createQueryBuilder()
     ->select('u')
     ->from('Model\Article', 'u');
-$adapter = new DoctrineORMAdapter($queryBuilder);
+$adapter = new DoctrineORMAdapter($queryBuilder, false);
 ```
 
 ### DoctrineODMMongoDBAdapter
