@@ -545,6 +545,40 @@ Options (default):
   * css_dots_class (disabled)
   * css_active_class (active)
 
+### TelegramInlineView
+This view generates a pagination for [Telegram](http://telegram.org)
+[InlineKeyboardMarkup](https://core.telegram.org/bots/api#inlinekeyboardmarkup).
+For real example see the [source](https://github.com/vitormattos/bot-packagist)
+of [@PackagistBot](http://t.me/PackagistBot)
+
+```php
+<?php
+
+use Pagerfanta\View\TelegramInlineView;
+use Pagerfanta\Pagerfanta;
+
+$pagerfanta = new Pagerfanta($adapter);
+$pagerfanta->setMaxPerPage(3);
+$pagerfanta->setCurrentPage(1);
+
+$view = new \Pagerfanta\View\TelegramInlineView();
+$view->setMaxButtons(5);
+$buttons = $view->render($pagerfanta, function($page) {
+	return '/p=' . $page;
+});
+
+// Set the variable $buttons to reply_markup field
+```
+
+Options (default):
+
+  * fsrst_page_template (« %text%)
+  * last_page_template (%text% »)
+  * previous_template (‹ %text%)
+  * next_template (%text% ›)
+  * page_template (%text%)
+  * current_template (· %text% ·)
+
 ### OptionableView
 
 This view is to reuse options in different views.
