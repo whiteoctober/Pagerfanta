@@ -1,9 +1,5 @@
 <?php
 /*
- * This file is part of the Pagerfanta package.
- *
- * (c) Maikel Doezé <maikel.doeze@marqin.nl>
- *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -25,19 +21,19 @@ class SphinxAdapter implements AdapterInterface
 	/**
 	 * Constructor.
 	 *
-	 * @param SphinxClient $client A Sphinx client.
-	 * @param $query A Sphinx query.
-     * @param $index A Sphinx index.
-     * @param $comment A Sphinx comment.
-	 */
+     * @param SphinxClient $client A Sphinx client.
+     * @param string $query A Sphinx query.
+     * @param string $index A Sphinx index.
+     * @param string $comment A Sphinx comment.
+     */
 	public function __construct(SphinxClient $client, $query, $index = "*", $comment = "")
 	{
-		$this->client = $client;
+        $this->client = $client;
         $this->query = $query;
         $this->index = $index;
         $this->comment = $comment;
-	}
-	
+    }
+
 	/**
      * {@inheritdoc}
      */
@@ -53,21 +49,53 @@ class SphinxAdapter implements AdapterInterface
     /*
      * setMaxMatches
      *
-     * @param $maxMatches Controls how much matches searchd will keep in RAM while searching.
+     * @param int $maxMatches Controls how much matches searchd will keep in RAM while searching.
+     *
+     * @return SphinxAdapter
      */
     public function setMaxMatches($maxMatches)
     {
         $this->maxMatches = $maxMatches;
+
+        return $this;
+    }
+
+    /*
+     * getMaxMatches
+     *
+     * @param void
+     *
+     * @return int
+     */
+    public function getMaxMatches()
+    {
+        return $this->maxMatches;
     }
 
     /*
      * setCutoff
      *
-     * @param $maxMatches Used for advanced performance control. It tells searchd to forcibly stop search query once cutoff matches have been found and processed.
+     * @param $cutoff Used for advanced performance control. It tells searchd to forcibly stop search query once cutoff matches have been found and processed.
+     *
+     * @return SphinxAdapter
      */
     public function setCutoff($cutoff)
     {
         $this->cutoff = $cutoff;
+
+        return $this;
+    }
+
+    /*
+     * getCutoff
+     *
+     * @param void
+     *
+     * @return int
+     */
+    public function getCutoff()
+    {
+        return $this->cutoff;
     }
 
     /**

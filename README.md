@@ -316,7 +316,7 @@ $adapter = new SolariumAdapter($solarium, $query);
 ```
 
 ### SphinxAdapter
-To paginate a [Sphinx](http://php.net/manual/en/class.sphinxclient.php) query:
+To paginate a [Sphinx](http://sphinxsearch.com/) query:
 
 ```php
 <?php
