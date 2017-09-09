@@ -3,10 +3,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
- 
-namespace Pagerfanta\Adapter;
 
-use SphinxClient;
+namespace Pagerfanta\Adapter;
 
 class SphinxAdapter implements AdapterInterface
 {
@@ -26,7 +24,7 @@ class SphinxAdapter implements AdapterInterface
      * @param string $index A Sphinx index.
      * @param string $comment A Sphinx comment.
      */
-    public function __construct(SphinxClient $client, $query, $index = "*", $comment = "")
+    public function __construct(\SphinxClient $client, $query, $index = "*", $comment = "")
     {
         $this->client = $client;
         $this->query = $query;
