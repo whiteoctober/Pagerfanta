@@ -10,31 +10,31 @@ use SphinxClient;
 
 class SphinxAdapter implements AdapterInterface
 {
-	private $client;
-	private $query;
+    private $client;
+    private $query;
     private $index;
     private $comment;
     private $results;
     private $maxMatches = 0;
     private $cutoff = 0;
-	
-	/**
-	 * Constructor.
-	 *
+
+    /**
+     * Constructor.
+     *
      * @param SphinxClient $client A Sphinx client.
      * @param string $query A Sphinx query.
      * @param string $index A Sphinx index.
      * @param string $comment A Sphinx comment.
      */
-	public function __construct(SphinxClient $client, $query, $index = "*", $comment = "")
-	{
+    public function __construct(SphinxClient $client, $query, $index = "*", $comment = "")
+    {
         $this->client = $client;
         $this->query = $query;
         $this->index = $index;
         $this->comment = $comment;
     }
 
-	/**
+    /**
      * {@inheritdoc}
      */
     public function getNbResults()
