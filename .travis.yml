@@ -6,6 +6,9 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
+  - 7.1
+  - 7.2
 
 matrix:
   include:
@@ -23,7 +26,9 @@ services: mongodb
 
 before_install:
   # Add the MongoDB ODM when we can fulfil its ext-mongo dependency
-  - 'echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini'
+  - 'if [[ ${TRAVIS_PHP_VERSION:0:2} == "5." ]]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini;fi'
+  - if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then pecl install -f mongodb-stable; fi
+  - if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then composer require "alcaeus/mongo-php-adapter=^1.0.0" --ignore-platform-reqs; fi
   - 'composer require doctrine/mongodb-odm "~1.0@dev" --dev --no-update'
   - 'if [[ "$COMPOSER_STABILITY" == "dev" ]]; then sed -i ''s/"pagerfanta\/pagerfanta"/"pagerfanta\/pagerfanta","minimum-stability": "dev"/g'' composer.json; fi'
   # Remove Propel2 dependency for unsupported php versions
