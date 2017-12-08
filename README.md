@@ -226,6 +226,19 @@ $queryBuilder->from('Model\Article');
 $adapter = new DoctrineODMPhpcrAdapter($queryBuilder);
 ```
 
+### DoctrinePlainPhpcrAdapter
+
+To paginate Doctrine Plain Phpcr query builders.
+
+```php
+<?php
+
+use Pagerfanta\Adapter\DoctrinePlainPhpcrAdapter;
+
+$queryBuilder = new QueryBuilder($this->factory);
+$adapter = new DoctrinePlainPhpcrAdapter($queryBuilder);
+```
+
 ### DoctrineCollectionAdapter
 
 To paginate a `Doctrine\Common\Collection\Collections` interface
