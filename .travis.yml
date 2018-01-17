@@ -3,8 +3,6 @@ language: php
 dist: trusty
 
 php:
-  - 5.4
-  - 5.5
   - 5.6
   - 7.0
   - 7.1
@@ -12,13 +10,6 @@ php:
 
 matrix:
   include:
-    # PHP 5.3 doesn't install on Trusty on Travis: https://github.com/travis-ci/travis-ci/issues/8219
-    - php: 5.3
-      dist: precise
-    # older releases
-    - php: 5.5
-      env: SOLARIUM_VERSION=2.* DOCTRINE_ORM_VERSION=2.3.*
-    # dev versions
     - php: 5.6
       env: COMPOSER_STABILITY=dev
 
@@ -31,8 +22,6 @@ before_install:
   - if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then composer require "alcaeus/mongo-php-adapter=^1.0.0" --ignore-platform-reqs; fi
   - 'composer require doctrine/mongodb-odm "~1.0@dev" --dev --no-update'
   - 'if [[ "$COMPOSER_STABILITY" == "dev" ]]; then sed -i ''s/"pagerfanta\/pagerfanta"/"pagerfanta\/pagerfanta","minimum-stability": "dev"/g'' composer.json; fi'
-  # Remove Propel2 dependency for unsupported php versions
-  - 'if [ "$TRAVIS_PHP_VERSION" == "5.3" ] ; then composer remove propel/propel --dev --no-update; fi'
   - sh -c "if [ $DOCTRINE_ORM_VERSION ]; then composer require doctrine/orm:${DOCTRINE_ORM_VERSION} --dev --no-update; fi"
   - sh -c "if [ $SOLARIUM_VERSION ]; then composer require solarium/solarium:${SOLARIUM_VERSION} --dev --no-update; fi"
 
