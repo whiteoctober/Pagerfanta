@@ -47,7 +47,7 @@ class DoctrineODMMongoDBAdapter implements AdapterInterface
      */
     public function getNbResults()
     {
-        return $this->queryBuilder->getQuery()->count();
+        return $this->queryBuilder->getQuery()->count(false);
     }
 
     /**
