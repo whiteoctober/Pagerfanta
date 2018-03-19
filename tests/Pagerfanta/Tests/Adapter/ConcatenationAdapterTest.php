@@ -19,9 +19,8 @@ class ConcatenationAdapterTest extends TestCase
             new FixedAdapter(0, array())
         ));
 
-        $this->setExpectedException(
-            '\Pagerfanta\Exception\InvalidArgumentException',
-            'Argument $adapters[1] expected to be a \Pagerfanta\Adapter\AdapterInterface instance, a string given'
+        $this->expectException(
+            '\Pagerfanta\Exception\InvalidArgumentException'
         );
         new ConcatenationAdapter(array(
             new ArrayAdapter(array()),
