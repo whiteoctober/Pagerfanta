@@ -217,6 +217,29 @@ $queryBuilder = $entityManager->createQueryBuilder()
 $adapter = new DoctrineORMAdapter($queryBuilder);
 ```
 
+### DoctrineORMNativeQueryAdapter
+
+To paginate [DoctrineORM](https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/native-sql.html) native query objects.
+
+```php
+$rsm = new ResultSetMappingBuilder($entityManager);
+$rsm->addRootEntityFromClassMetadata('Model\User', 'u');
+$rsm->addJoinedEntityFromClassMetadata('Model\Group', 'g', 'u', 'groups', [
+    'id' => 'group_id_x' // rename conflicted field on select clause
+]);
+
+$query = new QueryBuilder($entityManager->getConnection());
+$query->select($rsm->generateSelectClause(['u' => 'U', 'g' => 'G']));
+$query->from('user', 'U');
+$query->innerJoin('U', 'user_group', 'UG', 'U.id = UG.user_id');
+$query->innerJoin('UG', 'groups', 'G', 'G.id = UG.group_id');
+
+return new DoctrineORMNativeQueryAdapter($query, $entityManager, $rsm, function($query){
+    $query->select('COUNT(DISTINCT U.id) AS user_count')->setMaxResults(1);
+});
+
+```
+
 ### DoctrineODMMongoDBAdapter
 
 To paginate [DoctrineODMMongoDB](http://www.doctrine-project.org/docs/mongodb_odm/1.0/en/) query builders.
