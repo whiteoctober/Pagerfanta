@@ -19,7 +19,7 @@ use Pagerfanta\Adapter\AdapterInterface;
 use Pagerfanta\Exception\InvalidArgumentException;
 
 /**
- * DoctrineCollectionAdapter.
+ * DoctrineORMNativeQueryAdapter.
  *
  * @author Tugrul Topuz <tugrultopuz@gmail.com>
  */
