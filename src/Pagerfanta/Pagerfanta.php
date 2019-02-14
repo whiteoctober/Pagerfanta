@@ -494,7 +494,12 @@ class Pagerfanta implements \Countable, \IteratorAggregate, \JsonSerializable, P
      */
     public function jsonSerialize()
     {
-        return $this->getCurrentPageResults();
+        $results = $this->getCurrentPageResults();
+        if ($results instanceof \Traversable) {
+            return iterator_to_array($results);
+        }
+        
+        return $results;
     }
 
     private function toInteger($value)
