@@ -686,15 +686,6 @@ class PagerfantaTest extends TestCase
         $this->assertSame($expected, $this->pagerfanta->jsonSerialize());
     }
 
-    public function testJsonSerializeShouldReturnAnArrayOfCurrentPageResultsIfCurrentPageResultsIsAnArray()
-    {
-        $currentPageResults = array('foo', 'bar');
-        $this->setAdapterGetSlice($currentPageResults);
-
-        $expected = $currentPageResults;
-        $this->assertSame($expected, $this->pagerfanta->jsonSerialize());
-    }
-
     public function testJsonSerializeIsUsedOnJsonEncode()
     {
         $currentPageResults = array('foo', 'bar');
