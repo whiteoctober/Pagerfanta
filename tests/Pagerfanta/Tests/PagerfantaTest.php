@@ -658,6 +658,31 @@ class PagerfantaTest extends TestCase
         $expected = new \ArrayIterator($currentPageResults);
         $this->assertEquals($expected, $this->pagerfanta->getIterator());
     }
+    
+    public function testJsonSerializeShouldReturnAnArrayOfCurrentPageResultsIfItIsAnIterator()
+    {
+        $currentPageResults = new \ArrayIterator(array('foo'));
+        $this->setAdapterGetSlice($currentPageResults);
+        
+        $expected = array('foo');
+        $this->assertSame($expected, $this->pagerfanta->jsonSerialize());
+    }
+    public function testJsonSerializeShouldReturnAnArrayOfCurrentPageResultsIfItIsAnIteratorAggregate()
+    {
+        $currentPageResults = new IteratorAggregate();
+        $this->setAdapterGetSlice($currentPageResults);
+        
+        $expected = iterator_to_array($currentPageResults);
+        $this->assertSame($expected, $this->pagerfanta->jsonSerialize());
+    }
+    public function testJsonSerializeShouldReturnAnArrayOfCurrentPageResultsIfCurrentPageResultsIsAnArray()
+    {
+        $currentPageResults = array('foo', 'bar');
+        $this->setAdapterGetSlice($currentPageResults);
+        
+        $expected = $currentPageResults;
+        $this->assertSame($expected, $this->pagerfanta->jsonSerialize());
+    }
 
     private function setAdapterGetSlice($currentPageResults)
     {
