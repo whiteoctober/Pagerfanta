@@ -796,7 +796,7 @@ class PagerfantaTest extends TestCase
         $this->assertEquals($expectedResult, $pagerfanta->getCurrentPageResults());
     }
 
-    public function dataProviderTestOffset(): array
+    public function dataProviderTestOffset()
     {
         return array(
             'Page 1, offset 5, limit 5' => array(
