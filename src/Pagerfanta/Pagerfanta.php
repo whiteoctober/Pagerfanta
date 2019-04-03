@@ -36,6 +36,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, \JsonSerializable, P
     private $currentPage;
     private $nbResults;
     private $currentPageResults;
+    private $offset = 0;
 
     /**
      * @param AdapterInterface $adapter An adapter.
@@ -323,7 +324,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, \JsonSerializable, P
 
     private function calculateOffsetForCurrentPageResults()
     {
-        return ($this->getCurrentPage() - 1) * $this->getMaxPerPage();
+        return (($this->getCurrentPage() - 1) * $this->getMaxPerPage()) + $this->getOffset();
     }
 
     /**
@@ -538,5 +539,25 @@ class Pagerfanta implements \Countable, \IteratorAggregate, \JsonSerializable, P
         }
 
         return (int) ceil($position/$this->getMaxPerPage());
+    }
+
+    /**
+     * @return integer
+     */
+    public function getOffset()
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param integer $offset
+     *
+     * @return Pagerfanta
+     */
+    public function setOffset($offset)
+    {
+        $this->offset = $offset;
+
+        return $this;
     }
 }
