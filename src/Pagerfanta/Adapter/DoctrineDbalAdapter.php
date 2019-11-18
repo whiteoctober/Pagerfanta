@@ -20,8 +20,8 @@ use Pagerfanta\Exception\InvalidArgumentException;
  */
 class DoctrineDbalAdapter implements AdapterInterface
 {
-    private $queryBuilder;
-    private $countQueryBuilderModifier;
+    protected $queryBuilder;
+    protected $countQueryBuilderModifier;
 
     /**
      * Constructor.
@@ -54,7 +54,7 @@ class DoctrineDbalAdapter implements AdapterInterface
         return (int) $result;
     }
 
-    private function prepareCountQueryBuilder()
+    protected function prepareCountQueryBuilder()
     {
         $qb = clone $this->queryBuilder;
         call_user_func($this->countQueryBuilderModifier, $qb);
