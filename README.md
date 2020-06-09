@@ -1,4 +1,4 @@
-_This project is looking for maintainers - [details here](https://github.com/whiteoctober/Pagerfanta/issues/278)._
+**NB** This project is no longer maintained; you may like to use https://github.com/BabDev/Pagerfanta instead.
 
 # Pagerfanta
 
