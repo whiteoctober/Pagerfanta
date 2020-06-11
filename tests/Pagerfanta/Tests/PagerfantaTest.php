@@ -708,6 +708,42 @@ class PagerfantaTest extends TestCase
         $this->assertInstanceOf('IteratorAggregate', $this->pagerfanta);
     }
 
+    public function testLazyAdapterDoNotCallsGetNbResultsOnSetCurrentPage()
+    {
+        $adapter = $this->getMock('Pagerfanta\Adapter\LazyAdapterInterface');
+
+        $adapter
+            ->expects($this->never())
+            ->method('getNbResults');
+
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(10);
+        $pagerfanta->setCurrentPage(3);
+    }
+
+    /**
+     * @expectedException Pagerfanta\Exception\OutOfRangeCurrentPageException
+     */
+    public function testLazyAdapterCallsGetNbResultsOnGetCurrentPageResults()
+    {
+        $adapter = $this->getMock('Pagerfanta\Adapter\LazyAdapterInterface');
+
+        $adapter
+            ->expects($this->any())
+            ->method('getSlice')
+            ->will($this->returnValue(range(0, 9)));
+
+        $adapter
+            ->expects($this->any())
+            ->method('getNbResults')
+            ->will($this->returnValue(20));
+
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(10);
+        $pagerfanta->setCurrentPage(3);
+        $pagerfanta->getCurrentPageResults();
+    }
+
     private function assertResetCurrentPageResults($callback)
     {
         $this->setAdapterNbResultsAny(100);

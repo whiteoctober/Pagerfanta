@@ -14,7 +14,7 @@ namespace Pagerfanta\Adapter;
 use Elastica\Query;
 use Elastica\SearchableInterface;
 
-class ElasticaAdapter implements AdapterInterface
+class ElasticaAdapter implements LazyAdapterInterface
 {
     /**
      * @var Query

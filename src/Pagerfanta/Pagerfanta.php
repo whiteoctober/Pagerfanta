@@ -13,6 +13,7 @@ namespace Pagerfanta;
 
 use OutOfBoundsException;
 use Pagerfanta\Adapter\AdapterInterface;
+use Pagerfanta\Adapter\LazyAdapterInterface;
 use Pagerfanta\Exception\LogicException;
 use Pagerfanta\Exception\NotBooleanException;
 use Pagerfanta\Exception\NotIntegerException;
@@ -227,7 +228,9 @@ class Pagerfanta implements \Countable, \IteratorAggregate, \JsonSerializable, P
     {
         $currentPage = $this->toInteger($currentPage);
         $this->checkCurrentPage($currentPage);
-        $currentPage = $this->filterOutOfRangeCurrentPage($currentPage);
+        if (!$this->adapter instanceof LazyAdapterInterface) {
+            $currentPage = $this->filterOutOfRangeCurrentPage($currentPage);
+        }
 
         return $currentPage;
     }
@@ -318,7 +321,18 @@ class Pagerfanta implements \Countable, \IteratorAggregate, \JsonSerializable, P
         $offset = $this->calculateOffsetForCurrentPageResults();
         $length = $this->getMaxPerPage();
 
-        return $this->adapter->getSlice($offset, $length);
+        $slice = $this->adapter->getSlice($offset, $length);
+
+        if ($this->adapter instanceof LazyAdapterInterface) {
+            $page = $this->filterOutOfRangeCurrentPage($this->getCurrentPage());
+            if ($page != $this->getCurrentPage()) {
+                $this->setCurrentPage($page);
+
+                return $this->getCurrentPageResultsFromAdapter();
+            }
+        }
+
+        return $slice;
     }
 
     private function calculateOffsetForCurrentPageResults()
