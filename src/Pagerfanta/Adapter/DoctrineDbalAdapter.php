@@ -20,8 +20,8 @@ use Pagerfanta\Exception\InvalidArgumentException;
  */
 class DoctrineDbalAdapter implements AdapterInterface
 {
-    private $queryBuilder;
-    private $countQueryBuilderModifier;
+    protected $queryBuilder;
+    protected $countQueryBuilderModifier;
 
     /**
      * Constructor.
@@ -54,12 +54,16 @@ class DoctrineDbalAdapter implements AdapterInterface
         return (int) $result;
     }
 
-    private function prepareCountQueryBuilder()
+    protected function prepareCountQueryBuilder()
     {
         $qb = clone $this->queryBuilder;
-        call_user_func($this->countQueryBuilderModifier, $qb);
 
-        return $qb;
+        // group by queries are problematic to get total row count
+        // we are able to create new QueryBuilder instance using old QueryBuilder as a subquery
+        // to get total row count
+        $retVal = call_user_func($this->countQueryBuilderModifier, $qb);
+
+        return !is_null($retVal) && ($retVal instanceof QueryBuilder) ? $retVal : $qb;
     }
 
     /**
