@@ -2,6 +2,8 @@
 
 namespace Pagerfanta\Tests;
 
+use Pagerfanta\Adapter\AdapterInterface;
+use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +24,11 @@ class IteratorAggregate implements \IteratorAggregate
 
 class PagerfantaTest extends TestCase
 {
+    /**
+     * @var AdapterInterface
+     */
     private $adapter;
+
     /**
      * @var Pagerfanta
      */
@@ -756,5 +762,102 @@ class PagerfantaTest extends TestCase
         $this->setAdapterNbResultsAny(100);
 
         $this->pagerfanta->getPageNumberForItemAtPosition(101);
+    }
+
+    /**
+     * @dataProvider dataProviderTestOffset
+     */
+    public function testOffset($offset, $limit, $page, $expectedResult)
+    {
+        $currentPageResults = array(
+            'item 1',
+            'item 2',
+            'item 3',
+            'item 4',
+            'item 5',
+            'item 6',
+            'item 7',
+            'item 8',
+            'item 9',
+            'item 10',
+            'item 11',
+            'item 12',
+            'item 13',
+            'item 14',
+            'item 15',
+        );
+
+        $adapter = new ArrayAdapter($currentPageResults);
+        $pagerfanta = new Pagerfanta($adapter);
+
+        $pagerfanta->setOffset($offset);
+        $pagerfanta->setMaxPerPage($limit);
+        $pagerfanta->setCurrentPage($page);
+        $this->assertEquals($expectedResult, $pagerfanta->getCurrentPageResults());
+    }
+
+    public function dataProviderTestOffset()
+    {
+        return array(
+            'Page 1, offset 5, limit 5' => array(
+                'offset' => 5,
+                'limit' => 5,
+                'page' => 1,
+                'expectedResult' => array(
+                    'item 6',
+                    'item 7',
+                    'item 8',
+                    'item 9',
+                    'item 10',
+                ),
+            ),
+            'Page 2, offset 5, limit 5' => array(
+                'offset' => 5,
+                'limit' => 5,
+                'page' => 2,
+                'expectedResult' => array(
+                    'item 11',
+                    'item 12',
+                    'item 13',
+                    'item 14',
+                    'item 15',
+                ),
+            ),
+            'Page 3, offset 5, limit 5' => array(
+                'offset' => 5,
+                'limit' => 5,
+                'page' => 3,
+                'expectedResult' => array(),
+            ),
+            'offset 0, page 1' => array(
+                'offset' => 0,
+                'limit' => 10,
+                'page' => 1,
+                'expectedResult' => array(
+                    'item 1',
+                    'item 2',
+                    'item 3',
+                    'item 4',
+                    'item 5',
+                    'item 6',
+                    'item 7',
+                    'item 8',
+                    'item 9',
+                    'item 10',
+                ),
+            ),
+            'offset 0, page 2' => array(
+                'offset' => 0,
+                'limit' => 10,
+                'page' => 2,
+                'expectedResult' => array(
+                    'item 11',
+                    'item 12',
+                    'item 13',
+                    'item 14',
+                    'item 15',
+                ),
+            ),
+        );
     }
 }
