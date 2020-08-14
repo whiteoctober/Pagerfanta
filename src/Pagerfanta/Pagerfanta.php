@@ -39,14 +39,16 @@ class Pagerfanta implements \Countable, \IteratorAggregate, \JsonSerializable, P
 
     /**
      * @param AdapterInterface $adapter An adapter.
+     * @param int $maxPerPage
+     * @param int $currentPage
      */
-    public function __construct(AdapterInterface $adapter)
+    public function __construct(AdapterInterface $adapter, $maxPerPage = 10, $currentPage = 1)
     {
         $this->adapter = $adapter;
         $this->allowOutOfRangePages = false;
         $this->normalizeOutOfRangePages = false;
-        $this->maxPerPage = 10;
-        $this->currentPage = 1;
+        $this->setMaxPerPage($maxPerPage);
+        $this->setCurrentPage($currentPage);
     }
 
     /**
