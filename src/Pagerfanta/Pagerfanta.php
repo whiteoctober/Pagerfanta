@@ -260,7 +260,7 @@ class Pagerfanta implements \Countable, \IteratorAggregate, \JsonSerializable, P
 
     private function currentPageOutOfRange($currentPage)
     {
-        return $currentPage > 1 && $currentPage > $this->getNbPages();
+        return $currentPage < 1 && $currentPage > $this->getNbPages();
     }
 
     /**
